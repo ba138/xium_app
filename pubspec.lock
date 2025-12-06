@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  bounce:
+    dependency: "direct main"
+    description:
+      name: bounce
+      sha256: c213b754bf1c6d6793dea93e621c6e309ab07543aa1208351e0c7297a1fbafce
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -171,6 +179,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  get:
+    dependency: "direct main"
+    description:
+      name: get
+      sha256: "5ed34a7925b85336e15d472cc4cfe7d9ebf4ab8e8b9f688585bf6b50f4c3d79a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.7.3"
   google_fonts:
     dependency: "direct main"
     description:
