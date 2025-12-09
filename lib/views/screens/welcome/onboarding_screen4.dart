@@ -12,45 +12,63 @@ class OnboardingScreen4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              CommonImageView(imagePath: Assets.logo),
-              Spacer(),
-              MyButton(
-                onTap: () {},
-                buttonText: "Login with Email and Password",
-                radius: 12,
-                hasicon: true,
-                choiceIcon: Assets.phone,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                spacing: 8,
-                children: [
-                  Expanded(
-                    child: Divider(thickness: 0.5, color: AppColors.grayColor),
-                  ),
-                  MyText(text: "Or login with "),
-                  Expanded(
-                    child: Divider(thickness: 0.5, color: AppColors.grayColor),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  GlassiyButton(
-                    title: "Google",
-                    ontap: () {},
-                    image: Assets.google,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-            ],
+      body: Container(
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(Assets.gobgimage)),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                CommonImageView(imagePath: Assets.logo),
+                Spacer(),
+                MyButton(
+                  onTap: () {},
+                  buttonText: "Login with Email and Password",
+                  radius: 12,
+                  hasicon: true,
+                  choiceIcon: Assets.phone,
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  spacing: 8,
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: AppColors.grayColor,
+                      ),
+                    ),
+                    MyText(text: "Or login with "),
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: AppColors.grayColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  spacing: 12,
+                  children: [
+                    GlassiyButton(
+                      title: "Google",
+                      ontap: () {},
+                      image: Assets.google,
+                    ),
+                    GlassiyButton(
+                      title: "Google",
+                      ontap: () {},
+                      image: Assets.fb,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

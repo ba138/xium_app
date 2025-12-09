@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_Text.dart';
 
@@ -23,23 +22,23 @@ class GlassiyButton extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12), // blur behind
+          filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0), // blur behind
           child: Container(
             height: 56,
             width: 150,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               // 🌫️ Glass color overlay
-              color: Colors.white.withOpacity(0.12),
+              color: Colors.white.withValues(alpha: 0.12),
               // 🌟 Soft border
               border: Border.all(
-                color: Colors.white.withOpacity(0.25),
-                width: 1.2,
+                color: Colors.white.withValues(alpha: 0.25),
+                width: 0.5,
               ),
               // ✨ Subtle shadow for depth
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
+                  color: Colors.black.withValues(alpha: 0.15),
                   blurRadius: 12,
                   offset: Offset(0, 4),
                 ),
