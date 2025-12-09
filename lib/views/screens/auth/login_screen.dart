@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/auth/forget_password_screen.dart';
 import 'package:xium_app/views/screens/auth/register_screen.dart';
 import 'package:xium_app/views/screens/welcome/widgets/glassiy_button.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
@@ -52,7 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Align(
                 alignment: Alignment.topRight,
-                child: MyText(text: "Forget Password?", onTap: () {}),
+                child: MyText(
+                  text: "Forget Password?",
+                  onTap: () {
+                    Get.to(() => ForgetPasswordScreen());
+                  },
+                ),
               ),
               const SizedBox(height: 30),
               MyButton(onTap: () {}, buttonText: "Login", radius: 12),
