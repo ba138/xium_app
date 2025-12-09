@@ -90,7 +90,7 @@ class MyButton extends StatelessWidget {
                             : const EdgeInsets.only(left: 5),
                         child: CommonImageView(
                           imagePath: choiceIcon,
-                          height: 30,
+                          height: 20,
                         ),
                       )
                     : const SizedBox.shrink(),

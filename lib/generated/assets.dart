@@ -8,7 +8,7 @@ class Assets {
   static const String phone = 'assets/images/mobile.png';
 
   static const String fb = 'images/fb.png';
-  static const String google = 'images/google.png';
+  static const String google = 'assets/images/google.png';
   static const String apple = 'images/apple.png';
   static const String dLogo = 'images/d_logo.png';
   static const String aiIcon = 'images/ai_icon.png';
