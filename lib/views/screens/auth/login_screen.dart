@@ -4,6 +4,7 @@ import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/auth/forget_password_screen.dart';
 import 'package:xium_app/views/screens/auth/register_screen.dart';
+import 'package:xium_app/views/screens/starting/need_permission_screens.dart';
 import 'package:xium_app/views/screens/welcome/widgets/glassiy_button.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -61,7 +62,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              MyButton(onTap: () {}, buttonText: "Login", radius: 12),
+              MyButton(
+                onTap: () {
+                  Get.offAll(() => NeedPermissionScreens());
+                },
+                buttonText: "Login",
+                radius: 12,
+              ),
               const SizedBox(height: 20),
               Row(
                 spacing: 8,
