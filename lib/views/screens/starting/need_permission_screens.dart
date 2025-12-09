@@ -37,7 +37,7 @@ class _NeedPermissionScreensState extends State<NeedPermissionScreens> {
 
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               GlassContainer(
                 height: MediaQuery.of(context).size.height * 0.33,
                 width: double.infinity,
