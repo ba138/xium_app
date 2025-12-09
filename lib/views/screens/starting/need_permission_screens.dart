@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/starting/cube_screen.dart';
+import 'package:xium_app/views/screens/starting/no_source_found_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/glassy_container.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
@@ -71,14 +74,18 @@ class _NeedPermissionScreensState extends State<NeedPermissionScreens> {
               ),
               Spacer(),
               MyButton(
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => NoSourceFoundScreen());
+                },
                 buttonText: "Allow and continue",
                 radius: 12,
               ),
               const SizedBox(height: 10),
               MyBorderButton(
                 buttonText: "Later",
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => CubeScreen());
+                },
                 radius: 12,
                 bgColor: Colors.transparent,
                 borderColor: AppColors.buttonColor,
