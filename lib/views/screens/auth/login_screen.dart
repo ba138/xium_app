@@ -57,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.topRight,
                   child: MyText(
                     text: "Forget Password?",
+                    color: AppColors.buttonColor,
                     onTap: () {
                       Get.to(() => ForgetPasswordScreen());
                     },

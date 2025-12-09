@@ -148,7 +148,7 @@ class MyBorderButton extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius ?? 25),
-        color: bgColor ?? AppColors.secondary,
+        color: bgColor ?? AppColors.buttonColor,
         border: Border.all(width: 1.0, color: borderColor ?? Color(0xA3EADBBD)),
       ),
       child: Material(
@@ -156,8 +156,8 @@ class MyBorderButton extends StatelessWidget {
         child: Ink(
           child: InkWell(
             onTap: onTap,
-            splashColor: AppColors.secondary.withValues(alpha: 0.1),
-            highlightColor: AppColors.secondary.withValues(alpha: 0.1),
+            splashColor: AppColors.buttonColor.withValues(alpha: 0.1),
+            highlightColor: AppColors.buttonColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(radius ?? 8),
             child:
                 child ??
