@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/auth/login_screen.dart';
 import 'package:xium_app/views/screens/welcome/widgets/glassiy_button.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
@@ -25,7 +27,9 @@ class OnboardingScreen4 extends StatelessWidget {
                 CommonImageView(imagePath: Assets.logo),
                 Spacer(),
                 MyButton(
-                  onTap: () {},
+                  onTap: () {
+                    Get.offAll(() => LoginScreen());
+                  },
                   buttonText: "Login with Email and Password",
                   radius: 12,
                   hasicon: true,
