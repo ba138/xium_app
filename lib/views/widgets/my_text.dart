@@ -73,7 +73,7 @@ class MyText extends StatelessWidget {
               decoration: decoration,
               decorationColor: decorationColor, // Apply the color here
 
-              fontFamily: fontFamily ?? AppFonts.georgia,
+              fontFamily: fontFamily ?? AppFonts.satoshi,
               height: lineHeight ?? 0,
               fontStyle: fontStyle,
               letterSpacing: letterSpacing,
