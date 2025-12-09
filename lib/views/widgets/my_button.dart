@@ -73,7 +73,7 @@ class MyButton extends StatelessWidget {
           height: height,
           width: width,
           decoration: BoxDecoration(
-            color: backgroundColor ?? AppColors.secondary,
+            color: backgroundColor ?? AppColors.buttonColor,
             border: Border.all(color: outlineColor),
             borderRadius: BorderRadius.circular(radius),
           ),
@@ -208,14 +208,14 @@ class CustomButton extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius ?? 30),
-        color: bgColor ?? AppColors.secondary,
+        color: bgColor ?? AppColors.buttonColor,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          splashColor: AppColors.secondary.withValues(alpha: 0.1),
-          highlightColor: AppColors.secondary.withValues(alpha: 0.1),
+          splashColor: AppColors.buttonColor.withValues(alpha: 0.1),
+          highlightColor: AppColors.buttonColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(radius ?? 8),
           child:
               customChild ??

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/utils.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/views/screens/welcome/splash_screen.dart';
 

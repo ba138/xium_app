@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/welcome/onboarding_screen4.dart';
 import 'package:xium_app/views/screens/welcome/widgets/welcome_button.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/glassy_container.dart';
@@ -42,20 +44,21 @@ class OnboardingScreen3 extends StatelessWidget {
                         color: AppColors.grayColor,
                       ),
                     ),
-                    Container(
-                      height: 5,
-                      width: 18,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        color: AppColors.onPrimary,
-                      ),
-                    ),
+
                     Container(
                       height: 5,
                       width: 5,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColors.grayColor,
+                      ),
+                    ),
+                    Container(
+                      height: 5,
+                      width: 18,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        color: AppColors.onPrimary,
                       ),
                     ),
                   ],
@@ -71,7 +74,12 @@ class OnboardingScreen3 extends StatelessWidget {
                   text: "Your data is encrypted and accessible in one gesture.",
                 ),
                 const SizedBox(height: 50),
-                WelcomeButton(title: "Next", ontap: () {}),
+                WelcomeButton(
+                  title: "Next",
+                  ontap: () {
+                    Get.to(() => OnboardingScreen4());
+                  },
+                ),
               ],
             ),
           ),

@@ -39,7 +39,7 @@ class CommonImageView extends StatelessWidget {
     if (svgPath != null && svgPath!.isNotEmpty) {
       return Animate(
         effects: [FadeEffect(duration: Duration(milliseconds: 500))],
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width,
           child: ClipRRect(
@@ -71,7 +71,7 @@ class CommonImageView extends StatelessWidget {
             width: width,
             fit: fit,
             imageUrl: url!,
-            placeholder: (context, url) => Container(
+            placeholder: (context, url) => SizedBox(
               height: 23,
               width: 23,
               child: Center(
@@ -124,6 +124,7 @@ class CommonImageViewWithBorder extends StatelessWidget {
   final String placeHolder;
 
   CommonImageViewWithBorder({
+    super.key,
     this.url,
     this.imagePath,
     this.svgPath,
@@ -142,7 +143,7 @@ class CommonImageViewWithBorder extends StatelessWidget {
 
   Widget _buildImageView() {
     if (svgPath != null && svgPath!.isNotEmpty) {
-      return Container(
+      return SizedBox(
         height: height,
         width: width,
         child: ClipRRect(
@@ -168,7 +169,7 @@ class CommonImageViewWithBorder extends StatelessWidget {
           width: width,
           fit: fit,
           imageUrl: url!,
-          placeholder: (context, url) => Container(
+          placeholder: (context, url) => SizedBox(
             height: 23,
             width: 23,
             child: Center(
