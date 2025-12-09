@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/auth/register_screen.dart';
 import 'package:xium_app/views/screens/welcome/widgets/glassiy_button.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -95,7 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: "Register",
                     color: AppColors.buttonColor,
                     weight: FontWeight.bold,
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => RegisterScreen());
+                    },
                   ),
                 ],
               ),
