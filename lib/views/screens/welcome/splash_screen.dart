@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/welcome/onboarding_screen1.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -33,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     animationController.forward().then((_) {
-      // Get.offAll(() => WelcomeScreen());
+      Get.offAll(() => OnboardingScreen1());
     });
   }
 
@@ -51,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen>
           opacity: fadeAnimation,
           child: ScaleTransition(
             scale: scaleAnimation,
-            child: CommonImageView(height: 120, imagePath: Assets.logo),
+            child: CommonImageView(height: 200, imagePath: Assets.logo),
           ),
         ),
       ),
