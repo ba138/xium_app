@@ -1,4 +1,4 @@
 class AppFonts {
-  static const satoshi = "assets/fonts/Satoshi-Regular-otf";
+  static const String satoshi = "Satoshi";
   static const georgia = "Georgia";
 }
