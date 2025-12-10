@@ -11,6 +11,7 @@ class Assets {
   static const String source = 'assets/images/source.png';
   static const String setting = 'assets/images/Settings.png';
   static const String walmart = 'assets/images/walmart.png';
+  static const String receipt = 'assets/images/receipt.png';
 
   static const String fb = 'assets/images/fb.png';
   static const String google = 'assets/images/google.png';

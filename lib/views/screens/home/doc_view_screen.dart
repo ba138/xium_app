@@ -28,7 +28,7 @@ class DocViewScreen extends StatelessWidget {
                           color: AppColors.onPrimary,
                         ),
                       ),
-                      MyText(text: "Invoice – Carrefour", size: 16),
+                      MyText(text: "Invoice – Walmart", size: 16),
                     ],
                   ),
                   MyText(text: "+ More", size: 16, onTap: () {}),
