@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/home/home_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_Text.dart';
 
@@ -14,7 +16,9 @@ class CubeScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Get.offAll(() => HomeScreen());
+            },
             child: Column(
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),
