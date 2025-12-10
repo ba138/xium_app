@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/home/store_detail_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 import 'package:xium_app/views/widgets/my_text_field.dart';
@@ -55,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // ⭐ ADDING THE GRIDVIEW HERE ⭐
               Expanded(
                 child: GridView.builder(
-                  itemCount: 9, // total cards
+                  itemCount: 15, // total cards
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3, // 3 in a row
                     crossAxisSpacing: 12,
@@ -63,8 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     childAspectRatio: 0.8, // adjust card height
                   ),
                   itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {},
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => StoreDetailScreen());
+                      },
                       child: Container(
                         padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
