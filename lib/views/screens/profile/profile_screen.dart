@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -81,10 +83,24 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               MyText(text: "Connections & Integrations", size: 10),
+              const SizedBox(height: 20),
+              profileTile(),
+              Divider(thickness: 0.6),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget profileTile() {
+    return Row(
+      children: [
+        CommonImageView(imagePath: Assets.gmail, height: 40),
+        MyText(text: "Gmail", size: 16),
+        Spacer(),
+        MyText(text: "Connected", color: AppColors.grayColor),
+      ],
     );
   }
 }
