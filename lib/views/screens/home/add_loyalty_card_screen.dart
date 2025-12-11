@@ -33,8 +33,6 @@ class AddLoyaltyCardScreen extends StatelessWidget {
                   MyText(text: "Add your loyalty cards", size: 16),
 
                   const Spacer(),
-
-                  /// ✅ Glassy dotted border container placed here
                 ],
               ),
               const SizedBox(height: 30),
