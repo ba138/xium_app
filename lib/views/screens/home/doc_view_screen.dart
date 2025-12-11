@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/home/widgets/add_expanses_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -34,7 +35,13 @@ class DocViewScreen extends StatelessWidget {
                         MyText(text: "Invoice – Walmart", size: 16),
                       ],
                     ),
-                    MyText(text: "+ More", size: 16, onTap: () {}),
+                    MyText(
+                      text: "+ More",
+                      size: 16,
+                      onTap: () {
+                        Get.to((AddExpenseScreen()));
+                      },
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
