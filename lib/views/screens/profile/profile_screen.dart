@@ -84,8 +84,35 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 30),
               MyText(text: "Connections & Integrations", size: 10),
               const SizedBox(height: 20),
-              profileTile(),
-              Divider(thickness: 0.6),
+              profileTile(title: "Gmail", image: Assets.gmail),
+              Divider(thickness: 0.09),
+              profileTile(title: "OutLook", image: Assets.outlook),
+              Divider(thickness: 0.09),
+              profileTile(title: "Bank", image: Assets.bank),
+              Divider(thickness: 0.09),
+              profileTile(title: "Loyalty", image: Assets.loyalty),
+              const SizedBox(height: 40),
+              MyBorderButton(
+                buttonText: "Manage Connection",
+                onTap: () {},
+                bgColor: Colors.transparent,
+                radius: 12,
+                borderColor: AppColors.buttonColor,
+              ),
+              const SizedBox(height: 30),
+              MyText(text: "Application Settings", size: 10),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  MyText(text: "Language"),
+                  Spacer(),
+                  MyText(text: "English", weight: FontWeight.bold),
+                ],
+              ),
+              const SizedBox(height: 20),
+              MyText(text: "Security"),
+              const SizedBox(height: 20),
+              MyText(text: "Logout"),
             ],
           ),
         ),
@@ -93,11 +120,12 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget profileTile() {
+  Widget profileTile({required String image, required String title}) {
     return Row(
       children: [
-        CommonImageView(imagePath: Assets.gmail, height: 40),
-        MyText(text: "Gmail", size: 16),
+        CommonImageView(imagePath: image, height: 30),
+        const SizedBox(width: 10),
+        MyText(text: title, size: 16),
         Spacer(),
         MyText(text: "Connected", color: AppColors.grayColor),
       ],
