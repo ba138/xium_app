@@ -46,7 +46,7 @@ class AddLoyaltyCardScreen extends StatelessWidget {
                       height: 300,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.12),
+                        color: Colors.white.withValues(alpha: 0.12),
                       ),
                     ),
                   ),

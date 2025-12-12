@@ -17,6 +17,12 @@ class Assets {
   static const String bank = 'assets/images/bank.png';
   static const String loyalty = 'assets/images/loyalty.png';
   static const String mail = 'assets/images/mail.png';
+  static const String tink = 'assets/images/tink.png';
+  static const String bridge = 'assets/images/bridge.png';
+  static const String revolut = 'assets/images/revolut.png';
+  static const String n26 = 'assets/images/n26.png';
+  static const String monzo = 'assets/images/monzo.png';
+  static const String barclays = 'assets/images/barclays.png';
 
   static const String fb = 'assets/images/fb.png';
   static const String google = 'assets/images/google.png';
