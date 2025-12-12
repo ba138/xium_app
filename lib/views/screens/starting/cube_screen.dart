@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/home/home_screen.dart';
+import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_Text.dart';
 
 class CubeScreen extends StatefulWidget {
@@ -59,10 +61,9 @@ class _CubeScreenState extends State<CubeScreen>
                     builder: (context, _) {
                       return Transform.rotate(
                         angle: rotation.value * pi,
-                        child: Image.asset(
-                          "assets/images/cube.png",
-                          width: 260,
-                          height: 260,
+                        child: CommonImageView(
+                          imagePath: Assets.cube,
+                          height: 280,
                         ),
                       );
                     },
