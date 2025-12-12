@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -13,16 +14,15 @@ class ConnectSourceScreen extends StatefulWidget {
 }
 
 class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
-  /// ==========================
-  ///  DATA FOR GRIDVIEW
-  /// ==========================
   final List<Map<String, dynamic>> sources = [
     {
       "icon": Icons.email,
       "title": "Email",
       "connected": true,
       "subtitle": "Automatically import receipts from your inbox",
-      "ontap": () {},
+      "ontap": () {
+        Get.to(() => ConnectEmailScreen());
+      },
     },
     {
       "icon": Icons.phone,
@@ -84,9 +84,6 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
 
               const SizedBox(height: 20),
 
-              /// ==========================
-              ///  GRIDVIEW
-              /// ==========================
               Expanded(
                 child: GridView.builder(
                   itemCount: sources.length,
@@ -118,7 +115,6 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                /// ---- ICON + TITLE ----
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -138,7 +134,6 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
 
                                 const SizedBox(height: 12),
 
-                                /// ---- STATUS CHIP ----
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 10,
@@ -162,11 +157,11 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
 
                                 const SizedBox(height: 10),
 
-                                /// ---- DESCRIPTION TEXT ----
                                 MyText(
                                   text: item["subtitle"],
                                   size: 11,
                                   color: AppColors.grayColor,
+                                  textAlign: TextAlign.center,
                                 ),
                               ],
                             ),
