@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/connect_source/connect_source_screen.dart';
 import 'package:xium_app/views/screens/starting/cube_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
@@ -61,7 +62,13 @@ class NoSourceFoundScreen extends StatelessWidget {
               const SizedBox(height: 8),
               MyText(text: "Connect a source to start automatic retrieval"),
               Spacer(),
-              MyButton(onTap: () {}, buttonText: "Connect_Sources", radius: 12),
+              MyButton(
+                onTap: () {
+                  Get.to(() => ConnectSourceScreen());
+                },
+                buttonText: "Connect_Sources",
+                radius: 12,
+              ),
               const SizedBox(height: 10),
               MyBorderButton(
                 buttonText: "Skip",

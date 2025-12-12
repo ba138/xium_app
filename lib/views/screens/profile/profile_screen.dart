@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/profile/account_managemant_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -66,7 +67,9 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => AccountManagemantScreen());
+                    },
                     child: Container(
                       height: 30,
                       width: 80,
