@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/connect_source/redirecting_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 import 'package:xium_app/views/widgets/my_text_field.dart';
-// import your myTextField widget if name is different
 
 class ConnectBankCard extends StatefulWidget {
   const ConnectBankCard({super.key});
@@ -88,9 +88,6 @@ class _ConnectBankCardState extends State<ConnectBankCard> {
     );
   }
 
-  // -------------------------------------------------------
-  //        BOTTOM SHEET FUNCTION
-  // -------------------------------------------------------
   void _openBankSelectionSheet() {
     Get.bottomSheet(
       Container(
@@ -153,18 +150,20 @@ class _ConnectBankCardState extends State<ConnectBankCard> {
     );
   }
 
-  // -------------------------------------------------------
-  //        BANK TILE WIDGET
-  // -------------------------------------------------------
   Widget _bankTile(String name, String logo) {
     return Column(
       children: [
-        Row(
-          children: [
-            CommonImageView(imagePath: logo, height: 40),
-            const SizedBox(width: 12),
-            MyText(text: name, size: 18, weight: FontWeight.bold),
-          ],
+        GestureDetector(
+          onTap: () {
+            Get.to(() => RedirectingScreen());
+          },
+          child: Row(
+            children: [
+              CommonImageView(imagePath: logo, height: 40),
+              const SizedBox(width: 12),
+              MyText(text: name, size: 18, weight: FontWeight.bold),
+            ],
+          ),
         ),
         const SizedBox(height: 10),
         Divider(color: AppColors.grayColor, thickness: 0.5),

@@ -23,6 +23,7 @@ class Assets {
   static const String n26 = 'assets/images/n26.png';
   static const String monzo = 'assets/images/monzo.png';
   static const String barclays = 'assets/images/barclays.png';
+  static const String cloud = 'assets/images/cloud.png';
 
   static const String fb = 'assets/images/fb.png';
   static const String google = 'assets/images/google.png';
