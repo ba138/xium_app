@@ -5,6 +5,8 @@ import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
+import 'package:xium_app/views/screens/home/add_loyalty_card_screen.dart';
+import 'package:xium_app/views/screens/starting/cube_screen.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -49,7 +51,9 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
       "title": "Loyalty Cards",
       "connected": true,
       "subtitle": "Sync receipts from loyalty accounts.",
-      "ontap": () {},
+      "ontap": () {
+        Get.to(() => AddLoyaltyCardScreen());
+      },
     },
   ];
 
@@ -179,7 +183,9 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
                 ),
               ),
               MyButton(
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => CubeScreen());
+                },
                 buttonText: "Continue without connecting",
                 radius: 12,
               ),

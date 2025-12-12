@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/connect_source/connect_source_screen.dart';
 import 'package:xium_app/views/screens/profile/account_managemant_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
@@ -97,7 +98,9 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 40),
               MyBorderButton(
                 buttonText: "Manage Connection",
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => ConnectSourceScreen());
+                },
                 bgColor: Colors.transparent,
                 radius: 12,
                 borderColor: AppColors.buttonColor,

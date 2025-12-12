@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/connect_source/done_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -8,6 +10,9 @@ class SyncScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 4), () {
+      Get.to(() => DoneScreen());
+    });
     return Scaffold(
       body: SafeArea(
         child: Padding(
