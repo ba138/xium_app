@@ -2,7 +2,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
+import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -29,14 +31,18 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
       "title": "Phone",
       "connected": false,
       "subtitle": "Automatically import receipts from your inbox",
-      "ontap": () {},
+      "ontap": () {
+        Get.to(() => ConnectPhoneScreen());
+      },
     },
     {
       "icon": Icons.account_balance,
       "title": "Bank Card",
       "connected": false,
       "subtitle": "Automatically import receipts from your inbox",
-      "ontap": () {},
+      "ontap": () {
+        Get.to(() => ConnectBankCard());
+      },
     },
     {
       "icon": Icons.credit_card,

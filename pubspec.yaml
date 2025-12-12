@@ -39,6 +39,7 @@ dependencies:
   cached_network_image: ^3.4.1
   bounce: ^1.0.2
   get: ^4.7.3
+  country_code_picker: ^3.4.1
 
 dev_dependencies:
   flutter_test:
