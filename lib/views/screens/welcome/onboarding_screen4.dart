@@ -57,6 +57,7 @@ class OnboardingScreen4 extends StatelessWidget {
                 const SizedBox(height: 20),
                 Row(
                   spacing: 12,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GlassiyButton(
                       title: "Google",
@@ -64,7 +65,7 @@ class OnboardingScreen4 extends StatelessWidget {
                       image: Assets.google,
                     ),
                     GlassiyButton(
-                      title: "Google",
+                      title: "FaceBook",
                       ontap: () {},
                       image: Assets.fb,
                     ),

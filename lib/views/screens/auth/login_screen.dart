@@ -93,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 Row(
                   spacing: 12,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GlassiyButton(
                       title: "Google",
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       image: Assets.google,
                     ),
                     GlassiyButton(
-                      title: "Google",
+                      title: "Facebook",
                       ontap: () {},
                       image: Assets.fb,
                     ),
