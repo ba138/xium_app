@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/auth_controller.dart';
 import 'package:xium_app/views/screens/auth/login_screen.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -14,6 +15,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final AuthController authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,11 +41,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   hint: "Alexanold@mail.com",
                   radius: 12,
                   label: "Email",
+                  controller: authController.emailController,
                 ),
                 MyTextField(
                   hint: "******",
                   radius: 12,
                   label: "Password",
+                  controller: authController.passwordController,
                   suffix: Icon(
                     Icons.visibility_off_outlined,
                     color: AppColors.onPrimary,

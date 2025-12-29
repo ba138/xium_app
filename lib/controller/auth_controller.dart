@@ -17,6 +17,7 @@ class AuthController extends GetxController {
     final fullName = fullNameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
+    final repeatPassword = passwordController.text.trim();
 
     // ✅ Check for empty fields
     if (fullName.isEmpty || email.isEmpty || password.isEmpty) {
@@ -53,6 +54,14 @@ class AuthController extends GetxController {
       Get.snackbar(
         "Error",
         "Password must be at least 6 characters long",
+        colorText: AppColors.primary,
+      );
+      return;
+    }
+    if (password != repeatPassword) {
+      Get.snackbar(
+        "Error",
+        "Passwords do not match",
         colorText: AppColors.primary,
       );
       return;
