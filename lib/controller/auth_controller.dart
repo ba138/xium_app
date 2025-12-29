@@ -13,6 +13,8 @@ class AuthController extends GetxController {
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
   Future<void> createUser() async {
     final fullName = fullNameController.text.trim();
     final email = emailController.text.trim();
