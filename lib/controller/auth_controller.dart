@@ -238,7 +238,7 @@ class AuthController extends GetxController {
         return;
       }
       await _auth.sendPasswordResetEmail(email: email);
-      Get.back(); // Close loading dialog
+      Get.to(() => LoginScreen());
       Get.snackbar(
         "Reset Email Sent",
         "Check your inbox to reset your password.",
@@ -262,6 +262,15 @@ class AuthController extends GetxController {
     } catch (e) {
       Get.back(); // Close loading dialog
       Get.snackbar("Error", e.toString(), colorText: AppColors.primary);
+    }
+  }
+
+  Future<void> logoutUser() async {
+    try {
+      await _auth.signOut();
+      Get.offAll(() => const LoginScreen());
+    } catch (e) {
+      Get.snackbar('Logout Failed', e.toString(), colorText: AppColors.primary);
     }
   }
 }

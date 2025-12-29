@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/auth_controller.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 import 'package:xium_app/views/widgets/my_text_field.dart';
@@ -13,6 +13,8 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  var emailController = TextEditingController();
+  var authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,18 +40,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   hint: "Alexanold@mail.com",
                   radius: 12,
                   label: "Email",
+                  controller: emailController,
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.4),
                 MyButton(
                   onTap: () {
-                    Get.back();
-                    Get.snackbar(
-                      "Succes",
-                      "email is send check your inbox",
-                      snackPosition: SnackPosition.TOP,
-                      backgroundColor: AppColors.buttonColor,
-                      colorText: AppColors.onPrimary,
-                    );
+                    authController.resetPassword(emailController.text);
                   },
                   buttonText: "Continue",
                   radius: 12,
