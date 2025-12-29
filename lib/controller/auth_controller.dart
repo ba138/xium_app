@@ -61,11 +61,6 @@ class AuthController extends GetxController {
     try {
       Get.dialog(LoadingDialogWidget(), barrierDismissible: false);
 
-      // final fullName = fullNameController.text.trim();
-      // final email = emailController.text.trim();
-      // final password = passwordController.text.trim();
-
-      // Create user in Firebase Auth
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
@@ -125,6 +120,67 @@ class AuthController extends GetxController {
           e.message ?? "Something went wrong",
           colorText: AppColors.primary,
         );
+      }
+    } catch (e) {
+      Get.back();
+      Get.snackbar("Error", e.toString(), colorText: AppColors.primary);
+    }
+  }
+
+  Future<void> loginUser(String email, String password) async {
+    // ✅ Empty check
+    if (email.trim().isEmpty || password.trim().isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Email and Password cannot be empty",
+        colorText: AppColors.primary,
+      );
+      return;
+    }
+
+    // ✅ Basic email check (must contain @ and .)
+    if (!email.contains("@") || !email.contains(".")) {
+      Get.snackbar(
+        "Error",
+        "Please enter a valid email address",
+        colorText: AppColors.primary,
+      );
+      return;
+    }
+
+    // ✅ Password length check
+    if (password.length < 6) {
+      Get.snackbar(
+        "Error",
+        "Password must be at least 6 characters long",
+        colorText: AppColors.primary,
+      );
+      return;
+    }
+
+    try {
+      Get.dialog(const LoadingDialogWidget(), barrierDismissible: false);
+
+      // Sign in user
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = userCredential.user;
+      if (user == null) throw Exception("Login failed");
+
+      // Check email verification
+      if (!user.emailVerified) {
+        Get.back();
+        Get.snackbar(
+          "Verify Email",
+          "Please verify your email before logging in.",
+          colorText: AppColors.primary,
+        );
+        return;
+      } else {
+        Get.offAll(() => LoginScreen());
       }
     } catch (e) {
       Get.back();
