@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "88696399302",
+    "project_id": "xium-app",
+    "storage_bucket": "xium-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88696399302:android:019436f13eada1cbcdfec7",
+        "android_client_info": {
+          "package_name": "com.enzo.xium_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSmAVwgbes1G5Q9TFi8dMt1JiMHslq9dA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
