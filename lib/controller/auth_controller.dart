@@ -199,4 +199,69 @@ class AuthController extends GetxController {
       Get.snackbar("Error", e.toString(), colorText: AppColors.primary);
     }
   }
+
+  Future<void> resetPassword(String email) async {
+    if (email.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Please enter your email",
+        colorText: AppColors.primary,
+      );
+      return;
+    }
+
+    // ✅ Email format check
+    if (!email.contains("@") || !email.contains(".")) {
+      Get.snackbar(
+        "Error",
+        "Please enter a valid email address",
+        colorText: AppColors.primary,
+      );
+      return;
+    }
+
+    try {
+      Get.dialog(const LoadingDialogWidget(), barrierDismissible: false);
+      // Check if email exists in users collection
+      final querySnapshot = await _firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
+      if (querySnapshot.docs.isEmpty) {
+        Get.back(); // Close loading dialog
+        Get.snackbar(
+          "Email Not Registered",
+          "No account found with this email.",
+          colorText: AppColors.primary,
+        );
+        return;
+      }
+      await _auth.sendPasswordResetEmail(email: email);
+      Get.back(); // Close loading dialog
+      Get.snackbar(
+        "Reset Email Sent",
+        "Check your inbox to reset your password.",
+        colorText: AppColors.primary,
+      );
+    } on FirebaseAuthException catch (e) {
+      Get.back(); // Close loading dialog
+      if (e.code == 'invalid-email') {
+        Get.snackbar(
+          "Invalid Email",
+          "Please enter a valid email address.",
+          colorText: AppColors.primary,
+        );
+      } else {
+        Get.snackbar(
+          "Error",
+          e.message ?? "Something went wrong",
+          colorText: AppColors.primary,
+        );
+      }
+    } catch (e) {
+      Get.back(); // Close loading dialog
+      Get.snackbar("Error", e.toString(), colorText: AppColors.primary);
+    }
+  }
 }
