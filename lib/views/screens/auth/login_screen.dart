@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/auth_controller.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/auth/forget_password_screen.dart';
 import 'package:xium_app/views/screens/auth/register_screen.dart';
@@ -27,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  var authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hint: "Alexanold@mail.com",
                   radius: 12,
                   label: "Email",
+                  controller: emailController,
                 ),
                 MyTextField(
                   hint: "******",
@@ -61,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Icons.visibility_off_outlined,
                     color: AppColors.onPrimary,
                   ),
+                  controller: passwordController,
                 ),
                 Align(
                   alignment: Alignment.topRight,
@@ -75,7 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 30),
                 MyButton(
                   onTap: () {
-                    Get.offAll(() => NeedPermissionScreens());
+                    authController.loginUser(
+                      emailController.text,
+                      passwordController.text,
+                    );
                   },
                   buttonText: "Login",
                   radius: 12,

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/model/user_model.dart';
 import 'package:xium_app/views/screens/auth/login_screen.dart';
+import 'package:xium_app/views/screens/starting/need_permission_screens.dart';
 import 'package:xium_app/views/widgets/loading_dialog.dart';
 
 class AuthController extends GetxController {
@@ -143,7 +144,7 @@ class AuthController extends GetxController {
     if (email.trim().isEmpty || password.trim().isEmpty) {
       Get.snackbar(
         "Error",
-        "Email and Password cannot be empty",
+        "Email and Password can't be empty",
         colorText: AppColors.primary,
       );
       return;
@@ -191,7 +192,7 @@ class AuthController extends GetxController {
         );
         return;
       } else {
-        Get.offAll(() => LoginScreen());
+        Get.offAll(() => NeedPermissionScreens());
       }
     } catch (e) {
       Get.back();
