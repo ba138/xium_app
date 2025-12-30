@@ -119,21 +119,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  spacing: 12,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GlassiyButton(
-                      title: "Google",
-                      ontap: () {},
-                      image: Assets.google,
-                    ),
-                    GlassiyButton(
-                      title: "Facebook",
-                      ontap: () {},
-                      image: Assets.fb,
-                    ),
-                  ],
+                GlassiyButton(
+                  title: "Sign In With Google",
+                  ontap: () {
+                    debugPrint("Google Sign In");
+                    authController.signInWithGoogle();
+                  },
+                  image: Assets.google,
+                ),
+                const SizedBox(height: 12),
+                GlassiyButton(
+                  title: "Sign In With Apple",
+                  ontap: () {},
+                  image: Assets.fb,
                 ),
                 const SizedBox(height: 40),
 

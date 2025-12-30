@@ -12,7 +12,20 @@
           "package_name": "com.enzo.xium_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "88696399302-779skfq83trb3clf0as9k73dj3tstlts.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enzo.xium_app",
+            "certificate_hash": "a799643e846149e755a2d5ca433caa6f8a064795"
+          }
+        },
+        {
+          "client_id": "88696399302-r2pkdjn1re3g6m49r2ld624govsi9plf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCSmAVwgbes1G5Q9TFi8dMt1JiMHslq9dA"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88696399302-r2pkdjn1re3g6m49r2ld624govsi9plf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

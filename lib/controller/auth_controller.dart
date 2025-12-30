@@ -7,10 +7,12 @@ import 'package:xium_app/model/user_model.dart';
 import 'package:xium_app/views/screens/auth/login_screen.dart';
 import 'package:xium_app/views/screens/starting/need_permission_screens.dart';
 import 'package:xium_app/views/widgets/loading_dialog.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -89,7 +91,11 @@ class AuthController extends GetxController {
         await user.sendEmailVerification();
       }
 
-      final userModel = UserModel(username: fullName, email: email);
+      final userModel = UserModel(
+        uid: user.uid,
+        username: fullName,
+        email: email,
+      );
 
       // Save user to Firestore
       await _firestore.collection('users').doc(user.uid).set({
@@ -267,6 +273,94 @@ class AuthController extends GetxController {
     } catch (e) {
       Get.back(); // Close loading dialog
       Get.snackbar("Error", e.toString(), colorText: AppColors.primary);
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      Get.dialog(LoadingDialogWidget(), barrierDismissible: false);
+
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+      if (googleUser == null) {
+        Get.back();
+        Get.snackbar(
+          "Cancelled",
+          "Google sign-in was cancelled.",
+          colorText: AppColors.primary,
+        );
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(credential);
+
+      final User? firebaseUser = userCredential.user;
+
+      if (firebaseUser == null) {
+        throw Exception("Firebase authentication failed");
+      }
+
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(firebaseUser.uid);
+
+      final doc = await docRef.get();
+
+      /// 🔹 CASE 1: User already exists → Login only
+      if (doc.exists) {
+        Get.back();
+
+        Get.snackbar(
+          "Welcome back",
+          "Signed in successfully",
+          colorText: AppColors.primary,
+        );
+
+        Get.offAll(() => const NeedPermissionScreens());
+        return;
+      }
+
+      /// 🔹 CASE 2: New user → Create account
+      final userModel = UserModel(
+        uid: firebaseUser.uid,
+        username: firebaseUser.displayName ?? 'No Name',
+        email: firebaseUser.email ?? '',
+      );
+
+      await docRef.set({
+        ...userModel.toJson(),
+        'createdAt': FieldValue.serverTimestamp(),
+        'trialStartDate': FieldValue.serverTimestamp(),
+      });
+
+      Get.back();
+
+      Get.snackbar(
+        "Success",
+        "Account created using Google",
+        colorText: AppColors.primary,
+      );
+
+      Get.offAll(() => const NeedPermissionScreens());
+    } catch (e) {
+      Get.back();
+      debugPrint("Google Sign-In Error: $e");
+
+      Get.snackbar(
+        "Google Sign-In Error",
+        e.toString(),
+        colorText: AppColors.primary,
+      );
     }
   }
 

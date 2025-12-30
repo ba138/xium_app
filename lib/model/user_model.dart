@@ -1,11 +1,13 @@
 class UserModel {
   final String username;
   final String email;
+  final String? uid;
   final Map<String, String> source;
 
   UserModel({
     required this.username,
     required this.email,
+    required this.uid,
     Map<String, String>? source,
   }) : source =
            source ??
@@ -18,7 +20,7 @@ class UserModel {
 
   /// Convert model to JSON
   Map<String, dynamic> toJson() {
-    return {'username': username, 'email': email, 'source': source};
+    return {'username': username, 'email': email, 'uid': uid, 'source': source};
   }
 
   /// Create model from JSON
@@ -26,6 +28,8 @@ class UserModel {
     return UserModel(
       username: json['username'] ?? '',
       email: json['email'] ?? '',
+      uid: json['uid'],
+
       source: Map<String, String>.from(
         json['source'] ??
             {

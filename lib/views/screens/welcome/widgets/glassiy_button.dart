@@ -25,7 +25,7 @@ class GlassiyButton extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0), // blur behind
           child: Container(
             height: 56,
-            width: 150,
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               // 🌫️ Glass color overlay

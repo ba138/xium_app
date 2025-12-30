@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/auth_controller.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/auth/login_screen.dart';
 import 'package:xium_app/views/screens/welcome/widgets/glassiy_button.dart';
@@ -13,6 +16,7 @@ class OnboardingScreen4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var authController = Get.put(AuthController());
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -24,7 +28,8 @@ class OnboardingScreen4 extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                CommonImageView(imagePath: Assets.logo),
+                const SizedBox(height: 60),
+                CommonImageView(imagePath: Assets.logo, height: 300),
                 Spacer(),
                 MyButton(
                   onTap: () {
@@ -55,22 +60,25 @@ class OnboardingScreen4 extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  spacing: 12,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GlassiyButton(
-                      title: "Google",
-                      ontap: () {},
-                      image: Assets.google,
-                    ),
-                    GlassiyButton(
-                      title: "FaceBook",
-                      ontap: () {},
-                      image: Assets.fb,
-                    ),
-                  ],
-                ),
+                Platform.isAndroid
+                    ? GlassiyButton(
+                        title: "Sign In With Google",
+                        ontap: () {
+                          authController.signInWithGoogle();
+                        },
+                        image: Assets.google,
+                      )
+                    : SizedBox.shrink(),
+                const SizedBox(height: 12),
+                Platform.isIOS
+                    ? GlassiyButton(
+                        title: "Sign In With Apple",
+                        ontap: () {
+                          // authController.signInWithApple();
+                        },
+                        image: Assets.fb,
+                      )
+                    : SizedBox.shrink(),
                 const SizedBox(height: 20),
               ],
             ),
