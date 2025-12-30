@@ -340,7 +340,6 @@ class AuthController extends GetxController {
       await docRef.set({
         ...userModel.toJson(),
         'createdAt': FieldValue.serverTimestamp(),
-        'trialStartDate': FieldValue.serverTimestamp(),
       });
 
       Get.back();
