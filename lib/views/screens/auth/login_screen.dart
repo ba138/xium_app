@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
@@ -119,21 +121,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                GlassiyButton(
-                  title: "Sign In With Google",
-                  ontap: () {
-                    debugPrint("Google Sign In");
-                    authController.signInWithGoogle();
-                  },
-                  image: Assets.google,
-                ),
+                Platform.isAndroid
+                    ? GlassiyButton(
+                        title: "Sign In With Google",
+                        ontap: () {
+                          authController.signInWithGoogle();
+                        },
+                        image: Assets.google,
+                      )
+                    : SizedBox.shrink(),
                 const SizedBox(height: 12),
-                GlassiyButton(
-                  title: "Sign In With Apple",
-                  ontap: () {},
-                  image: Assets.fb,
-                ),
-                const SizedBox(height: 40),
+                Platform.isIOS
+                    ? GlassiyButton(
+                        title: "Sign In With Apple",
+                        ontap: () {
+                          // authController.signInWithApple();
+                        },
+                        image: Assets.fb,
+                      )
+                    : SizedBox.shrink(),
+                const SizedBox(height: 80),
 
                 Row(
                   spacing: 6,

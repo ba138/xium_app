@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/auth_controller.dart';
+import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/auth/login_screen.dart';
+import 'package:xium_app/views/screens/welcome/widgets/glassiy_button.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 import 'package:xium_app/views/widgets/my_text_field.dart';
@@ -147,6 +151,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   buttonText: "Register",
                   radius: 12,
                 ),
+                const SizedBox(height: 20),
+
+                Row(
+                  spacing: 8,
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: AppColors.grayColor,
+                      ),
+                    ),
+                    MyText(text: "Or Register with "),
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: AppColors.grayColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Platform.isAndroid
+                    ? GlassiyButton(
+                        title: "Register With Google",
+                        ontap: () {
+                          authController.signInWithGoogle();
+                        },
+                        image: Assets.google,
+                      )
+                    : SizedBox.shrink(),
+                const SizedBox(height: 12),
+                Platform.isIOS
+                    ? GlassiyButton(
+                        title: "Sign In With Apple",
+                        ontap: () {
+                          // authController.signInWithApple();
+                        },
+                        image: Assets.fb,
+                      )
+                    : SizedBox.shrink(),
                 const SizedBox(height: 40),
 
                 Row(
