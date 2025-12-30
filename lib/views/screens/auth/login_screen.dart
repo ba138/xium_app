@@ -5,7 +5,6 @@ import 'package:xium_app/controller/auth_controller.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/auth/forget_password_screen.dart';
 import 'package:xium_app/views/screens/auth/register_screen.dart';
-import 'package:xium_app/views/screens/starting/need_permission_screens.dart';
 import 'package:xium_app/views/screens/welcome/widgets/glassiy_button.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -56,16 +55,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   label: "Email",
                   controller: emailController,
                 ),
-                MyTextField(
-                  hint: "******",
-                  radius: 12,
-                  label: "Password",
-                  suffix: Icon(
-                    Icons.visibility_off_outlined,
-                    color: AppColors.onPrimary,
-                  ),
-                  controller: passwordController,
-                ),
+                Obx(() {
+                  return MyTextField(
+                    hint: "******",
+                    radius: 12,
+                    label: "Password",
+                    suffix: GestureDetector(
+                      onTap: () {
+                        authController.isPasswordHidden.value =
+                            !authController.isPasswordHidden.value;
+                      },
+                      child: Icon(
+                        authController.isPasswordHidden.value
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        color: authController.isPasswordHidden.value
+                            ? AppColors.onPrimary
+                            : AppColors.buttonColor,
+                      ),
+                    ),
+                    controller: passwordController,
+                    isObSecure: authController.isPasswordHidden.value,
+                  );
+                }),
                 Align(
                   alignment: Alignment.topRight,
                   child: MyText(

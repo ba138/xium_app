@@ -68,47 +68,73 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           return null;
                         },
                       ),
-                      MyTextField(
-                        hint: "******",
-                        radius: 12,
-                        label: "Password",
-                        controller: authController.passwordController,
-                        suffix: Icon(
-                          Icons.visibility_off_outlined,
-                          color: AppColors.onPrimary,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Password is required';
-                          }
-                          if (value.length < 6) {
-                            return 'Password must be at least 6 characters';
-                          }
-                          return null;
-                        },
-                      ),
-                      MyTextField(
-                        hint: "******",
-                        radius: 12,
-                        label: "Repeat Password",
-                        suffix: Icon(
-                          Icons.visibility_off_outlined,
-                          color: AppColors.onPrimary,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Repeat Password is required';
-                          }
-                          if (value.length < 6) {
-                            return 'Password must be at least 6 characters';
-                          }
-                          if (authController.passwordController.text !=
-                              authController.passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                      ),
+                      Obx(() {
+                        return MyTextField(
+                          hint: "******",
+                          radius: 12,
+                          label: "Password",
+                          suffix: GestureDetector(
+                            onTap: () {
+                              authController.isShowRegister.value =
+                                  !authController.isShowRegister.value;
+                            },
+                            child: Icon(
+                              authController.isShowRegister.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              color: authController.isShowRegister.value
+                                  ? AppColors.onPrimary
+                                  : AppColors.buttonColor,
+                            ),
+                          ),
+                          isObSecure: !authController.isShowRegister.value,
+                          controller: authController.passwordController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Password is required';
+                            }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
+                            }
+                            return null;
+                          },
+                        );
+                      }),
+                      Obx(() {
+                        return MyTextField(
+                          hint: "******",
+                          radius: 12,
+                          label: "Repeat Password",
+                          suffix: GestureDetector(
+                            onTap: () {
+                              authController.isShowRepeatPassword.value =
+                                  !authController.isShowRepeatPassword.value;
+                            },
+                            child: Icon(
+                              authController.isShowRepeatPassword.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              color: authController.isShowRepeatPassword.value
+                                  ? AppColors.onPrimary
+                                  : AppColors.buttonColor,
+                            ),
+                          ),
+                          isObSecure:
+                              !authController.isShowRepeatPassword.value,
+                          controller: authController.repeatPasswordController,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please repeat your password';
+                            }
+
+                            if (authController.repeatPasswordController.text !=
+                                authController.passwordController.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ),
