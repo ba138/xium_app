@@ -1,1 +1,44 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"xium-app","appId":"1:88696399302:android:fdc84954d1b7c8decdfec7","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"xium-app","appId":"1:88696399302:ios:d9eacc2c4b2f2373cdfec7","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"xium-app","configurations":{"android":"1:88696399302:android:fdc84954d1b7c8decdfec7","ios":"1:88696399302:ios:d9eacc2c4b2f2373cdfec7"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "xium-app",
+          "appId": "1:88696399302:android:fdc84954d1b7c8decdfec7",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "xium-app",
+          "appId": "1:88696399302:ios:d9eacc2c4b2f2373cdfec7",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "xium-app",
+          "configurations": {
+            "android": "1:88696399302:android:fdc84954d1b7c8decdfec7",
+            "ios": "1:88696399302:ios:d9eacc2c4b2f2373cdfec7"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ]
+}
