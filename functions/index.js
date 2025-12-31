@@ -1,32 +1,176 @@
+const functions = require("firebase-functions/v2/https");
+const admin = require("firebase-admin");
+const cors = require("cors")({ origin: true });
+const { defineSecret } = require("firebase-functions/params");
+
+admin.initializeApp();
+
+// 🔐 Secrets
+const PLAID_CLIENT_ID = defineSecret("PLAID_CLIENT_ID");
+const PLAID_SECRET = defineSecret("PLAID_SECRET");
+const PLAID_ENV = defineSecret("PLAID_ENV");
+
+const { Configuration, PlaidApi, PlaidEnvironments } = require("plaid");
+
+// 🔹 Create Plaid Client (lazy init)
+function getPlaidClient() {
+  const config = new Configuration({
+    basePath: PlaidEnvironments[PLAID_ENV.value()],
+    baseOptions: {
+      headers: {
+        "PLAID-CLIENT-ID": PLAID_CLIENT_ID.value(),
+        "PLAID-SECRET": PLAID_SECRET.value(),
+      },
+    },
+  });
+
+  return new PlaidApi(config);
+}
+
 /**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ * ✅ Create Plaid Link Token
  */
+exports.createPlaidLinkToken = functions.onRequest(
+  {
+    region: "us-central1",
+    secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV],
+    memory: "512MiB",
+    timeoutSeconds: 60,
+  },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const { uid } = req.body;
+        if (!uid) {
+          return res.status(400).json({ error: "uid is required" });
+        }
 
-const {setGlobalOptions} = require("firebase-functions");
-const {onRequest} = require("firebase-functions/https");
-const logger = require("firebase-functions/logger");
+        const plaidClient = getPlaidClient();
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+        const response = await plaidClient.linkTokenCreate({
+          user: { client_user_id: uid },
+          client_name: "Xium App",
+          products: ["transactions"],
+          country_codes: ["US"],
+          language: "en",
+        });
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+        res.status(200).json(response.data);
+      } catch (e) {
+        console.error("createPlaidLinkToken error:", e);
+        res.status(500).json({ error: e.message });
+      }
+    });
+  }
+);
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+
+/**
+ * ✅ Exchange Public Token
+ */
+exports.exchangePlaidToken = functions.onRequest(
+  {
+    secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV],
+  },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const { publicToken, uid } = req.body;
+        const plaidClient = getPlaidClient();
+
+        const response = await plaidClient.itemPublicTokenExchange({
+          public_token: publicToken,
+        });
+
+        await admin.firestore()
+          .collection("plaidTokens")
+          .doc(uid)
+          .set({
+            accessToken: response.data.access_token,
+            itemId: response.data.item_id,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+
+        res.json({ success: true });
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: e.message });
+      }
+    });
+  }
+);
+
+/**
+ * ✅ Fetch & Store Transactions
+ * - Group by merchant
+ * - Avoid duplicates using transaction_id
+ */
+exports.syncTransactions = functions.onRequest(
+  {
+    secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV],
+  },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const { uid } = req.body;
+
+        const tokenSnap = await admin.firestore()
+          .collection("plaidTokens")
+          .doc(uid)
+          .get();
+
+        if (!tokenSnap.exists) {
+          return res.status(404).json({ error: "No Plaid token found" });
+        }
+
+        const accessToken = tokenSnap.data().accessToken;
+        const plaidClient = getPlaidClient();
+
+        let cursor = null;
+        let added = [];
+
+        do {
+          const response = await plaidClient.transactionsSync({
+            access_token: accessToken,
+            cursor,
+          });
+
+          added.push(...response.data.added);
+          cursor = response.data.next_cursor;
+
+          if (!response.data.has_more) break;
+        } while (true);
+
+        const batch = admin.firestore().batch();
+
+        for (const tx of added) {
+          const merchant =
+            tx.merchant_name?.toLowerCase().replace(/\s+/g, "_") ||
+            "unknown";
+
+          const ref = admin.firestore()
+            .collection("users")
+            .doc(uid)
+            .collection("merchants")
+            .doc(merchant)
+            .collection("transactions")
+            .doc(tx.transaction_id);
+
+          const snap = await ref.get();
+          if (!snap.exists) {
+            batch.set(ref, {
+              ...tx,
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            });
+          }
+        }
+
+        await batch.commit();
+        res.json({ synced: added.length });
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: e.message });
+      }
+    });
+  }
+);

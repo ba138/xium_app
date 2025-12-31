@@ -345,7 +345,7 @@ packages:
     source: hosted
     version: "0.12.4+4"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
@@ -496,6 +496,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  plaid_flutter:
+    dependency: "direct main"
+    description:
+      name: plaid_flutter
+      sha256: "768845854c86957d75d350519096277b3585223bd145fba263bf5c04b311678f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.5"
   platform:
     dependency: transitive
     description:

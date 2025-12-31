@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/plaid_controller.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/connect_source/redirecting_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
@@ -16,6 +17,7 @@ class ConnectBankCard extends StatefulWidget {
 }
 
 class _ConnectBankCardState extends State<ConnectBankCard> {
+  var plaidController = Get.put(PlaidController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +70,10 @@ class _ConnectBankCardState extends State<ConnectBankCard> {
               const Spacer(),
 
               MyButton(
-                onTap: () => _openBankSelectionSheet(),
+                onTap: () {
+                  plaidController.openPlaidLink();
+                  // () => _openBankSelectionSheet()
+                },
                 buttonText: "Continue with secure banking",
                 radius: 12,
               ),
