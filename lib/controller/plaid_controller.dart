@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +8,7 @@ import 'package:plaid_flutter/plaid_flutter.dart';
 
 class PlaidController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /// Loading state
   var isLoading = false.obs;
@@ -73,19 +75,27 @@ class PlaidController extends GetxController {
     try {
       isLoading.value = true;
 
-      final linkToken = await createLinkToken();
+      final isConnected = await _isBankConnected();
 
+      if (isConnected) {
+        isLoading.value = false;
+        Get.snackbar(
+          "Bank Already Connected",
+          "Your bank account is already linked.",
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
+      }
+
+      final linkToken = await createLinkToken();
       final configuration = LinkTokenConfiguration(token: linkToken);
 
-      /// STEP 1: Create configuration
       await PlaidLink.create(configuration: configuration);
-      _configuration = configuration;
-
-      /// STEP 2: Open Plaid UI (NO PARAMS)
       await PlaidLink.open();
     } catch (e) {
-      isLoading.value = false;
       Get.snackbar("Plaid Error", e.toString());
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -136,5 +146,18 @@ class PlaidController extends GetxController {
     }
 
     isLoading.value = false;
+  }
+
+  Future<bool> _isBankConnected() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return false;
+
+    final snap = await _firestore.collection("users").doc(uid).get();
+
+    if (!snap.exists) return false;
+
+    final source = snap.data()?['source'] as Map<String, dynamic>?;
+
+    return source?['bank'] == "connected";
   }
 }
