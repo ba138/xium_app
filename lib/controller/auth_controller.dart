@@ -95,6 +95,8 @@ class AuthController extends GetxController {
         uid: user.uid,
         username: fullName,
         email: email,
+        profilePictureUrl:
+            "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
       );
 
       // Save user to Firestore
@@ -335,6 +337,9 @@ class AuthController extends GetxController {
         uid: firebaseUser.uid,
         username: firebaseUser.displayName ?? 'No Name',
         email: firebaseUser.email ?? '',
+        profilePictureUrl:
+            firebaseUser.photoURL ??
+            "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
       );
 
       await docRef.set({

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/user_controller.dart';
 import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
@@ -18,44 +19,43 @@ class ConnectSourceScreen extends StatefulWidget {
 }
 
 class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
+  var userController = Get.put(UserController());
   final List<Map<String, dynamic>> sources = [
     {
+      "key": "email",
       "icon": Icons.email,
       "title": "Email",
-      "connected": true,
       "subtitle": "Automatically import receipts from your inbox",
-      "ontap": () {
-        Get.to(() => ConnectEmailScreen());
-      },
+      "ontap": () => Get.to(() => ConnectEmailScreen()),
     },
     {
+      "key": "sms",
       "icon": Icons.phone,
       "title": "Phone",
-      "connected": false,
       "subtitle": "Automatically import receipts from your inbox",
-      "ontap": () {
-        Get.to(() => ConnectPhoneScreen());
-      },
+      "ontap": () => Get.to(() => ConnectPhoneScreen()),
     },
     {
+      "key": "bank",
       "icon": Icons.account_balance,
       "title": "Bank Card",
-      "connected": false,
-      "subtitle": "Automatically import receipts from your inbox",
-      "ontap": () {
-        Get.to(() => ConnectBankCard());
-      },
+      "subtitle": "Automatically import receipts from your bank",
+      "ontap": () => Get.to(() => ConnectBankCard()),
     },
     {
+      "key": "osr",
       "icon": Icons.credit_card,
       "title": "Loyalty Cards",
-      "connected": true,
-      "subtitle": "Sync receipts from loyalty accounts.",
-      "ontap": () {
-        Get.to(() => AddLoyaltyCardScreen());
-      },
+      "subtitle": "Sync receipts from loyalty accounts",
+      "ontap": () => Get.to(() => AddLoyaltyCardScreen()),
     },
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,93 +95,120 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
               const SizedBox(height: 20),
 
               Expanded(
-                child: GridView.builder(
-                  itemCount: sources.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 18,
-                    crossAxisSpacing: 18,
-                    childAspectRatio: 0.90,
-                  ),
-                  itemBuilder: (context, index) {
-                    final item = sources[index];
+                child: Obx(() {
+                  final user = userController.user.value;
 
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                        child: GestureDetector(
-                          onTap: item['ontap'],
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.25),
-                                width: 1,
+                  if (user == null) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  return GridView.builder(
+                    itemCount: sources.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 18,
+                          crossAxisSpacing: 18,
+                          childAspectRatio: 0.90,
+                        ),
+                    itemBuilder: (context, index) {
+                      final item = sources[index];
+                      final String key = item["key"];
+
+                      final bool connected = user.source[key] == "connected";
+
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (connected) {
+                                Get.snackbar(
+                                  "Already Connected",
+                                  "${item["title"]} is already connected",
+                                  snackPosition: SnackPosition.TOP,
+                                  backgroundColor: Colors.black87,
+                                  colorText: Colors.white,
+                                );
+                              } else {
+                                item["ontap"]();
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.25),
+                                  width: 1,
+                                ),
                               ),
-                            ),
-                            padding: const EdgeInsets.all(14),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      item["icon"],
-                                      size: 20,
-                                      color: AppColors.buttonColor,
+                              padding: const EdgeInsets.all(14),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        item["icon"],
+                                        size: 20,
+                                        color: AppColors.buttonColor,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      MyText(
+                                        text: item["title"],
+                                        size: 14,
+                                        weight: FontWeight.w600,
+                                      ),
+                                    ],
+                                  ),
+
+                                  const SizedBox(height: 12),
+
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 6,
                                     ),
-                                    const SizedBox(width: 6),
-                                    MyText(
-                                      text: item["title"],
-                                      size: 14,
-                                      weight: FontWeight.w600,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.15,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                  ],
-                                ),
-
-                                const SizedBox(height: 12),
-
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 6,
+                                    child: MyText(
+                                      text: connected
+                                          ? "Connected"
+                                          : "Not Connected",
+                                      size: 10,
+                                      weight: FontWeight.w500,
+                                      color: connected
+                                          ? Colors.greenAccent
+                                          : AppColors.onPrimary,
+                                    ),
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.15),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: MyText(
-                                    text: item["connected"]
-                                        ? "Connected"
-                                        : "Not Connected",
-                                    size: 10,
-                                    weight: FontWeight.w500,
-                                    color: item["connected"]
-                                        ? Colors.greenAccent
-                                        : AppColors.onPrimary,
-                                  ),
-                                ),
 
-                                const SizedBox(height: 10),
+                                  const SizedBox(height: 10),
 
-                                MyText(
-                                  text: item["subtitle"],
-                                  size: 11,
-                                  color: AppColors.grayColor,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                                  MyText(
+                                    text: item["subtitle"],
+                                    size: 11,
+                                    color: AppColors.grayColor,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  );
+                }),
               ),
+
               MyButton(
                 onTap: () {
                   Get.to(() => CubeScreen());

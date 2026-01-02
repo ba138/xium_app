@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:plaid_flutter/plaid_flutter.dart';
+import 'package:xium_app/constants/app_colors.dart';
 
 class PlaidController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -82,7 +83,8 @@ class PlaidController extends GetxController {
         Get.snackbar(
           "Bank Already Connected",
           "Your bank account is already linked.",
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
+          colorText: AppColors.primary,
         );
         return;
       }
