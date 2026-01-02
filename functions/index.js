@@ -3,12 +3,6 @@ const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 const { defineSecret } = require("firebase-functions/params");
 
-// Helpers
-// const { detectStore, detectDocumentType } = require("./classification");
-// const { ensureStoreExists } = require("./utils");
-// const { runOCR } = require("./ocr");
-
-// Initialize Firebase ONCE
 admin.initializeApp();
 
 const db = admin.firestore();
@@ -75,15 +69,13 @@ exports.createPlaidLinkToken = onRequest(
    ✅ EXCHANGE PUBLIC TOKEN
 ============================================================ */
 exports.exchangePlaidToken = onRequest(
-  {
-    secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV],
-  },
+  { secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV] },
   (req, res) =>
     cors(req, res, async () => {
       try {
         const { publicToken, uid } = req.body;
-
         const plaidClient = getPlaidClient();
+
         const response = await plaidClient.itemPublicTokenExchange({
           public_token: publicToken,
         });
@@ -96,7 +88,7 @@ exports.exchangePlaidToken = onRequest(
 
         res.json({ success: true });
       } catch (e) {
-        console.error("exchangePlaidToken error:", e);
+        console.error(e);
         res.status(500).json({ error: e.message });
       }
     })
@@ -106,9 +98,7 @@ exports.exchangePlaidToken = onRequest(
    ✅ SYNC TRANSACTIONS
 ============================================================ */
 exports.syncTransactions = onRequest(
-  {
-    secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV],
-  },
+  { secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV] },
   (req, res) =>
     cors(req, res, async () => {
       try {
@@ -146,20 +136,6 @@ exports.syncTransactions = onRequest(
           const storeId = merchantName
             .toLowerCase()
             .replace(/[^a-z0-9]/g, "");
-
-          // Store master
-          batch.set(
-            db.collection("stores").doc(storeId),
-            {
-              storeId,
-              name: merchantName,
-              merchantEntityIds:
-                admin.firestore.FieldValue.arrayUnion(merchantEntityId),
-            },
-            { merge: true }
-          );
-
-          // Transaction
           batch.set(
             db
               .collection("transactions")
@@ -176,7 +152,7 @@ exports.syncTransactions = onRequest(
               date: tx.date,
               pending: tx.pending,
               category: tx.personal_finance_category?.primary || null,
-              source: "plaid",
+              source: "Bank",
               createdAt: admin.firestore.FieldValue.serverTimestamp(),
             },
             { merge: true }
@@ -184,7 +160,6 @@ exports.syncTransactions = onRequest(
         }
 
         await db.collection("plaidTokens").doc(uid).update({ cursor });
-
         await db.collection("users").doc(uid).update({
           "source.bank": "connected",
         });
@@ -197,67 +172,3 @@ exports.syncTransactions = onRequest(
       }
     })
 );
-
-/* ============================================================
-   ✅ PROCESS INCOMING EMAIL (MAILGUN)
-============================================================ */
-// exports.processIncomingEmail = onRequest(async (req, res) => {
-//   try {
-//     const { from, subject, "body-plain": body } = req.body;
-//     const recipient = req.body.recipient;
-
-//     const userSnap = await db
-//       .collection("users")
-//       .where("forwardingEmail", "==", recipient)
-//       .limit(1)
-//       .get();
-
-//     if (userSnap.empty) return res.send("User not found");
-
-//     const userId = userSnap.docs[0].id;
-
-//     const docRef = await db
-//       .collection("users")
-//       .doc(userId)
-//       .collection("documents")
-//       .add({
-//         source: "email",
-//         from,
-//         subject,
-//         status: "processing",
-//         createdAt: admin.firestore.FieldValue.serverTimestamp(),
-//       });
-
-//     let fullText = body || "";
-
-//     if (req.files) {
-//       for (const file of Object.values(req.files)) {
-//         const filePath = `users/${userId}/documents/${docRef.id}/${file.name}`;
-//         await bucket.file(filePath).save(file.data, {
-//           contentType: file.mimetype,
-//         });
-
-//         const gcsUrl = `gs://${bucket.name}/${filePath}`;
-//         fullText += " " + (await runOCR(gcsUrl));
-//       }
-//     }
-
-//     const store = detectStore(from, subject, fullText);
-//     const type = detectDocumentType(fullText);
-
-//     await ensureStoreExists(store);
-
-//     await docRef.update({
-//       storeId: store.storeId,
-//       storeName: store.storeName,
-//       type,
-//       confidence: store.confidence,
-//       status: "done",
-//     });
-
-//     res.send("Email processed successfully");
-//   } catch (err) {
-//     console.error("processIncomingEmail error:", err);
-//     res.status(500).send("Processing error");
-//   }
-// });

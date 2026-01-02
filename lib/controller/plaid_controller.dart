@@ -131,7 +131,8 @@ class PlaidController extends GetxController {
     );
 
     if (response.statusCode == 200) {
-      transactions.value = jsonDecode(response.body);
+      final data = jsonDecode(response.body);
+      print("Synced transactions: ${data['synced']}");
     }
 
     isLoading.value = false;
