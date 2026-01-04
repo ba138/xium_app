@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/email.controller.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
@@ -20,9 +21,9 @@ class _ConnectEmailScreenState extends State<ConnectEmailScreen> {
   final List<Map<String, dynamic>> emailOptions = [
     {"image": Assets.gmail, "title": "Sign In with Gmail"},
     {"image": Assets.outlook, "title": "Sign In with Outlook"},
-    {"image": Assets.mail, "title": "Sign in with another address"},
+    // {"image": Assets.mail, "title": "Sign in with another address"},
   ];
-
+  var emailController = Get.put(MailController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,7 +139,13 @@ class _ConnectEmailScreenState extends State<ConnectEmailScreen> {
                 ),
               ),
               Spacer(),
-              MyButton(onTap: () {}, buttonText: "Save Changes", radius: 12),
+              MyButton(
+                onTap: () {
+                  emailController.handleEmailSetup(context);
+                },
+                buttonText: "Save Changes",
+                radius: 12,
+              ),
             ],
           ),
         ),
