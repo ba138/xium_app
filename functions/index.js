@@ -5,6 +5,7 @@ const { defineSecret } = require("firebase-functions/params");
 const { detectStore, detectDocumentType } = require("./classification");
 const { ensureStoreExists } = require("./utils");
 const { runOCR } = require("./ocr");
+const Busboy = require("busboy");
 
 admin.initializeApp();
 
@@ -178,22 +179,21 @@ exports.syncTransactions = onRequest(
 );
 exports.processIncomingEmail = onRequest(async (req, res) => {
   try {
+    const Busboy = require("busboy");
     const busboy = Busboy({ headers: req.headers });
 
     let fields = {};
     let files = [];
 
-    // Parse fields
     busboy.on("field", (name, value) => {
       fields[name] = value;
     });
 
-    // Parse attachments
     busboy.on("file", (name, file, info) => {
       const { filename, mimeType } = info;
       const buffers = [];
 
-      file.on("data", (data) => buffers.push(data));
+      file.on("data", data => buffers.push(data));
       file.on("end", () => {
         files.push({
           filename,
@@ -204,78 +204,113 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
     });
 
     busboy.on("finish", async () => {
-      const from = fields.from;
-      const subject = fields.subject;
-      const body = fields["body-plain"] || "";
-      const recipient = fields.recipient;
+      try {
+        const from = fields.from || "";
+        const subject = fields.subject || "";
+        const body = fields["body-plain"] || "";
+        // const recipientRaw = fields.recipient || "";
+        const recipientRaw = "receipt+UC3oafFrD9Q9s5rrcsLPQpoqe6c2@mg.xium.io";
 
-      // 1️⃣ Identify user by forwarding email
-      const userSnap = await db
-        .collection("users")
-        .where("forwardingEmail", "==", recipient)
-        .limit(1)
-        .get();
+        // 🔹 Mailgun may send multiple recipients
+        const recipients = recipientRaw
+          .split(",")
+          .map(r => r.trim());
 
-      if (userSnap.empty) {
-        return res.status(200).send("User not found");
-      }
+        // 🔹 Find receipt+UID@mg.xium.io
+        const receiptEmail = recipients.find(r =>
+          r.startsWith("receipt+")
+        );
 
-      const userId = userSnap.docs[0].id;
+        if (!receiptEmail) {
+          return res.status(200).json({
+            message: "No receipt email found",
+            recipients,
+          });
+        }
 
-      // 2️⃣ Create initial document
-      const docRef = await db
-        .collection("users")
-        .doc(userId)
-        .collection("documents")
-        .add({
-          source: "email",
-          from,
-          subject,
-          status: "processing",
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        // 🔹 Extract UID
+        const uid = receiptEmail.split("receipt+")[1].split("@")[0];
+
+        // 🔹 Fetch user by UID (DOC ID)
+        const userRef = db.collection("users").doc(uid);
+        const userSnap = await userRef.get();
+
+        if (!userSnap.exists) {
+          return res.status(200).json({
+            message: "User not found",
+            uid,
+            receiptEmail,
+          });
+        }
+
+        // 🔹 Create document
+        const docRef = await userRef
+          .collection("documents")
+          .add({
+            source: "email",
+            from,
+            subject,
+            recipient: receiptEmail,
+            status: "processing",
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+
+        let fullText = body;
+
+        // 🔹 Upload attachments + OCR
+        for (const file of files) {
+          const filePath = `users/${uid}/documents/${docRef.id}/${file.filename}`;
+
+          await bucket.file(filePath).save(file.buffer, {
+            contentType: file.mimeType,
+          });
+
+          const gcsUrl = `gs://${bucket.name}/${filePath}`;
+          const ocrText = await runOCR(gcsUrl);
+          fullText += " " + ocrText;
+        }
+
+        // 🔹 Classification
+        const store = detectStore(from, subject, fullText);
+        const documentType = detectDocumentType(fullText);
+
+        await ensureStoreExists(store);
+
+        // 🔹 Final update
+        await docRef.update({
+          storeId: store.storeId,
+          storeName: store.storeName,
+          storeLogo: store.storeLogo || null,
+          documentType, // invoice | receipt | warranty
+          confidence: store.confidence,
+          status: "done",
         });
 
-      let fullText = body;
-
-      // 3️⃣ Upload attachments + OCR
-      for (const file of files) {
-        const filePath = `users/${userId}/documents/${docRef.id}/${file.filename}`;
-
-        await bucket.file(filePath).save(file.buffer, {
-          contentType: file.mimeType,
+        return res.status(200).json({
+          success: true,
+          uid,
+          documentId: docRef.id,
+          store,
+          documentType,
         });
 
-        const gcsUrl = `gs://${bucket.name}/${filePath}`;
-        const ocrText = await runOCR(gcsUrl);
-        fullText += " " + ocrText;
+      } catch (innerError) {
+        console.error("INNER ERROR:", innerError);
+        return res.status(500).json({
+          error: innerError.message,
+          stack: innerError.stack,
+        });
       }
-
-      // 4️⃣ Classification
-      const store = detectStore(from, subject, fullText);
-      const type = detectDocumentType(fullText);
-
-      // 5️⃣ Ensure store exists
-      await ensureStoreExists(store);
-
-      // 6️⃣ Final update
-     const documentType = detectDocumentType(fullText);
-
-await docRef.update({
-  storeId: store.storeId,
-  storeName: store.storeName,
-  storeLogo: store.storeLogo || null,
-  documentType, // ✅ invoice | receipt | warranty
-  confidence: store.confidence,
-  status: "done",
-});
-
-
-      res.status(200).send("Email processed successfully");
     });
 
     busboy.end(req.rawBody);
+
   } catch (error) {
-    console.error("processIncomingEmail error:", error);
-    res.status(500).send("Processing error");
+    console.error("OUTER ERROR:", error);
+    return res.status(500).json({
+      error: error.message,
+      stack: error.stack,
+    });
   }
 });
+
