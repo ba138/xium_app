@@ -185,10 +185,12 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
     let fields = {};
     let files = [];
 
+    // 🔹 Parse form fields
     busboy.on("field", (name, value) => {
       fields[name] = value;
     });
 
+    // 🔹 Parse attachments
     busboy.on("file", (name, file, info) => {
       const { filename, mimeType } = info;
       const buffers = [];
@@ -205,52 +207,47 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
 
     busboy.on("finish", async () => {
       try {
-        const from = fields.from || "";
+        const fromRaw = fields.from || "";
         const subject = fields.subject || "";
         const body = fields["body-plain"] || "";
-        // const recipientRaw = fields.recipient || "";
-        const recipientRaw = "receipt+UC3oafFrD9Q9s5rrcsLPQpoqe6c2@mg.xium.io";
 
-        // 🔹 Mailgun may send multiple recipients
-        const recipients = recipientRaw
-          .split(",")
-          .map(r => r.trim());
+        // 🔹 Extract email from "Name <email>"
+        const emailMatch = fromRaw.match(/<(.+?)>/);
+        const senderEmail = emailMatch ? emailMatch[1] : fromRaw.trim();
 
-        // 🔹 Find receipt+UID@mg.xium.io
-        const receiptEmail = recipients.find(r =>
-          r.startsWith("receipt+")
-        );
-
-        if (!receiptEmail) {
-          return res.status(200).json({
-            message: "No receipt email found",
-            recipients,
+        if (!senderEmail) {
+          return res.status(400).json({
+            error: "Sender email not found",
+            fromRaw,
           });
         }
 
-        // 🔹 Extract UID
-        const uid = receiptEmail.split("receipt+")[1].split("@")[0];
+        // 🔹 Find user STRICTLY by email
+        const userSnap = await db
+          .collection("users")
+          .where("email", "==", senderEmail)
+          .limit(1)
+          .get();
 
-        // 🔹 Fetch user by UID (DOC ID)
-        const userRef = db.collection("users").doc(uid);
-        const userSnap = await userRef.get();
-
-        if (!userSnap.exists) {
+        if (userSnap.empty) {
           return res.status(200).json({
             message: "User not found",
-            uid,
-            receiptEmail,
+            senderEmail,
           });
         }
 
-        // 🔹 Create document
-        const docRef = await userRef
+        const userDoc = userSnap.docs[0];
+        const uid = userDoc.id;
+
+        // 🔹 Create initial document
+        const docRef = await db
+          .collection("users")
+          .doc(uid)
           .collection("documents")
           .add({
             source: "email",
-            from,
+            from: senderEmail,
             subject,
-            recipient: receiptEmail,
             status: "processing",
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
           });
@@ -270,13 +267,14 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
           fullText += " " + ocrText;
         }
 
-        // 🔹 Classification
-        const store = detectStore(from, subject, fullText);
+        // 🔹 Detect store & document type
+        const store = detectStore(senderEmail, subject, fullText);
         const documentType = detectDocumentType(fullText);
 
+        // 🔹 Ensure store exists
         await ensureStoreExists(store);
 
-        // 🔹 Final update
+        // 🔹 Final document update
         await docRef.update({
           storeId: store.storeId,
           storeName: store.storeName,
@@ -284,16 +282,21 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
           documentType, // invoice | receipt | warranty
           confidence: store.confidence,
           status: "done",
+          body: fullText,
+        });
+
+        // 🔹 Mark EMAIL source as connected
+        await db.collection("users").doc(uid).update({
+          "source.email": "connected",
         });
 
         return res.status(200).json({
           success: true,
           uid,
           documentId: docRef.id,
-          store,
           documentType,
+          store: store.storeName,
         });
-
       } catch (innerError) {
         console.error("INNER ERROR:", innerError);
         return res.status(500).json({
@@ -304,13 +307,13 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
     });
 
     busboy.end(req.rawBody);
-
-  } catch (error) {
-    console.error("OUTER ERROR:", error);
+  } catch (outerError) {
+    console.error("OUTER ERROR:", outerError);
     return res.status(500).json({
-      error: error.message,
-      stack: error.stack,
+      error: outerError.message,
+      stack: outerError.stack,
     });
   }
 });
+
 

@@ -3,10 +3,8 @@ import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/auth_controller.dart';
 import 'package:xium_app/controller/user_controller.dart';
-import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/connect_source/connect_source_screen.dart';
 import 'package:xium_app/views/screens/profile/account_managemant_screen.dart';
-import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -125,25 +123,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       profileTile(
                         title: "Gmail",
-                        image: Assets.gmail,
+                        image: Icons.email,
                         isConnected: userController.isEmailConnected,
                       ),
                       Divider(thickness: 0.09),
                       profileTile(
                         title: "Phone SMS",
-                        image: Assets.phone,
+                        image: Icons.phone,
                         isConnected: userController.isEmailConnected,
                       ),
                       Divider(thickness: 0.09),
                       profileTile(
                         title: "Bank",
-                        image: Assets.bank,
+                        image: Icons.account_balance,
                         isConnected: userController.isBankConnected,
                       ),
                       Divider(thickness: 0.09),
                       profileTile(
                         title: "Loyalty",
-                        image: Assets.loyalty,
+                        image: Icons.credit_card,
                         isConnected: userController.isOcrConnected,
                       ),
                     ],
@@ -187,13 +185,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget profileTile({
-    required String image,
+    required IconData image,
     required String title,
     required bool isConnected,
   }) {
     return Row(
       children: [
-        CommonImageView(imagePath: image, height: 30),
+        Icon(image, size: 30, color: AppColors.buttonColor),
         const SizedBox(width: 10),
         MyText(text: title, size: 16),
         Spacer(),
