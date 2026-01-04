@@ -2,6 +2,9 @@ const { onRequest } = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 const { defineSecret } = require("firebase-functions/params");
+const { detectStore, detectDocumentType } = require("./classification");
+const { ensureStoreExists } = require("./utils");
+const { runOCR } = require("./ocr");
 
 admin.initializeApp();
 
@@ -171,4 +174,108 @@ exports.syncTransactions = onRequest(
         res.status(500).json({ error: e.message });
       }
     })
+
 );
+exports.processIncomingEmail = onRequest(async (req, res) => {
+  try {
+    const busboy = Busboy({ headers: req.headers });
+
+    let fields = {};
+    let files = [];
+
+    // Parse fields
+    busboy.on("field", (name, value) => {
+      fields[name] = value;
+    });
+
+    // Parse attachments
+    busboy.on("file", (name, file, info) => {
+      const { filename, mimeType } = info;
+      const buffers = [];
+
+      file.on("data", (data) => buffers.push(data));
+      file.on("end", () => {
+        files.push({
+          filename,
+          mimeType,
+          buffer: Buffer.concat(buffers),
+        });
+      });
+    });
+
+    busboy.on("finish", async () => {
+      const from = fields.from;
+      const subject = fields.subject;
+      const body = fields["body-plain"] || "";
+      const recipient = fields.recipient;
+
+      // 1️⃣ Identify user by forwarding email
+      const userSnap = await db
+        .collection("users")
+        .where("forwardingEmail", "==", recipient)
+        .limit(1)
+        .get();
+
+      if (userSnap.empty) {
+        return res.status(200).send("User not found");
+      }
+
+      const userId = userSnap.docs[0].id;
+
+      // 2️⃣ Create initial document
+      const docRef = await db
+        .collection("users")
+        .doc(userId)
+        .collection("documents")
+        .add({
+          source: "email",
+          from,
+          subject,
+          status: "processing",
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+
+      let fullText = body;
+
+      // 3️⃣ Upload attachments + OCR
+      for (const file of files) {
+        const filePath = `users/${userId}/documents/${docRef.id}/${file.filename}`;
+
+        await bucket.file(filePath).save(file.buffer, {
+          contentType: file.mimeType,
+        });
+
+        const gcsUrl = `gs://${bucket.name}/${filePath}`;
+        const ocrText = await runOCR(gcsUrl);
+        fullText += " " + ocrText;
+      }
+
+      // 4️⃣ Classification
+      const store = detectStore(from, subject, fullText);
+      const type = detectDocumentType(fullText);
+
+      // 5️⃣ Ensure store exists
+      await ensureStoreExists(store);
+
+      // 6️⃣ Final update
+     const documentType = detectDocumentType(fullText);
+
+await docRef.update({
+  storeId: store.storeId,
+  storeName: store.storeName,
+  storeLogo: store.storeLogo || null,
+  documentType, // ✅ invoice | receipt | warranty
+  confidence: store.confidence,
+  status: "done",
+});
+
+
+      res.status(200).send("Email processed successfully");
+    });
+
+    busboy.end(req.rawBody);
+  } catch (error) {
+    console.error("processIncomingEmail error:", error);
+    res.status(500).send("Processing error");
+  }
+});

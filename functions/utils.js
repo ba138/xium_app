@@ -1,17 +1,24 @@
-// const admin = require("firebase-admin");
-// const db = admin.firestore();
+const admin = require("firebase-admin");
 
-// async function ensureStoreExists(store) {
-//   const ref = db.collection("stores").doc(store.storeId);
-//   const snap = await ref.get();
+function getDB() {
+  if (!admin.apps.length) {
+    admin.initializeApp();
+  }
+  return admin.firestore();
+}
 
-//   if (!snap.exists) {
-//     await ref.set({
-//       storeId: store.storeId,
-//       name: store.storeName,
-//       createdAt: admin.firestore.FieldValue.serverTimestamp()
-//     });
-//   }
-// }
+async function ensureStoreExists(store) {
+  const db = getDB();
+  const ref = db.collection("stores").doc(store.storeId);
+  const snap = await ref.get();
 
-// module.exports = { ensureStoreExists };
+  if (!snap.exists) {
+    await ref.set({
+      storeId: store.storeId,
+      name: store.storeName,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+  }
+}
+
+module.exports = { ensureStoreExists };
