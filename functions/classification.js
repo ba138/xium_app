@@ -15,6 +15,7 @@ function detectStore(from = "", subject = "", text = "") {
       return {
         storeId: store.storeId,
         storeName: store.name,
+        storeLogo: store.storeLogo,
         confidence: 0.9
       };
     }

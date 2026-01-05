@@ -155,7 +155,7 @@ exports.syncTransactions = onRequest(
               currency: tx.iso_currency_code,
               date: tx.date,
               pending: tx.pending,
-              category: tx.personal_finance_category?.primary || null,
+              documentType: tx.personal_finance_category?.primary || null,
               source: "Bank",
               createdAt: admin.firestore.FieldValue.serverTimestamp(),
             },
