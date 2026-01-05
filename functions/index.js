@@ -158,6 +158,7 @@ exports.syncTransactions = onRequest(
               documentType: tx.personal_finance_category?.primary || null,
               source: "Bank",
               createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              storeLogo:tx.storeLogo || null,
             },
             { merge: true }
           );
