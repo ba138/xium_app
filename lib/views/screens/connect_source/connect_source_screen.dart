@@ -117,18 +117,17 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
                           filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
                           child: GestureDetector(
                             onTap: () {
-                              // if (connected) {
-                              //   Get.snackbar(
-                              //     "Already Connected",
-                              //     "${item["title"]} is already connected",
-                              //     snackPosition: SnackPosition.TOP,
-                              //     backgroundColor: Colors.black87,
-                              //     colorText: Colors.white,
-                              //   );
-                              // } else {
-                              //   item["ontap"]();
-                              // }
-                              item["ontap"]();
+                              if (connected) {
+                                Get.snackbar(
+                                  "Already Connected",
+                                  "${item["title"]} is already connected",
+                                  snackPosition: SnackPosition.TOP,
+                                  backgroundColor: Colors.black87,
+                                  colorText: Colors.white,
+                                );
+                              } else {
+                                item["ontap"]();
+                              }
                             },
                             child: Container(
                               decoration: BoxDecoration(

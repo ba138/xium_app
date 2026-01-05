@@ -142,9 +142,9 @@ exports.syncTransactions = onRequest(
             .replace(/[^a-z0-9]/g, "");
           batch.set(
             db
-              .collection("transactions")
+              .collection("users")
               .doc(uid)
-              .collection("plaid")
+              .collection("documents")
               .doc(tx.transaction_id),
             {
               storeId,
@@ -185,7 +185,7 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
     let fields = {};
     let files = [];
 
-    // 🔹 Parse form fields
+    // 🔹 Parse fields
     busboy.on("field", (name, value) => {
       fields[name] = value;
     });
@@ -211,18 +211,17 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
         const subject = fields.subject || "";
         const body = fields["body-plain"] || "";
 
-        // 🔹 Extract email from "Name <email>"
+        // 🔹 Extract sender email
         const emailMatch = fromRaw.match(/<(.+?)>/);
         const senderEmail = emailMatch ? emailMatch[1] : fromRaw.trim();
 
         if (!senderEmail) {
           return res.status(400).json({
             error: "Sender email not found",
-            fromRaw,
           });
         }
 
-        // 🔹 Find user STRICTLY by email
+        // 🔹 STRICT user lookup by email
         const userSnap = await db
           .collection("users")
           .where("email", "==", senderEmail)
@@ -239,7 +238,40 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
         const userDoc = userSnap.docs[0];
         const uid = userDoc.id;
 
-        // 🔹 Create initial document
+        let fullText = body;
+
+        // 🔹 OCR attachments FIRST (before storing anything)
+        for (const file of files) {
+          const tempPath = `temp/${Date.now()}-${file.filename}`;
+
+          await bucket.file(tempPath).save(file.buffer, {
+            contentType: file.mimeType,
+          });
+
+          const gcsUrl = `gs://${bucket.name}/${tempPath}`;
+          const ocrText = await runOCR(gcsUrl);
+          fullText += " " + ocrText;
+
+          // 🔹 Cleanup temp file
+          await bucket.file(tempPath).delete().catch(() => {});
+        }
+
+        // 🔹 Detect document type
+        const documentType = detectDocumentType(fullText);
+
+        // ❌ DROP UNKNOWN DOCUMENTS
+        if (documentType === "unknown") {
+          return res.status(200).json({
+            success: false,
+            reason: "Document type not supported",
+            documentType,
+          });
+        }
+
+        // 🔹 Detect store (only after type is valid)
+        const store = detectStore(senderEmail, subject, fullText);
+
+        // 🔹 Create document ONLY NOW
         const docRef = await db
           .collection("users")
           .doc(uid)
@@ -248,44 +280,17 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
             source: "email",
             from: senderEmail,
             subject,
-            status: "processing",
+            documentType,
+            storeId: store.storeId,
+            storeName: store.storeName,
+            storeLogo: store.storeLogo || null,
+            confidence: store.confidence,
+            status: "done",
+            body: fullText,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
           });
 
-        let fullText = body;
-
-        // 🔹 Upload attachments + OCR
-        for (const file of files) {
-          const filePath = `users/${uid}/documents/${docRef.id}/${file.filename}`;
-
-          await bucket.file(filePath).save(file.buffer, {
-            contentType: file.mimeType,
-          });
-
-          const gcsUrl = `gs://${bucket.name}/${filePath}`;
-          const ocrText = await runOCR(gcsUrl);
-          fullText += " " + ocrText;
-        }
-
-        // 🔹 Detect store & document type
-        const store = detectStore(senderEmail, subject, fullText);
-        const documentType = detectDocumentType(fullText);
-
-        // 🔹 Ensure store exists
-        await ensureStoreExists(store);
-
-        // 🔹 Final document update
-        await docRef.update({
-          storeId: store.storeId,
-          storeName: store.storeName,
-          storeLogo: store.storeLogo || null,
-          documentType, // invoice | receipt | warranty
-          confidence: store.confidence,
-          status: "done",
-          body: fullText,
-        });
-
-        // 🔹 Mark EMAIL source as connected
+        // 🔹 Mark email source as connected
         await db.collection("users").doc(uid).update({
           "source.email": "connected",
         });
@@ -297,23 +302,21 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
           documentType,
           store: store.storeName,
         });
+
       } catch (innerError) {
         console.error("INNER ERROR:", innerError);
         return res.status(500).json({
           error: innerError.message,
-          stack: innerError.stack,
         });
       }
     });
 
     busboy.end(req.rawBody);
+
   } catch (outerError) {
     console.error("OUTER ERROR:", outerError);
     return res.status(500).json({
       error: outerError.message,
-      stack: outerError.stack,
     });
   }
 });
-
-

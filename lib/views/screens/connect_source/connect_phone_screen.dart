@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/phone_connect_controller.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -16,60 +17,7 @@ class ConnectPhoneScreen extends StatefulWidget {
 class _ConnectPhoneScreenState extends State<ConnectPhoneScreen> {
   String selectedCode = "+1";
   final TextEditingController phoneController = TextEditingController();
-  void showSuccessDialog() {
-    Get.dialog(
-      Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Color(0xff3463CD).withValues(alpha: 0.27),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              /// -------- WHITE CIRCLE WITH DONE ICON ----------
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xff175293), // ✔ WHITE CIRCLE
-                ),
-                child: Icon(
-                  Icons.done,
-                  color: AppColors.primary, // ✔ GREEN DONE ICON
-                  size: 32,
-                ),
-              ),
-
-              const SizedBox(height: 18),
-
-              /// -------- TITLE --------
-              MyText(
-                text: "Phone Number\n Connected Successfully",
-                size: 18,
-                weight: FontWeight.w600,
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 6),
-
-              /// -------- SUBTITLE --------
-              MyText(
-                text: "SMS - based receipts will be detected automatically.",
-                size: 10,
-                color: Colors.white70,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-      barrierDismissible: true,
-    );
-  }
+  var phoneConnectController = Get.put(PhoneConnectController());
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +132,10 @@ class _ConnectPhoneScreenState extends State<ConnectPhoneScreen> {
 
               MyButton(
                 onTap: () {
-                  showSuccessDialog();
+                  phoneConnectController.connectPhone(
+                    phoneController.text,
+                    selectedCode,
+                  );
                 },
                 buttonText: "Connect phone number",
                 radius: 12,
