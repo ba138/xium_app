@@ -12,7 +12,7 @@ module.exports = {
     name: "Google",
     keywords: ["google", "google cloud", "gcp", "google invoice"],
     domains: ["google.com", "cloud.google.com"],
-    storeLogo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    storeLogo: "https://t3.ftcdn.net/jpg/03/99/98/60/360_F_399986042_9iSLYUNyDv8npaKP31xsIpDVFjfqGLDF.jpg",
   },
 
   apple: {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
-import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/home/doc_view_screen.dart';
 import 'package:xium_app/views/screens/home/widgets/dynamic_container.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
@@ -57,36 +56,53 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                 height: 120,
                 width: double.infinity,
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CommonImageView(
                       url:
                           widget.storeLogo ??
                           "https://c8.alamy.com/comp/P2D424/store-vector-icon-isolated-on-transparent-background-store-logo-concept-P2D424.jpg",
+                      height: 50,
+                      width: 50,
+                      fit: BoxFit.contain,
                     ),
                     const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        MyText(text: widget.storeName ?? "UnKnown", size: 20),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.article_sharp,
-                              color: AppColors.buttonColor,
-                            ),
-                            MyText(
-                              text:
-                                  "${widget.documentCount ?? 0} documents found",
-                              size: 12,
-                            ),
-                          ],
-                        ),
-                      ],
+
+                    /// ⭐ THIS IS THE FIX ⭐
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyText(
+                            text: widget.storeName ?? "Unknown",
+                            size: 20,
+                            maxLines: 2, // FULL NAME WITH WRAP
+                            textOverflow: TextOverflow.visible,
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.article_sharp,
+                                color: AppColors.buttonColor,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 4),
+                              MyText(
+                                text:
+                                    "${widget.documentCount ?? 0} documents found",
+                                size: 12,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
+
               const SizedBox(height: 20),
               SizedBox(
                 height: 40,
