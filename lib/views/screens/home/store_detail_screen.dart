@@ -9,7 +9,15 @@ import 'package:xium_app/views/widgets/glassy_container.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
 class StoreDetailScreen extends StatefulWidget {
-  const StoreDetailScreen({super.key});
+  final String? storeName;
+  final String? storeLogo;
+  final int? documentCount;
+  const StoreDetailScreen({
+    super.key,
+    this.storeName,
+    this.storeLogo,
+    this.documentCount,
+  });
 
   @override
   State<StoreDetailScreen> createState() => _StoreDetailScreenState();
@@ -50,20 +58,28 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                 width: double.infinity,
                 child: Row(
                   children: [
-                    CommonImageView(imagePath: Assets.walmart),
+                    CommonImageView(
+                      url:
+                          widget.storeLogo ??
+                          "https://c8.alamy.com/comp/P2D424/store-vector-icon-isolated-on-transparent-background-store-logo-concept-P2D424.jpg",
+                    ),
                     const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        MyText(text: "Walmart", size: 20),
+                        MyText(text: widget.storeName ?? "UnKnown", size: 20),
                         Row(
                           children: [
                             Icon(
                               Icons.article_sharp,
                               color: AppColors.buttonColor,
                             ),
-                            MyText(text: "23 documents found", size: 12),
+                            MyText(
+                              text:
+                                  "${widget.documentCount ?? 0} documents found",
+                              size: 12,
+                            ),
                           ],
                         ),
                       ],

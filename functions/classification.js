@@ -1,9 +1,15 @@
 const STORES = require("./storeDictionary");
 
+/**
+ * Normalize text for matching
+ */
 function normalizeText(text = "") {
   return text.toLowerCase().replace(/\s+/g, " ");
 }
 
+/**
+ * Detect store from email + content
+ */
 function detectStore(from = "", subject = "", text = "") {
   const content = normalizeText(`${from} ${subject} ${text}`);
 
@@ -15,8 +21,8 @@ function detectStore(from = "", subject = "", text = "") {
       return {
         storeId: store.storeId,
         storeName: store.name,
-        storeLogo: store.storeLogo,
-        confidence: 0.9
+        storeLogo: store.storeLogo || null,
+        confidence: 0.9,
       };
     }
   }
@@ -24,10 +30,14 @@ function detectStore(from = "", subject = "", text = "") {
   return {
     storeId: "unknown",
     storeName: "Unknown",
-    confidence: 0.1
+    storeLogo: null,
+    confidence: 0.1,
   };
 }
 
+/**
+ * Detect document type
+ */
 function detectDocumentType(text = "") {
   text = normalizeText(text);
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/home_controller.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/home/add_loyalty_card_screen.dart';
 import 'package:xium_app/views/screens/home/store_detail_screen.dart';
@@ -17,6 +18,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final controller = Get.put(HomeController());
+  String truncate(String text, int max) {
+    if (text.length <= max) return text;
+    return "${text.substring(0, max)}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,43 +96,66 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // ⭐ ADDING THE GRIDVIEW HERE ⭐
               Expanded(
-                child: GridView.builder(
-                  itemCount: 15, // total cards
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, // 3 in a row
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.8, // adjust card height
-                  ),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(() => StoreDetailScreen());
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.grayColor.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.grey.withValues(alpha: 0.3),
+                child: Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.stores.isEmpty) {
+                    return const Center(child: Text("No stores found"));
+                  }
+
+                  return GridView.builder(
+                    itemCount: controller.stores.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 0.8,
+                        ),
+                    itemBuilder: (context, index) {
+                      final store = controller.stores[index];
+
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(
+                            () => StoreDetailScreen(
+                              storeName: store.storeName,
+                              storeLogo: store.storeLogo,
+                              documentCount: store.documentCount,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.grayColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.grey.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CommonImageView(
+                                url:
+                                    store.storeLogo ??
+                                    "https://c8.alamy.com/comp/P2D424/store-vector-icon-isolated-on-transparent-background-store-logo-concept-P2D424.jpg",
+                                height: 40,
+                              ),
+                              const SizedBox(height: 8),
+                              MyText(text: truncate(store.storeName, 9)),
+
+                              // const SizedBox(height: 4),
+                            ],
                           ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CommonImageView(
-                              imagePath: Assets.walmart,
-                              height: 40,
-                            ),
-                            const SizedBox(height: 8),
-                            MyText(text: "Walmart"),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  );
+                }),
               ),
             ],
           ),

@@ -188,18 +188,17 @@ exports.syncTransactions = onRequest(
 
 exports.processIncomingEmail = onRequest(async (req, res) => {
   try {
-    const Busboy = require("busboy");
     const busboy = Busboy({ headers: req.headers });
 
     let fields = {};
     let files = [];
 
-    // 🔹 Parse fields
+    // Parse fields
     busboy.on("field", (name, value) => {
       fields[name] = value;
     });
 
-    // 🔹 Parse attachments
+    // Parse attachments
     busboy.on("file", (name, file, info) => {
       const { filename, mimeType } = info;
       const buffers = [];
@@ -220,17 +219,15 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
         const subject = fields.subject || "";
         const body = fields["body-plain"] || "";
 
-        // 🔹 Extract sender email
-        const emailMatch = fromRaw.match(/<(.+?)>/);
-        const senderEmail = emailMatch ? emailMatch[1] : fromRaw.trim();
+        // Extract sender email
+        const match = fromRaw.match(/<(.+?)>/);
+        const senderEmail = match ? match[1] : fromRaw.trim();
 
         if (!senderEmail) {
-          return res.status(400).json({
-            error: "Sender email not found",
-          });
+          return res.status(400).json({ error: "Sender email not found" });
         }
 
-        // 🔹 STRICT user lookup by email
+        // 🔹 Find user STRICTLY by email
         const userSnap = await db
           .collection("users")
           .where("email", "==", senderEmail)
@@ -239,17 +236,17 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
 
         if (userSnap.empty) {
           return res.status(200).json({
+            success: false,
             message: "User not found",
             senderEmail,
           });
         }
 
-        const userDoc = userSnap.docs[0];
-        const uid = userDoc.id;
+        const uid = userSnap.docs[0].id;
 
         let fullText = body;
 
-        // 🔹 OCR attachments FIRST (before storing anything)
+        // OCR attachments (optional)
         for (const file of files) {
           const tempPath = `temp/${Date.now()}-${file.filename}`;
 
@@ -257,30 +254,28 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
             contentType: file.mimeType,
           });
 
-          const gcsUrl = `gs://${bucket.name}/${tempPath}`;
-          const ocrText = await runOCR(gcsUrl);
-          fullText += " " + ocrText;
+          // ⚠️ If OCR not wired yet, skip safely
+          // const ocrText = await runOCR(`gs://${bucket.name}/${tempPath}`);
+          // fullText += " " + ocrText;
 
-          // 🔹 Cleanup temp file
           await bucket.file(tempPath).delete().catch(() => {});
         }
 
-        // 🔹 Detect document type
+        // Detect document type
         const documentType = detectDocumentType(fullText);
 
-        // ❌ DROP UNKNOWN DOCUMENTS
+        // ❌ Ignore unknown docs
         if (documentType === "unknown") {
           return res.status(200).json({
             success: false,
-            reason: "Document type not supported",
-            documentType,
+            reason: "Unsupported document type",
           });
         }
 
-        // 🔹 Detect store (only after type is valid)
+        // Detect store
         const store = detectStore(senderEmail, subject, fullText);
 
-        // 🔹 Create document ONLY NOW
+        // Create Firestore document
         const docRef = await db
           .collection("users")
           .doc(uid)
@@ -292,40 +287,33 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
             documentType,
             storeId: store.storeId,
             storeName: store.storeName,
-            storeLogo: store.storeLogo || null,
+            storeLogo: store.storeLogo,
             confidence: store.confidence,
             status: "done",
             body: fullText,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
           });
 
-        // 🔹 Mark email source as connected
+        // Mark email source connected
         await db.collection("users").doc(uid).update({
           "source.email": "connected",
         });
 
         return res.status(200).json({
           success: true,
-          uid,
           documentId: docRef.id,
-          documentType,
           store: store.storeName,
+          documentType,
         });
-
-      } catch (innerError) {
-        console.error("INNER ERROR:", innerError);
-        return res.status(500).json({
-          error: innerError.message,
-        });
+      } catch (err) {
+        console.error("INNER ERROR:", err);
+        return res.status(500).json({ error: err.message });
       }
     });
 
     busboy.end(req.rawBody);
-
-  } catch (outerError) {
-    console.error("OUTER ERROR:", outerError);
-    return res.status(500).json({
-      error: outerError.message,
-    });
+  } catch (err) {
+    console.error("OUTER ERROR:", err);
+    return res.status(500).json({ error: err.message });
   }
 });
