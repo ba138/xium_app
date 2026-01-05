@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/user_controller.dart';
+import 'package:xium_app/views/screens/connect_source/add_loyalty_card_info_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
-import 'package:xium_app/views/screens/home/add_loyalty_card_screen.dart';
 import 'package:xium_app/views/screens/starting/cube_screen.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -47,7 +47,7 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
       "icon": Icons.credit_card,
       "title": "Loyalty Cards",
       "subtitle": "Sync receipts from loyalty accounts",
-      "ontap": () => Get.to(() => AddLoyaltyCardScreen()),
+      "ontap": () => Get.to(() => AddLoyaltyInfoScreen()),
     },
   ];
 

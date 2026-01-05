@@ -168,6 +168,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
+                MyText(text: "Loyalty Card Usage"),
+                const SizedBox(height: 20),
                 MyText(text: "Security"),
                 const SizedBox(height: 20),
                 MyText(

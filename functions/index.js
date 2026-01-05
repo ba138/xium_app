@@ -6,6 +6,7 @@ const { detectStore, detectDocumentType } = require("./classification");
 const { ensureStoreExists } = require("./utils");
 const { runOCR } = require("./ocr");
 const Busboy = require("busboy");
+const { getStoreLogo } = require("./logo");
 
 admin.initializeApp();
 
@@ -101,6 +102,7 @@ exports.exchangePlaidToken = onRequest(
 /* ============================================================
    ✅ SYNC TRANSACTIONS
 ============================================================ */
+
 exports.syncTransactions = onRequest(
   { secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV] },
   (req, res) =>
@@ -135,11 +137,18 @@ exports.syncTransactions = onRequest(
 
         for (const tx of added) {
           const merchantName = tx.merchant_name || tx.name || "Unknown";
-          const merchantEntityId = tx.merchant_entity_id || "unknown";
+          const merchantEntityId = tx.merchant_entity_id || null;
 
           const storeId = merchantName
             .toLowerCase()
             .replace(/[^a-z0-9]/g, "");
+
+          const storeLogo = await getStoreLogo({
+            plaidClient,
+            merchantEntityId,
+            website: tx.website || null,
+          });
+
           batch.set(
             db
               .collection("users")
@@ -149,16 +158,15 @@ exports.syncTransactions = onRequest(
             {
               storeId,
               storeName: merchantName,
-              merchantName,
               merchantEntityId,
               amount: tx.amount,
               currency: tx.iso_currency_code,
               date: tx.date,
               pending: tx.pending,
               documentType: tx.personal_finance_category?.primary || null,
-              source: "Bank",
+              source: "bank",
+            storeLogo:  tx.logo_url,
               createdAt: admin.firestore.FieldValue.serverTimestamp(),
-              storeLogo:tx.storeLogo || null,
             },
             { merge: true }
           );
@@ -176,8 +184,8 @@ exports.syncTransactions = onRequest(
         res.status(500).json({ error: e.message });
       }
     })
-
 );
+
 exports.processIncomingEmail = onRequest(async (req, res) => {
   try {
     const Busboy = require("busboy");
