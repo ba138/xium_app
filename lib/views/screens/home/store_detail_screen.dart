@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/store_detail_controller.dart';
 import 'package:xium_app/views/screens/home/doc_view_screen.dart';
 import 'package:xium_app/views/screens/home/widgets/dynamic_container.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
@@ -28,6 +29,24 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
   String selectedValue = "Newest";
 
   final List<String> options = ["Newest", "Oldest", "A–Z", "Z–A"];
+  final controller = Get.put(StoreDetailController());
+  String formatDate(DateTime? date) {
+    if (date == null) return "N/A";
+    return "${date.day.toString().padLeft(2, '0')}/"
+        "${date.month.toString().padLeft(2, '0')}/"
+        "${date.year}";
+  }
+
+  String formatAmount(double? amount, String? currency) {
+    if (amount == null) return "N/A";
+    return "${currency ?? ''} ${amount.toStringAsFixed(2)}";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller.getStoreDocuments(widget.storeName!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +151,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MyText(
-                    text: "23 docs Found",
+                    text: "Sort Results",
                     size: 12,
                     color: AppColors.grayColor,
                   ),
@@ -194,432 +213,142 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
               Expanded(
                 child: GlassContainer(
                   width: double.infinity,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis
-                          .horizontal, // horizontal scroll to prevent overflow
-                      child: DataTable(
-                        columnSpacing: 20,
-                        headingRowHeight: 35,
-                        dividerThickness: 0.6,
-                        dataRowHeight: 50,
-                        columns: const [
-                          DataColumn(
-                            label: Text(
-                              'Doc Type',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (controller.documents.isEmpty) {
+                      return const Center(child: Text("No documents found"));
+                    }
+
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columnSpacing: 20,
+                          headingRowHeight: 35,
+                          dividerThickness: 0.6,
+                          dataRowHeight: 50,
+                          columns: const [
+                            DataColumn(
+                              label: Text(
+                                'Doc Type',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Date',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            DataColumn(
+                              label: Text(
+                                'Date',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Amount',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            DataColumn(
+                              label: Text(
+                                'Amount',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Source',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            DataColumn(
+                              label: Text(
+                                'Source',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'View',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                            DataColumn(
+                              label: Text(
+                                'View',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                        rows: [
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  'Invoice',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
+                          ],
+                          rows: controller.documents.map((doc) {
+                            return DataRow(
+                              cells: [
+                                /// Doc Type
+                                DataCell(
+                                  Text(
+                                    doc.documentType ?? "N/A",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.primary,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '20/04/2020',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
+
+                                /// Date
+                                DataCell(
+                                  Text(
+                                    formatDate(doc.createdAt?.toDate()),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.primary,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '\$20',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
+
+                                /// Amount (NULL SAFE)
+                                DataCell(
+                                  Text(
+                                    doc.amount == null
+                                        ? "N/A"
+                                        : "${doc.currency ?? ''} ${doc.amount!.toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.primary,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              DataCell(
-                                Text(
-                                  'Email',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
+
+                                /// Source
+                                DataCell(
+                                  Text(
+                                    doc.source ?? "N/A",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.primary,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              DataCell(
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => DocViewScreen());
-                                  },
-                                  child: Icon(
-                                    Icons.remove_red_eye,
-                                    size: 16,
-                                    color: AppColors.buttonColor,
+
+                                /// View
+                                DataCell(
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(
+                                        () => DocViewScreen(document: doc),
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.remove_red_eye,
+                                      size: 16,
+                                      color: AppColors.buttonColor,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  'Receipt',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '22/05/2020',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '\$15',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  'OCR',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => DocViewScreen());
-                                  },
-                                  child: Icon(
-                                    Icons.remove_red_eye,
-                                    size: 16,
-                                    color: AppColors.buttonColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  'Warranty',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '10/06/2020',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '\$50',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  'Bank',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => DocViewScreen());
-                                  },
-                                  child: Icon(
-                                    Icons.remove_red_eye,
-                                    size: 16,
-                                    color: AppColors.buttonColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  'Invoice',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '20/04/2020',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '\$20',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  'Email',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => DocViewScreen());
-                                  },
-                                  child: Icon(
-                                    Icons.remove_red_eye,
-                                    size: 16,
-                                    color: AppColors.buttonColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  'Invoice',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '20/04/2020',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '\$20',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  'Email',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => DocViewScreen());
-                                  },
-                                  child: Icon(
-                                    Icons.remove_red_eye,
-                                    size: 16,
-                                    color: AppColors.buttonColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  'Invoice',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '20/04/2020',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '\$20',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  'Email',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => DocViewScreen());
-                                  },
-                                  child: Icon(
-                                    Icons.remove_red_eye,
-                                    size: 16,
-                                    color: AppColors.buttonColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  'Invoice',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '20/04/2020',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  '\$20',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  'Email',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => DocViewScreen());
-                                  },
-                                  child: Icon(
-                                    Icons.remove_red_eye,
-                                    size: 16,
-                                    color: AppColors.buttonColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
               ),
             ],

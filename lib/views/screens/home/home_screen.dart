@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
   String truncate(String text, int max) {
     if (text.length <= max) return text;
-    return "${text.substring(0, max)}";
+    return text.substring(0, max);
   }
 
   @override
