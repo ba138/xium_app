@@ -89,7 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
               MyTextField(
                 hint: "Search a store",
                 radius: 12,
-                prefix: Icon(Icons.search),
+                prefix: const Icon(Icons.search),
+                onChanged: (value) {
+                  controller.searchStores(value); // 🔥 CALL FUNCTION
+                },
               ),
 
               const SizedBox(height: 20),
@@ -101,12 +104,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (controller.stores.isEmpty) {
+                  if (controller.filteredStores.isEmpty) {
                     return const Center(child: Text("No stores found"));
                   }
 
                   return GridView.builder(
-                    itemCount: controller.stores.length,
+                    itemCount: controller.filteredStores.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
@@ -115,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           childAspectRatio: 0.8,
                         ),
                     itemBuilder: (context, index) {
-                      final store = controller.stores[index];
+                      final store = controller.filteredStores[index];
 
                       return GestureDetector(
                         onTap: () {
@@ -147,8 +150,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               const SizedBox(height: 8),
                               MyText(text: truncate(store.storeName, 9)),
-
-                              // const SizedBox(height: 4),
                             ],
                           ),
                         ),

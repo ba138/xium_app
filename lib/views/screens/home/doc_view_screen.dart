@@ -49,8 +49,7 @@ class DocViewScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         MyText(
-                          text:
-                              "${document.documentType ?? "Document"} – ${document.storeName ?? "Unknown"}",
+                          text: "${document.documentType ?? "Document"} ",
                           size: 16,
                           weight: FontWeight.w600,
                         ),

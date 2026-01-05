@@ -9,7 +9,12 @@ class HomeController extends GetxController {
   final _auth = FirebaseAuth.instance;
 
   final RxList<DocumentModel> documents = <DocumentModel>[].obs;
+
+  /// 🔥 All stores (grouped)
   final RxList<StoreModel> stores = <StoreModel>[].obs;
+
+  /// 🔍 Stores shown in UI (search result)
+  final RxList<StoreModel> filteredStores = <StoreModel>[].obs;
 
   final RxBool isLoading = false.obs;
 
@@ -43,7 +48,7 @@ class HomeController extends GetxController {
     }
   }
 
-  /// 🔥 GROUP BY storeName (NOT storeId)
+  /// 🔥 GROUP BY storeName
   void _buildStores() {
     final Map<String, List<DocumentModel>> grouped = {};
 
@@ -51,7 +56,7 @@ class HomeController extends GetxController {
       final name = (doc.storeName ?? '').trim();
       if (name.isEmpty || name.toLowerCase() == 'unknown') continue;
 
-      final key = name.toLowerCase(); // 🔑 normalize
+      final key = name.toLowerCase();
 
       grouped.putIfAbsent(key, () => []);
       grouped[key]!.add(doc);
@@ -67,9 +72,26 @@ class HomeController extends GetxController {
         documentCount: docs.length,
       );
     }).toList();
+
+    /// 🔑 Initially show all stores
+    filteredStores.assignAll(stores);
   }
 
-  /// 🔹 Get documents for a store
+  /// 🔍 SEARCH — STARTS WITH
+  void searchStores(String query) {
+    if (query.isEmpty) {
+      filteredStores.assignAll(stores);
+      return;
+    }
+
+    final q = query.toLowerCase();
+
+    filteredStores.assignAll(
+      stores.where((store) => store.storeName.toLowerCase().startsWith(q)),
+    );
+  }
+
+  /// 📂 Documents for store
   List<DocumentModel> documentsByStoreName(String storeName) {
     return documents
         .where((d) => d.storeName?.toLowerCase() == storeName.toLowerCase())
