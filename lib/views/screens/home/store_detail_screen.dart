@@ -24,7 +24,7 @@ class StoreDetailScreen extends StatefulWidget {
 }
 
 class _StoreDetailScreenState extends State<StoreDetailScreen> {
-  final List<String> tags = ["All", "Receipts", "Invoices", "Warranties"];
+  final List<String> tags = ["All", "Receipt", "invoice", "Warrantie"];
   int selectedIndex = 0; // default = All selected
   String selectedValue = "Newest";
 
@@ -133,6 +133,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                       onTap: () {
                         setState(() {
                           selectedIndex = index;
+                          controller.filterByType(tags[index]);
                         });
                       },
                       child: DynamicContainer(
@@ -198,6 +199,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                             onChanged: (newValue) {
                               setState(() {
                                 selectedValue = newValue!;
+                                controller.sortByOption(selectedValue);
                               });
                             },
                           ),
@@ -219,7 +221,9 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                     }
 
                     if (controller.documents.isEmpty) {
-                      return const Center(child: Text("No documents found"));
+                      return const Center(
+                        child: MyText(text: "No documents found"),
+                      );
                     }
 
                     return SingleChildScrollView(

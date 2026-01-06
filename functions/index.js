@@ -317,3 +317,52 @@ exports.processIncomingEmail = onRequest(async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 });
+exports.deleteUserAccount = onRequest(async (req, res) => {
+  try {
+    // 🔐 Check auth token
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const idToken = authHeader.split("Bearer ")[1];
+    const decoded = await admin.auth().verifyIdToken(idToken);
+    const uid = decoded.uid;
+
+    const userRef = db.collection("users").doc(uid);
+
+    // 🔹 Helper: delete a subcollection
+    const deleteSubCollection = async (collectionRef) => {
+      const snapshot = await collectionRef.get();
+      const batch = db.batch();
+
+      snapshot.docs.forEach(doc => {
+        batch.delete(doc.ref);
+      });
+
+      await batch.commit();
+    };
+
+    // 🔹 Delete subcollections
+    await deleteSubCollection(userRef.collection("documents"));
+    await deleteSubCollection(userRef.collection("loyaltyCards"));
+
+    // 🔹 Delete user document
+    await userRef.delete();
+
+    // 🔹 Delete Firebase Auth user
+    await admin.auth().deleteUser(uid);
+
+    return res.status(200).json({
+      success: true,
+      message: "User deleted from Auth and Firestore successfully",
+    });
+
+  } catch (error) {
+    console.error("deleteUserAccount error:", error);
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+});
+
