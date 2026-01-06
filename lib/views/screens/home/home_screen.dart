@@ -9,6 +9,7 @@ import 'package:xium_app/views/screens/profile/profile_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 import 'package:xium_app/views/widgets/my_text_field.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -103,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: Obx(() {
                   if (controller.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
+                    return storeGridShimmer();
                   }
 
                   if (controller.filteredStores.isEmpty) {
@@ -164,6 +165,47 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget storeGridShimmer() {
+    return GridView.builder(
+      itemCount: 12, // fake items
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 0.8,
+      ),
+      itemBuilder: (_, __) {
+        return Shimmer.fromColors(
+          baseColor: Color(0xFF2A2A2A), // dark card
+          highlightColor: Color(0xFF3A3A3A), // soft light pass
+
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 40,
+                  width: 40,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(height: 12, width: 60, color: Colors.white),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
