@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
 
                   if (controller.filteredStores.isEmpty) {
-                    return const Center(child: Text("No stores found"));
+                    return const Center(child: MyText(text: "No stores found"));
                   }
 
                   return GridView.builder(
