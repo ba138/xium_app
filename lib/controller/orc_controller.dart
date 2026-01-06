@@ -58,7 +58,10 @@ class OcrController extends GetxController {
       final imageUrl = await ref.getDownloadURL();
       uploadedImageUrl.value = imageUrl;
 
-      await _sendToCloudFunction(uid, imageUrl);
+      await _sendToCloudFunction(
+        uid,
+        "https://receiptmakerly.com/static/Walmart-Style-Receipt-019870d43b9f09365107e41308e23162.png",
+      );
     } catch (e) {
       error.value = e.toString();
     } finally {

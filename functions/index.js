@@ -381,12 +381,11 @@ exports.processImageDocument = onRequest(
           });
         }
 
-        // 🔐 Init OpenAI
         const openai = new OpenAI({
           apiKey: process.env.OPENAI_API_KEY,
         });
 
-        // 🧠 OpenAI Vision + OCR + Classification
+        // 🧠 OCR + Classification + Store Logo Search
         const response = await openai.responses.create({
           model: "gpt-4.1",
           input: [
@@ -396,15 +395,25 @@ exports.processImageDocument = onRequest(
                 {
                   type: "input_text",
                   text: `
-Analyze this image and return JSON only with:
-- documentType: invoice | receipt | warranty | unknown
-- storeName
-- merchantName
-- amount (number or null)
-- currency (string or null)
-- date (ISO format YYYY-MM-DD or null)
+Analyze this image and return JSON ONLY with:
 
-If not a valid document, set documentType = "unknown"
+{
+  "documentType": "invoice | receipt | warranty | unknown",
+  "storeName": string | null,
+  "merchantName": string | null,
+  "amount": number | null,
+  "currency": string | null,
+  "date": "YYYY-MM-DD" | null,
+  "storeLogo": "public logo image url (png/svg/jpg) or null"
+}
+
+Rules:
+- Search the web to find the official store logo
+- Prefer JPG or PNG logos
+- Logo must be publicly accessible (no auth)
+- If unsure, set storeLogo = null
+- If not a valid document, set documentType = "unknown"
+- Return VALID JSON ONLY
 `,
                 },
                 {
@@ -418,7 +427,6 @@ If not a valid document, set documentType = "unknown"
 
         const rawText = response.output_text;
 
-        // 🔹 Parse JSON safely
         let extracted;
         try {
           extracted = JSON.parse(rawText);
@@ -429,7 +437,7 @@ If not a valid document, set documentType = "unknown"
           });
         }
 
-        // ❌ Ignore unknown documents
+        // ❌ Ignore unsupported docs
         if (extracted.documentType === "unknown") {
           return res.status(200).json({
             success: false,
@@ -437,17 +445,18 @@ If not a valid document, set documentType = "unknown"
           });
         }
 
-        // 🔹 Store in Firestore
+        // 🔹 Save to Firestore
         const docRef = await db
           .collection("users")
           .doc(uid)
           .collection("documents")
           .add({
             source: "ocr",
-            imageUrl,
+            imageUrl: imageUrl,
             documentType: extracted.documentType,
             storeName: extracted.storeName || "Unknown",
-            merchantName: extracted.merchantName || null,
+            storeLogo: extracted.storeLogo ?? null,
+            merchantName: extracted.merchantName ?? null,
             amount: extracted.amount ?? null,
             currency: extracted.currency ?? null,
             date: extracted.date ?? null,
@@ -456,7 +465,7 @@ If not a valid document, set documentType = "unknown"
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
           });
 
-        // 🔹 Mark OCR source connected
+        // 🔹 Mark OCR connected
         await db.collection("users").doc(uid).update({
           "source.ocr": "connected",
         });
@@ -474,4 +483,5 @@ If not a valid document, set documentType = "unknown"
       }
     })
 );
+
 
