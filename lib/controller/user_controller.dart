@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:xium_app/model/user_model.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:xium_app/views/screens/auth/login_screen.dart';
 
 class UserController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -52,6 +55,48 @@ class UserController extends GetxController {
 
       isLoading.value = false;
     });
+  }
+
+  /// 🔥 Delete user account (Auth + Firestore via Cloud Function)
+  Future<void> deleteUserAccount() async {
+    try {
+      isLoading.value = true;
+
+      final currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        throw Exception("User not logged in");
+      }
+
+      // 🔐 Get fresh ID token
+      final token = await currentUser.getIdToken(true);
+
+      final response = await http.post(
+        Uri.parse(
+          "https://us-central1-xium-app.cloudfunctions.net/deleteUserAccount",
+        ),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (response.statusCode != 200) {
+        final body = jsonDecode(response.body);
+        throw Exception(body["error"] ?? "Failed to delete account");
+      }
+
+      // ✅ Sign out locally after deletion
+      await _auth.signOut();
+
+      // 🧹 Clear local state
+      user.value = null;
+
+      Get.offAll(() => LoginScreen()); // or your login route
+    } catch (e) {
+      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   /// 🔹 Quick helpers for UI

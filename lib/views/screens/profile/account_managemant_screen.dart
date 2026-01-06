@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/user_controller.dart';
 import 'package:xium_app/views/widgets/glassy_container.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -15,6 +16,7 @@ class AccountManagemantScreen extends StatefulWidget {
 }
 
 class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
+  var controller = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +111,19 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                       ),
                       const SizedBox(height: 40),
                       MyButton(
-                        onTap: () {},
+                        onTap: () {
+                          Get.defaultDialog(
+                            title: "Delete Account",
+                            middleText: "This action is permanent. Continue?",
+                            textConfirm: "Delete",
+                            textCancel: "Cancel",
+                            confirmTextColor: Colors.white,
+                            onConfirm: () {
+                              Get.back();
+                              controller.deleteUserAccount();
+                            },
+                          );
+                        },
                         buttonText: "Delete permanently",
                         radius: 12,
                       ),
