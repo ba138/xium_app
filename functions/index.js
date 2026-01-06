@@ -7,6 +7,8 @@ const { ensureStoreExists } = require("./utils");
 const { runOCR } = require("./ocr");
 const Busboy = require("busboy");
 const { getStoreLogo } = require("./logo");
+const OpenAI = require("openai");
+
 
 admin.initializeApp();
 
@@ -365,4 +367,111 @@ exports.deleteUserAccount = onRequest(async (req, res) => {
     });
   }
 });
+
+exports.processImageDocument = onRequest(
+  { secrets: ["OPENAI_API_KEY"] },
+  (req, res) =>
+    cors(req, res, async () => {
+      try {
+        const { uid, imageUrl } = req.body;
+
+        if (!uid || !imageUrl) {
+          return res.status(400).json({
+            error: "uid and imageUrl are required",
+          });
+        }
+
+        // 🔐 Init OpenAI
+        const openai = new OpenAI({
+          apiKey: process.env.OPENAI_API_KEY,
+        });
+
+        // 🧠 OpenAI Vision + OCR + Classification
+        const response = await openai.responses.create({
+          model: "gpt-4.1",
+          input: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "input_text",
+                  text: `
+Analyze this image and return JSON only with:
+- documentType: invoice | receipt | warranty | unknown
+- storeName
+- merchantName
+- amount (number or null)
+- currency (string or null)
+- date (ISO format YYYY-MM-DD or null)
+
+If not a valid document, set documentType = "unknown"
+`,
+                },
+                {
+                  type: "input_image",
+                  image_url: imageUrl,
+                },
+              ],
+            },
+          ],
+        });
+
+        const rawText = response.output_text;
+
+        // 🔹 Parse JSON safely
+        let extracted;
+        try {
+          extracted = JSON.parse(rawText);
+        } catch (e) {
+          return res.status(400).json({
+            error: "Failed to parse AI response",
+            rawText,
+          });
+        }
+
+        // ❌ Ignore unknown documents
+        if (extracted.documentType === "unknown") {
+          return res.status(200).json({
+            success: false,
+            reason: "Unsupported document",
+          });
+        }
+
+        // 🔹 Store in Firestore
+        const docRef = await db
+          .collection("users")
+          .doc(uid)
+          .collection("documents")
+          .add({
+            source: "ocr",
+            imageUrl,
+            documentType: extracted.documentType,
+            storeName: extracted.storeName || "Unknown",
+            merchantName: extracted.merchantName || null,
+            amount: extracted.amount ?? null,
+            currency: extracted.currency ?? null,
+            date: extracted.date ?? null,
+            confidence: 0.9,
+            status: "done",
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+
+        // 🔹 Mark OCR source connected
+        await db.collection("users").doc(uid).update({
+          "source.ocr": "connected",
+        });
+
+        return res.status(200).json({
+          success: true,
+          documentId: docRef.id,
+          data: extracted,
+        });
+      } catch (error) {
+        console.error("OCR Function Error:", error);
+        return res.status(500).json({
+          error: error.message,
+        });
+      }
+    })
+);
 
