@@ -85,12 +85,8 @@ class CommonImageView extends StatelessWidget {
                 ),
               ),
             ),
-            errorWidget: (context, url, error) => Image.asset(
-              placeHolder,
-              height: height,
-              width: width,
-              fit: fit,
-            ),
+            errorWidget: (context, url, error) =>
+                Icon(Icons.store, size: height, color: AppColors.primary),
           ),
         ),
       );
