@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:xium_app/model/document_model.dart';
+import 'package:xium_app/views/screens/home/store_detail_screen.dart';
 
 class StoreDetailController extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -131,6 +132,9 @@ class StoreDetailController extends GetxController {
     required String documentId,
     required double amount,
     required String currency,
+    String? storeName,
+    String? storeLogo,
+    int? documentCount,
   }) async {
     try {
       final uid = _auth.currentUser?.uid;
@@ -142,6 +146,14 @@ class StoreDetailController extends GetxController {
           .collection("documents")
           .doc(documentId)
           .update({"amount": amount, "currency": currency});
+      Get.to(
+        () => StoreDetailScreen(
+          storeName: storeName,
+          storeLogo: storeLogo,
+          documentCount: documentCount,
+        ),
+      );
+      // Get.back();
 
       /// 🔥 NO manual list update needed
       /// Firestore listener will update UI automatically

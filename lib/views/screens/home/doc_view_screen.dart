@@ -9,7 +9,16 @@ import 'package:xium_app/views/widgets/my_text.dart';
 
 class DocViewScreen extends StatelessWidget {
   final DocumentModel document;
-  const DocViewScreen({super.key, required this.document});
+  final String? storeName;
+  final String? storeLogo;
+  final int? documentCount;
+  const DocViewScreen({
+    super.key,
+    required this.document,
+    this.storeName,
+    this.storeLogo,
+    this.documentCount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +70,12 @@ class DocViewScreen extends StatelessWidget {
                             text: "+ More",
                             size: 14,
                             onTap: () => Get.to(
-                              () => AddExpenseScreen(docId: document.id!),
+                              () => AddExpenseScreen(
+                                docId: document.id!,
+                                storeName: storeName,
+                                storeLogo: storeLogo,
+                                documentCount: documentCount,
+                              ),
                             ),
                           ),
                   ],

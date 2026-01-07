@@ -45,7 +45,9 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
   @override
   void initState() {
     super.initState();
-    controller.listenStoreDocuments(widget.storeName!);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.listenStoreDocuments(widget.storeName!);
+    });
   }
 
   @override
@@ -336,7 +338,12 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       Get.to(
-                                        () => DocViewScreen(document: doc),
+                                        () => DocViewScreen(
+                                          document: doc,
+                                          storeLogo: widget.storeLogo,
+                                          storeName: widget.storeName,
+                                          documentCount: widget.documentCount,
+                                        ),
                                       );
                                     },
                                     child: Icon(

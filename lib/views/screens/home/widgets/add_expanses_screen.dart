@@ -2,14 +2,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
-import 'package:xium_app/controller/home_controller.dart';
 import 'package:xium_app/controller/store_detail_controller.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   final String docId;
-  const AddExpenseScreen({super.key, required this.docId});
+  final String? storeName;
+  final String? storeLogo;
+  final int? documentCount;
+  const AddExpenseScreen({
+    super.key,
+    required this.docId,
+    this.storeName,
+    this.storeLogo,
+    this.documentCount,
+  });
 
   @override
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
@@ -22,12 +30,20 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   List<String> currencies = ["USD", "PKR", "EUR", "GBP"];
   var controller = Get.put(StoreDetailController());
+  Timer? _cursorTimer;
+
   @override
   void initState() {
     super.initState();
 
     /// blinking cursor
     Timer.periodic(const Duration(milliseconds: 600), (timer) {
+      setState(() {
+        showCursor = !showCursor;
+      });
+    });
+    _cursorTimer = Timer.periodic(const Duration(milliseconds: 600), (timer) {
+      if (!mounted) return;
       setState(() {
         showCursor = !showCursor;
       });
@@ -50,6 +66,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _cursorTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -173,6 +195,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     documentId: widget.docId,
                     amount: double.tryParse(amount)!,
                     currency: selectedCurrency,
+                    storeName: widget.storeName,
+                    storeLogo: widget.storeLogo,
+                    documentCount: widget.documentCount,
                   );
                 },
                 buttonText: "Next",
