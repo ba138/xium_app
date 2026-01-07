@@ -17,6 +17,7 @@ class DocumentModel {
   final String? body;
   final double? confidence;
   final String? status;
+  final String? imageUrl;
 
   // 🔹 Bank / transaction-based fields
   final double? amount;
@@ -33,6 +34,7 @@ class DocumentModel {
     this.storeId,
     this.storeName,
     this.storeLogo,
+    this.imageUrl,
 
     this.from,
     this.subject,
@@ -73,6 +75,7 @@ class DocumentModel {
       date: data?['date'],
       pending: data?['pending'],
       merchantEntityId: data?['merchantEntityId'],
+      imageUrl: data?['imageUrl'],
     );
   }
 
@@ -97,10 +100,12 @@ class DocumentModel {
       'date': date,
       'pending': pending,
       'merchantEntityId': merchantEntityId,
+      'imageUrl': imageUrl,
     };
   }
 
   /// 🔹 Helpers (Very Useful for UI)
   bool get isEmailDocument => source == 'email';
   bool get isBankTransaction => source == 'bank';
+  bool get isOcrDocument => documentType == 'ocr';
 }

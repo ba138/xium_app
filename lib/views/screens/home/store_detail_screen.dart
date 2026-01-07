@@ -79,14 +79,18 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CommonImageView(
-                      url:
-                          widget.storeLogo ??
-                          "https://c8.alamy.com/comp/P2D424/store-vector-icon-isolated-on-transparent-background-store-logo-concept-P2D424.jpg",
-                      height: 50,
-                      width: 50,
-                      fit: BoxFit.contain,
-                    ),
+                    widget.storeLogo != null && widget.storeLogo!.isNotEmpty
+                        ? CommonImageView(
+                            url: widget.storeLogo!,
+                            height: 50,
+                            width: 50,
+                            fit: BoxFit.contain,
+                          )
+                        : Icon(
+                            Icons.store,
+                            color: AppColors.onPrimary,
+                            size: 40,
+                          ),
                     const SizedBox(width: 10),
 
                     /// ⭐ THIS IS THE FIX ⭐

@@ -84,12 +84,35 @@ class DocViewScreen extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 /// 🖼️ STORE LOGO / IMAGE
+                // Use document.imageUrl if available, else storeLogo, else placeholder
                 Center(
-                  child: CommonImageView(
-                    url:
-                        document.storeLogo ??
-                        "https://c8.alamy.com/comp/P2D424/store-vector-icon-isolated-on-transparent-background-store-logo-concept-P2D424.jpg",
-                    height: 80,
+                  child: Builder(
+                    builder: (_) {
+                      // 1️⃣ Document image
+                      if (document.imageUrl != null &&
+                          document.imageUrl!.isNotEmpty) {
+                        return CommonImageView(
+                          url: document.imageUrl!,
+                          height: 400,
+                        );
+                      }
+
+                      // 2️⃣ Store logo
+                      if (document.storeLogo != null &&
+                          document.storeLogo!.isNotEmpty) {
+                        return CommonImageView(
+                          url: document.storeLogo!,
+                          height: 100,
+                        );
+                      }
+
+                      // 3️⃣ Default store icon
+                      return const Icon(
+                        Icons.store,
+                        size: 100,
+                        color: Colors.grey,
+                      );
+                    },
                   ),
                 ),
 
@@ -113,7 +136,7 @@ class DocViewScreen extends StatelessWidget {
                     title: "Date",
                     subTitle: formatDate(document.createdAt?.toDate()),
                   ),
-                  docTile(title: "Source", subTitle: "Email"),
+                  docTile(title: "Source", subTitle: document.source ?? "N/A"),
                   docTile(
                     title: "Subject",
                     subTitle: document.subject ?? "N/A",

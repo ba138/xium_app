@@ -145,12 +145,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CommonImageView(
-                                url:
-                                    store.storeLogo ??
-                                    "https://c8.alamy.com/comp/P2D424/store-vector-icon-isolated-on-transparent-background-store-logo-concept-P2D424.jpg",
-                                height: 40,
-                              ),
+                              store.storeLogo != null &&
+                                      store.storeLogo!.isNotEmpty
+                                  ? CommonImageView(
+                                      url: store.storeLogo!,
+                                      height: 40,
+                                    )
+                                  : Icon(
+                                      Icons.store,
+                                      size: 40,
+                                      color: AppColors.primary,
+                                    ),
+
                               const SizedBox(height: 8),
                               MyText(text: truncate(store.storeName, 9)),
                             ],

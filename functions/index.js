@@ -8,6 +8,8 @@ const { runOCR } = require("./ocr");
 const Busboy = require("busboy");
 const { getStoreLogo } = require("./logo");
 const OpenAI = require("openai");
+const fetch = require("node-fetch");
+
 
 
 admin.initializeApp();
@@ -368,6 +370,32 @@ exports.deleteUserAccount = onRequest(async (req, res) => {
   }
 });
 
+async function validateLogoUrl(url) {
+  try {
+    if (!url) return null;
+
+    const res = await fetch(url, { method: "HEAD", timeout: 5000 });
+    if (!res.ok) return null;
+
+    const contentType = res.headers.get("content-type") || "";
+    if (!contentType.startsWith("image/")) return null;
+
+    return url;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Clean AI JSON (remove ```json fences)
+ */
+function extractJson(text) {
+  return text
+    .replace(/```json/i, "")
+    .replace(/```/g, "")
+    .trim();
+}
+
 exports.processImageDocument = onRequest(
   { secrets: ["OPENAI_API_KEY"] },
   (req, res) =>
@@ -385,7 +413,7 @@ exports.processImageDocument = onRequest(
           apiKey: process.env.OPENAI_API_KEY,
         });
 
-        // 🧠 OCR + Classification + Store Logo Search
+        // 🧠 OCR + Classification + Logo search
         const response = await openai.responses.create({
           model: "gpt-4.1",
           input: [
@@ -395,7 +423,7 @@ exports.processImageDocument = onRequest(
                 {
                   type: "input_text",
                   text: `
-Analyze this image and return JSON ONLY with:
+Analyze this image and return VALID JSON ONLY.
 
 {
   "documentType": "invoice | receipt | warranty | unknown",
@@ -404,16 +432,15 @@ Analyze this image and return JSON ONLY with:
   "amount": number | null,
   "currency": string | null,
   "date": "YYYY-MM-DD" | null,
-  "storeLogo": "public logo image url (png/svg/jpg) or null"
+  "storeLogo": "public logo image url or null"
 }
 
 Rules:
-- Search the web to find the official store logo
-- Prefer JPG or PNG logos
-- Logo must be publicly accessible (no auth)
-- If unsure, set storeLogo = null
-- If not a valid document, set documentType = "unknown"
-- Return VALID JSON ONLY
+- Find official store logo from the web
+- Logo must be public PNG/JPG/SVG
+- If unsure → storeLogo = null
+- If not a valid document → documentType = "unknown"
+DO NOT add explanations or markdown.
 `,
                 },
                 {
@@ -426,10 +453,14 @@ Rules:
         });
 
         const rawText = response.output_text;
+        if (!rawText) {
+          throw new Error("Empty AI response");
+        }
 
+        // 🧹 Clean & parse JSON
         let extracted;
         try {
-          extracted = JSON.parse(rawText);
+          extracted = JSON.parse(extractJson(rawText));
         } catch (e) {
           return res.status(400).json({
             error: "Failed to parse AI response",
@@ -437,13 +468,16 @@ Rules:
           });
         }
 
-        // ❌ Ignore unsupported docs
+        // ❌ Unsupported document
         if (extracted.documentType === "unknown") {
           return res.status(200).json({
             success: false,
             reason: "Unsupported document",
           });
         }
+
+        // ✅ Validate logo
+        const validLogo = await validateLogoUrl(extracted.storeLogo);
 
         // 🔹 Save to Firestore
         const docRef = await db
@@ -452,10 +486,10 @@ Rules:
           .collection("documents")
           .add({
             source: "ocr",
-            imageUrl: imageUrl,
+            imageUrl,
             documentType: extracted.documentType,
             storeName: extracted.storeName || "Unknown",
-            storeLogo: extracted.storeLogo ?? null,
+            storeLogo: validLogo,
             merchantName: extracted.merchantName ?? null,
             amount: extracted.amount ?? null,
             currency: extracted.currency ?? null,
@@ -466,14 +500,20 @@ Rules:
           });
 
         // 🔹 Mark OCR connected
-        await db.collection("users").doc(uid).update({
-          "source.ocr": "connected",
-        });
+        await db.collection("users").doc(uid).set(
+          {
+            source: { ocr: "connected" },
+          },
+          { merge: true }
+        );
 
         return res.status(200).json({
           success: true,
           documentId: docRef.id,
-          data: extracted,
+          data: {
+            ...extracted,
+            storeLogo: validLogo,
+          },
         });
       } catch (error) {
         console.error("OCR Function Error:", error);
@@ -483,5 +523,6 @@ Rules:
       }
     })
 );
+
 
 
