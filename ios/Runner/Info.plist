@@ -7,6 +7,18 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<!-- Camera -->
+<key>NSCameraUsageDescription</key>
+<string>This app needs camera access to scan invoices, receipts, and warranties.</string>
+
+<!-- Photo Library -->
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app needs photo library access to upload documents.</string>
+
+<!-- Optional: Save images -->
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>This app needs permission to save scanned images.</string>
+
 	<key>CFBundleDisplayName</key>
 	<string>Xium App</string>
 	<key>CFBundleExecutable</key>

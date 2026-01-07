@@ -1,4 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Camera -->
+<uses-permission android:name="android.permission.CAMERA"/>
+
+<!-- Gallery / Storage -->
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
+<!-- For Android 12 and below -->
+<uses-permission
+    android:name="android.permission.READ_EXTERNAL_STORAGE"
+    android:maxSdkVersion="32"/>
+
     <application
         android:label="xium_app"
         android:name="${applicationName}"
