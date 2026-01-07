@@ -4,6 +4,7 @@ import 'package:xium_app/constants/app_colors.dart';
 
 import 'package:xium_app/model/document_model.dart';
 import 'package:xium_app/views/screens/home/widgets/add_expanses_screen.dart';
+import 'package:xium_app/views/screens/home/widgets/full_screen_image_view.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -91,9 +92,19 @@ class DocViewScreen extends StatelessWidget {
                       // 1️⃣ Document image
                       if (document.imageUrl != null &&
                           document.imageUrl!.isNotEmpty) {
-                        return CommonImageView(
-                          url: document.imageUrl!,
-                          height: 400,
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              () => FullScreenImageView(
+                                imageUrl: document.imageUrl!,
+                              ),
+                              transition: Transition.fadeIn,
+                            );
+                          },
+                          child: CommonImageView(
+                            url: document.imageUrl!,
+                            height: 400,
+                          ),
                         );
                       }
 
