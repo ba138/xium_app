@@ -55,11 +55,15 @@ class DocViewScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    MyText(
-                      text: "+ More",
-                      size: 14,
-                      onTap: () => Get.to(() => AddExpenseScreen()),
-                    ),
+                    document.amount != null
+                        ? const SizedBox.shrink()
+                        : MyText(
+                            text: "+ More",
+                            size: 14,
+                            onTap: () => Get.to(
+                              () => AddExpenseScreen(docId: document.id!),
+                            ),
+                          ),
                   ],
                 ),
 
@@ -86,6 +90,10 @@ class DocViewScreen extends StatelessWidget {
                   docTile(
                     title: "Store",
                     subTitle: document.storeName ?? "N/A",
+                  ),
+                  docTile(
+                    title: "Amount",
+                    subTitle: formatAmount(document.amount, document.currency),
                   ),
                   docTile(
                     title: "Date",

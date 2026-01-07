@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/views/screens/home/home_screen.dart';
@@ -9,7 +8,8 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> scaleAnimation;
   late Animation<double> fadeAnimation;
-  var _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
+  @override
   void onInit() {
     super.onInit();
 

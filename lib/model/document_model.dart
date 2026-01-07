@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DocumentModel {
   // 🔹 Common fields
+
   final String? id;
   final String? source; // email | bank
   final String? documentType;

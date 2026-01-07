@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,42 +17,51 @@ class StoreDetailController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxString error = ''.obs;
 
-  /// 🔹 Fetch documents by store name
-  Future<void> getStoreDocuments(String storeName) async {
-    try {
-      isLoading.value = true;
-      error.value = '';
-      allDocuments.clear();
-      documents.clear();
+  StreamSubscription<QuerySnapshot>? _docSubscription;
 
-      final uid = _auth.currentUser?.uid;
-      if (uid == null) {
-        error.value = "User not logged in";
-        return;
-      }
+  @override
+  void onClose() {
+    _docSubscription?.cancel();
+    super.onClose();
+  }
 
-      final snapshot = await _db
-          .collection("users")
-          .doc(uid)
-          .collection("documents")
-          .where("storeName", isEqualTo: storeName)
-          .orderBy("createdAt", descending: true)
-          .get();
-
-      final result = snapshot.docs
-          .map((doc) => DocumentModel.fromFirestore(doc))
-          .toList();
-
-      /// 🔥 store all docs
-      allDocuments.assignAll(result);
-
-      /// 🔥 default = ALL
-      documents.assignAll(result);
-    } catch (e) {
-      error.value = e.toString();
-    } finally {
-      isLoading.value = false;
+  /// 🔥 REALTIME: Listen documents by store name
+  void listenStoreDocuments(String storeName) {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) {
+      error.value = "User not logged in";
+      return;
     }
+
+    isLoading.value = true;
+    error.value = '';
+
+    _docSubscription?.cancel();
+
+    _docSubscription = _db
+        .collection("users")
+        .doc(uid)
+        .collection("documents")
+        .where("storeName", isEqualTo: storeName)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .listen(
+          (snapshot) {
+            final result = snapshot.docs
+                .map((doc) => DocumentModel.fromFirestore(doc))
+                .toList();
+
+            /// 🔥 keep master + filtered in sync
+            allDocuments.assignAll(result);
+            documents.assignAll(result);
+
+            isLoading.value = false;
+          },
+          onError: (e) {
+            error.value = e.toString();
+            isLoading.value = false;
+          },
+        );
   }
 
   /// 🔹 FILTER BY DOCUMENT TYPE
@@ -69,8 +79,7 @@ class StoreDetailController extends GetxController {
     documents.assignAll(filtered);
   }
 
-  /// 🔹 Sort documents based on option string
-
+  /// 🔹 SORT DOCUMENTS
   void sortByOption(String option) {
     final List<DocumentModel> sortedList = List.from(documents);
 
@@ -83,35 +92,31 @@ class StoreDetailController extends GetxController {
 
     switch (option) {
       case "Newest":
-        sortedList.sort((a, b) {
-          final aDate = toDate(a.createdAt);
-          final bDate = toDate(b.createdAt);
-          return bDate.compareTo(aDate);
-        });
+        sortedList.sort(
+          (a, b) => toDate(b.createdAt).compareTo(toDate(a.createdAt)),
+        );
         break;
 
       case "Oldest":
-        sortedList.sort((a, b) {
-          final aDate = toDate(a.createdAt);
-          final bDate = toDate(b.createdAt);
-          return aDate.compareTo(bDate);
-        });
+        sortedList.sort(
+          (a, b) => toDate(a.createdAt).compareTo(toDate(b.createdAt)),
+        );
         break;
 
-      case "A–Z": // ✅ documentType A–Z
-        sortedList.sort((a, b) {
-          final aType = (a.documentType ?? '').toLowerCase();
-          final bType = (b.documentType ?? '').toLowerCase();
-          return aType.compareTo(bType);
-        });
+      case "A–Z": // documentType
+        sortedList.sort(
+          (a, b) => (a.documentType ?? '').toLowerCase().compareTo(
+            (b.documentType ?? '').toLowerCase(),
+          ),
+        );
         break;
 
-      case "Z–A": // ✅ documentType Z–A
-        sortedList.sort((a, b) {
-          final aType = (a.documentType ?? '').toLowerCase();
-          final bType = (b.documentType ?? '').toLowerCase();
-          return bType.compareTo(aType);
-        });
+      case "Z–A":
+        sortedList.sort(
+          (a, b) => (b.documentType ?? '').toLowerCase().compareTo(
+            (a.documentType ?? '').toLowerCase(),
+          ),
+        );
         break;
 
       default:
@@ -119,5 +124,29 @@ class StoreDetailController extends GetxController {
     }
 
     documents.assignAll(sortedList);
+  }
+
+  /// ✅ ADD or UPDATE amount (Realtime-safe)
+  Future<void> addOrUpdateAmount({
+    required String documentId,
+    required double amount,
+    required String currency,
+  }) async {
+    try {
+      final uid = _auth.currentUser?.uid;
+      if (uid == null) throw "User not logged in";
+
+      await _db
+          .collection("users")
+          .doc(uid)
+          .collection("documents")
+          .doc(documentId)
+          .update({"amount": amount, "currency": currency});
+
+      /// 🔥 NO manual list update needed
+      /// Firestore listener will update UI automatically
+    } catch (e) {
+      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
+    }
   }
 }

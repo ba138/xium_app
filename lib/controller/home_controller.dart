@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,12 +6,13 @@ import 'package:xium_app/model/document_model.dart';
 import 'package:xium_app/model/store_model.dart';
 
 class HomeController extends GetxController {
-  final _db = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  /// 🔹 All documents
   final RxList<DocumentModel> documents = <DocumentModel>[].obs;
 
-  /// 🔥 All stores (grouped)
+  /// 🔹 All stores (grouped)
   final RxList<StoreModel> stores = <StoreModel>[].obs;
 
   /// 🔍 Stores shown in UI (search result)
@@ -18,37 +20,52 @@ class HomeController extends GetxController {
 
   final RxBool isLoading = false.obs;
 
+  StreamSubscription<QuerySnapshot>? _docSubscription;
+
   @override
   void onInit() {
     super.onInit();
-    fetchDocuments();
+    _listenDocuments();
   }
 
-  Future<void> fetchDocuments() async {
-    try {
-      isLoading.value = true;
-
-      final uid = _auth.currentUser?.uid;
-      if (uid == null) return;
-
-      final snap = await _db
-          .collection('users')
-          .doc(uid)
-          .collection('documents')
-          .orderBy('createdAt', descending: true)
-          .get();
-
-      documents.value = snap.docs
-          .map((d) => DocumentModel.fromFirestore(d))
-          .toList();
-
-      _buildStores();
-    } finally {
-      isLoading.value = false;
-    }
+  @override
+  void onClose() {
+    _docSubscription?.cancel();
+    super.onClose();
   }
 
-  /// 🔥 GROUP BY storeName
+  /// 🔥 REALTIME LISTENER
+  void _listenDocuments() {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    isLoading.value = true;
+
+    _docSubscription?.cancel();
+
+    _docSubscription = _db
+        .collection('users')
+        .doc(uid)
+        .collection('documents')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .listen(
+          (snapshot) {
+            documents.assignAll(
+              snapshot.docs.map((d) => DocumentModel.fromFirestore(d)).toList(),
+            );
+
+            _buildStores();
+            isLoading.value = false;
+          },
+          onError: (e) {
+            isLoading.value = false;
+            Get.snackbar("Error", e.toString());
+          },
+        );
+  }
+
+  /// 🔥 GROUP BY storeName (NOT storeId)
   void _buildStores() {
     final Map<String, List<DocumentModel>> grouped = {};
 
@@ -62,7 +79,7 @@ class HomeController extends GetxController {
       grouped[key]!.add(doc);
     }
 
-    stores.value = grouped.entries.map((entry) {
+    final result = grouped.entries.map((entry) {
       final docs = entry.value;
       final first = docs.first;
 
@@ -73,8 +90,8 @@ class HomeController extends GetxController {
       );
     }).toList();
 
-    /// 🔑 Initially show all stores
-    filteredStores.assignAll(stores);
+    stores.assignAll(result);
+    filteredStores.assignAll(result); // 🔑 reset search
   }
 
   /// 🔍 SEARCH — STARTS WITH
@@ -91,7 +108,7 @@ class HomeController extends GetxController {
     );
   }
 
-  /// 📂 Documents for store
+  /// 📂 Documents for a store (helper)
   List<DocumentModel> documentsByStoreName(String storeName) {
     return documents
         .where((d) => d.storeName?.toLowerCase() == storeName.toLowerCase())

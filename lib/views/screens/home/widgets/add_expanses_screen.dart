@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/home_controller.dart';
+import 'package:xium_app/controller/store_detail_controller.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
 class AddExpenseScreen extends StatefulWidget {
-  const AddExpenseScreen({super.key});
+  final String docId;
+  const AddExpenseScreen({super.key, required this.docId});
 
   @override
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
@@ -18,7 +21,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   bool showCursor = true;
 
   List<String> currencies = ["USD", "PKR", "EUR", "GBP"];
-
+  var controller = Get.put(StoreDetailController());
   @override
   void initState() {
     super.initState();
@@ -145,7 +148,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               // ---------- KEYPAD ----------
               // ---------- KEYPAD ----------
               SizedBox(
-                height: 400, // adjust until all keys fit perfectly
+                height:
+                    MediaQuery.of(context).size.height *
+                    0.6, // adjust until all keys fit perfectly
                 child: GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: 3,
@@ -160,11 +165,21 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   ],
                 ),
               ),
-
+              const Spacer(),
               // ---------- BUTTON ----------
-              MyButton(onTap: () {}, buttonText: "Next", radius: 12),
+              MyButton(
+                onTap: () {
+                  controller.addOrUpdateAmount(
+                    documentId: widget.docId,
+                    amount: double.tryParse(amount)!,
+                    currency: selectedCurrency,
+                  );
+                },
+                buttonText: "Next",
+                radius: 12,
+              ),
 
-              const SizedBox(height: 15),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             ],
           ),
         ),

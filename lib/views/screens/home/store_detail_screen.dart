@@ -45,7 +45,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
   @override
   void initState() {
     super.initState();
-    controller.getStoreDocuments(widget.storeName!);
+    controller.listenStoreDocuments(widget.storeName!);
   }
 
   @override
