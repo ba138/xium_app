@@ -4,6 +4,7 @@ import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/home_controller.dart';
 import 'package:xium_app/controller/orc_controller.dart';
 import 'package:xium_app/generated/assets.dart';
+import 'package:xium_app/views/screens/home/add_loyalty_card_screen.dart';
 import 'package:xium_app/views/screens/home/store_detail_screen.dart';
 import 'package:xium_app/views/screens/profile/profile_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
@@ -20,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
-  final orcController = Get.put(OcrController());
   String truncate(String text, int max) {
     if (text.length <= max) return text;
     return text.substring(0, max);
@@ -31,8 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Get.to(() => AddLoyaltyCardScreen());
-          orcController.pickImage(fromCamera: true);
+          Get.to(() => AddLoyaltyCardScreen());
         },
         backgroundColor: Colors.transparent,
         elevation: 0,

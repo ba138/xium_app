@@ -1,11 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/orc_controller.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 import 'dart:ui';
 
-class AddLoyaltyCardScreen extends StatelessWidget {
+class AddLoyaltyCardScreen extends StatefulWidget {
   const AddLoyaltyCardScreen({super.key});
+
+  @override
+  State<AddLoyaltyCardScreen> createState() => _AddLoyaltyCardScreenState();
+}
+
+class _AddLoyaltyCardScreenState extends State<AddLoyaltyCardScreen> {
+  final orcController = Get.put(OcrController());
+  void showImageSourceSheet() {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+        decoration: BoxDecoration(
+          color: const Color(0xFF121212),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle bar
+            Container(
+              height: 4,
+              width: 40,
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade700,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+
+            MyText(text: "Select Image Source", size: 16),
+
+            const SizedBox(height: 24),
+
+            sheetTile(
+              icon: Icons.camera_alt,
+              title: "Camera",
+              onTap: () {
+                Get.back();
+                orcController.pickImage(fromCamera: true);
+              },
+            ),
+
+            const SizedBox(height: 16),
+
+            sheetTile(
+              icon: Icons.photo_library,
+              title: "Gallery",
+              onTap: () {
+                Get.back();
+                orcController.pickImage(fromCamera: false);
+              },
+            ),
+
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +92,7 @@ class AddLoyaltyCardScreen extends StatelessWidget {
 
                   const SizedBox(width: 10),
 
-                  MyText(text: "Add your loyalty cards", size: 16),
+                  MyText(text: "Scann", size: 16),
 
                   const Spacer(),
                 ],
@@ -54,31 +116,45 @@ class AddLoyaltyCardScreen extends StatelessWidget {
               ),
               SizedBox(height: 30),
               MyText(
-                text: "Scan your loyalty card to help XIUM detect receipts.",
+                text:
+                    "Scan your invoice | receipt | warranty  to help XIUM detect documents.",
                 size: 20,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              MyText(text: "Position your card inside the frame.", size: 14),
+              MyText(
+                text: "Position your documents inside the frame.",
+                size: 14,
+              ),
               const SizedBox(height: 50),
-              Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF6CA7E7), // top
-                      Color(0xFF3463CD), // bottom
-                    ],
+              GestureDetector(
+                onTap: () {
+                  showImageSourceSheet();
+                },
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFF6CA7E7), // top
+                        Color(0xFF3463CD), // bottom
+                      ],
+                    ),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ),
                 ),
-                child: const Center(
-                  child: Icon(Icons.camera_alt, color: Colors.white, size: 28),
-                ),
               ),
+
               Spacer(),
               MyText(
                 text:
@@ -87,6 +163,30 @@ class AddLoyaltyCardScreen extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget sheetTile({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1B1F2A),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: AppColors.buttonColor),
+            const SizedBox(width: 14),
+            MyText(text: title, size: 15),
+          ],
         ),
       ),
     );
