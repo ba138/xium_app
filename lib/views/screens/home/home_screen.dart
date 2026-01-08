@@ -151,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? CommonImageView(
                                       url: store.storeLogo!,
                                       height: 40,
+                                      fit: BoxFit.contain,
                                     )
                                   : Icon(
                                       Icons.store,

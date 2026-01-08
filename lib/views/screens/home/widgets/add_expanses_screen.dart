@@ -80,132 +80,136 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // ---------- HEADER ----------
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: AppColors.onPrimary,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ---------- HEADER ----------
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: AppColors.onPrimary,
+                      ),
+                    ),
+                    MyText(text: "Create Expense", size: 16),
+                  ],
+                ),
+
+                const SizedBox(height: 50),
+
+                // ---------- CURRENCY + AMOUNT ----------
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "$selectedCurrency ",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 38,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: amount,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextSpan(
+                          text: showCursor ? "|" : "",
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 40,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  MyText(text: "Create Expense", size: 16),
-                ],
-              ),
+                ),
 
-              const SizedBox(height: 50),
+                const SizedBox(height: 30),
 
-              // ---------- CURRENCY + AMOUNT ----------
-              Center(
-                child: RichText(
-                  text: TextSpan(
+                // ---------- CURRENCY DROPDOWN ----------
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1B1F2A),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: selectedCurrency,
+                        dropdownColor: Colors.black,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                        items: currencies
+                            .map(
+                              (c) => DropdownMenuItem(value: c, child: Text(c)),
+                            )
+                            .toList(),
+                        onChanged: (v) {
+                          setState(() {
+                            selectedCurrency = v!;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // ---------- KEYPAD ----------
+                // ---------- KEYPAD ----------
+                SizedBox(
+                  height:
+                      MediaQuery.of(context).size.height *
+                      0.6, // adjust until all keys fit perfectly
+                  child: GridView.count(
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1.3, // makes buttons shorter or taller
                     children: [
-                      TextSpan(
-                        text: "$selectedCurrency ",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 38,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: amount,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      TextSpan(
-                        text: showCursor ? "|" : "",
-                        style: TextStyle(
-                          color: Colors.grey.shade400,
-                          fontSize: 40,
-                        ),
-                      ),
+                      for (var i = 1; i <= 9; i++) keypadButton(i.toString()),
+                      keypadButton("."),
+                      keypadButton("0"),
+                      keypadButton("back"),
                     ],
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 30),
-
-              // ---------- CURRENCY DROPDOWN ----------
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1B1F2A),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: selectedCurrency,
-                      dropdownColor: Colors.black,
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                      items: currencies
-                          .map(
-                            (c) => DropdownMenuItem(value: c, child: Text(c)),
-                          )
-                          .toList(),
-                      onChanged: (v) {
-                        setState(() {
-                          selectedCurrency = v!;
-                        });
-                      },
-                    ),
-                  ),
+                // ---------- BUTTON ----------
+                MyButton(
+                  onTap: () {
+                    controller.addOrUpdateAmount(
+                      documentId: widget.docId,
+                      amount: double.tryParse(amount)!,
+                      currency: selectedCurrency,
+                      storeName: widget.storeName,
+                      storeLogo: widget.storeLogo,
+                      documentCount: widget.documentCount,
+                    );
+                  },
+                  buttonText: "Next",
+                  radius: 12,
                 ),
-              ),
 
-              const SizedBox(height: 40),
-
-              // ---------- KEYPAD ----------
-              // ---------- KEYPAD ----------
-              SizedBox(
-                height:
-                    MediaQuery.of(context).size.height *
-                    0.6, // adjust until all keys fit perfectly
-                child: GridView.count(
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 1.2, // makes buttons shorter or taller
-                  children: [
-                    for (var i = 1; i <= 9; i++) keypadButton(i.toString()),
-                    keypadButton("."),
-                    keypadButton("0"),
-                    keypadButton("back"),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              // ---------- BUTTON ----------
-              MyButton(
-                onTap: () {
-                  controller.addOrUpdateAmount(
-                    documentId: widget.docId,
-                    amount: double.tryParse(amount)!,
-                    currency: selectedCurrency,
-                    storeName: widget.storeName,
-                    storeLogo: widget.storeLogo,
-                    documentCount: widget.documentCount,
-                  );
-                },
-                buttonText: "Next",
-                radius: 12,
-              ),
-
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            ],
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              ],
+            ),
           ),
         ),
       ),

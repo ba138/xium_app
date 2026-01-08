@@ -54,7 +54,7 @@ class GlassContainer extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
         child: Container(
           width: width,
-          height: height,
+          // height: height,
           padding: padding,
           decoration: decoration ?? defaultDecoration,
           child: child,
