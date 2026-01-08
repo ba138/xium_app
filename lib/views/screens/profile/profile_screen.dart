@@ -98,7 +98,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.to(() => AccountManagemantScreen());
+                          Get.to(
+                            () => AccountManagemantScreen(
+                              name: userController.user.value?.username ?? '',
+                              email: userController.user.value?.email ?? '',
+                            ),
+                          );
                         },
                         child: Container(
                           height: 30,

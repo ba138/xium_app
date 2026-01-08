@@ -8,7 +8,14 @@ import 'package:xium_app/views/widgets/my_text.dart';
 import 'package:xium_app/views/widgets/my_text_field.dart';
 
 class AccountManagemantScreen extends StatefulWidget {
-  const AccountManagemantScreen({super.key});
+  final String name;
+  final String email;
+
+  const AccountManagemantScreen({
+    super.key,
+    required this.name,
+    required this.email,
+  });
 
   @override
   State<AccountManagemantScreen> createState() =>
@@ -17,6 +24,13 @@ class AccountManagemantScreen extends StatefulWidget {
 
 class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
   var controller = Get.put(UserController());
+  @override
+  void initState() {
+    controller.nameController.text = widget.name;
+    controller.emailController.text = widget.email;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,20 +75,33 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                         hint: "Your Full Name",
                         label: "Name",
                         radius: 12,
+                        controller: controller.nameController,
                       ),
                       MyTextField(
                         hint: "Salmanuix@gmail.com",
                         label: "Email",
                         radius: 12,
+                        controller: controller.emailController,
                       ),
                       MyTextField(
                         hint: "********",
                         label: "Password",
                         radius: 12,
+
+                        isReadOnly: true,
+                        controller: controller.currentPasswordController,
+                      ),
+                      MyTextField(
+                        hint: "********",
+                        label: "New Password",
+                        radius: 12,
+                        controller: controller.newPasswordController,
                       ),
                       const SizedBox(height: 30),
                       MyButton(
-                        onTap: () {},
+                        onTap: () {
+                          controller.updateUserInfo();
+                        },
                         buttonText: "Save Changes",
                         radius: 12,
                       ),
