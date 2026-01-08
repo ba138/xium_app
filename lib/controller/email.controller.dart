@@ -29,7 +29,7 @@ class MailController extends GetxController {
 
     if (forwardingEmail.value.isNotEmpty) return;
 
-    final email = "receipt+$uid@mg.xium.io";
+    final email = "$uid@mg.xium.io";
 
     await _db.collection("users").doc(uid).update({"forwardingEmail": email});
 
@@ -50,18 +50,18 @@ class MailController extends GetxController {
   void _showForwardingDialog(BuildContext context) {
     Get.dialog(
       AlertDialog(
-        title: const Text("Connect Email"),
+        title: const Text("Email Scanning"),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Forward your receipts & invoices to this email:",
+                "To automatically classify your documents, forward your emails to this address:",
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
 
-              /// Email box
+              /// Forwarding Email Box
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -82,7 +82,11 @@ class MailController extends GetxController {
                         Clipboard.setData(
                           ClipboardData(text: forwardingEmail.value),
                         );
-                        Get.snackbar("Copied", "Forwarding email copied");
+                        Get.snackbar(
+                          "Copied",
+                          "Forwarding email copied",
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
                       },
                     ),
                   ],
@@ -91,29 +95,26 @@ class MailController extends GetxController {
 
               const SizedBox(height: 16),
               const Text(
-                "How to set forwarding:",
+                "How it works",
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
 
               const Text(
-                "1. Open your email inbox (Gmail / Outlook)\n"
-                "2. Go to Settings → Forwarding\n"
-                "3. Add the above email address\n"
-                "4. Confirm forwarding\n"
-                "5. Create a rule to forward:\n"
-                "   • Invoices\n"
-                "   • Receipts\n"
-                "   • Warranties\n",
+                "1. Open any receipt or invoice email\n"
+                "2. Tap Forward\n"
+                "3. Paste the XIUM email above\n"
+                "4. Send the email\n",
                 style: TextStyle(fontSize: 13),
               ),
 
               const SizedBox(height: 12),
               const Text(
-                "Xium automatically classifies emails into:\n"
-                "• Invoice\n"
-                "• Receipt\n"
-                "• Warranty",
+                "XIUM will automatically detect and organize:\n"
+                "• Receipts\n"
+                "• Invoices\n"
+                "• Warranties\n"
+                "\nNo setup or verification required.",
                 style: TextStyle(fontSize: 13),
               ),
             ],
