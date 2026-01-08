@@ -42,6 +42,7 @@ class PlaidController extends GetxController {
     _successSub = PlaidLink.onSuccess.listen(_onSuccess);
     _exitSub = PlaidLink.onExit.listen(_onExit);
     _eventSub = PlaidLink.onEvent.listen(_onEvent);
+    _autoSyncTransactions();
   }
 
   @override
@@ -50,6 +51,28 @@ class PlaidController extends GetxController {
     _exitSub?.cancel();
     _eventSub?.cancel();
     super.onClose();
+  }
+
+  Future<void> _autoSyncTransactions() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    try {
+      // 🔍 Check if bank already connected
+      final isConnected = await _isBankConnected();
+      if (!isConnected) return;
+
+      isLoading.value = true;
+
+      // ⏳ Small delay avoids race conditions on cold start
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      await syncTransactions();
+    } catch (e) {
+      print("Auto sync error: $e");
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   /// 🔹 Create Link Token from backend
