@@ -190,189 +190,205 @@ exports.syncTransactions = onRequest(
     })
 );
 
+
 exports.processIncomingEmail = onRequest(
   { secrets: ["OPENAI_API_KEY"] },
-  async (req, res) => {
-    try {
-      const busboy = Busboy({ headers: req.headers });
+  (req, res) =>
+    cors(req, res, async () => {
+      try {
+        const busboy = Busboy({ headers: req.headers });
 
-      let fields = {};
-      let files = [];
+        const fields = {};
+        const files = [];
 
-      busboy.on("field", (name, value) => {
-        fields[name] = value;
-      });
+        // 🔹 Parse fields
+        busboy.on("field", (name, value) => {
+          fields[name] = value;
+        });
 
-      busboy.on("file", (name, file, info) => {
-        const buffers = [];
-        file.on("data", d => buffers.push(d));
-        file.on("end", () => {
-          files.push({
-            filename: info.filename,
-            mimeType: info.mimeType,
-            buffer: Buffer.concat(buffers),
+        // 🔹 Parse attachments (optional)
+        busboy.on("file", (name, file, info) => {
+          const buffers = [];
+          file.on("data", d => buffers.push(d));
+          file.on("end", () => {
+            files.push({
+              filename: info.filename,
+              mimeType: info.mimeType,
+              buffer: Buffer.concat(buffers),
+            });
           });
         });
-      });
 
-      busboy.on("finish", async () => {
-        try {
-          const fromRaw = fields.from || "";
-          const subject = fields.subject || "";
-          const body = fields["body-plain"] || "";
+        busboy.on("finish", async () => {
+          try {
+            const fromRaw = fields.from || "";
+            const subject = fields.subject || "";
+            const body = fields["body-plain"] || "";
 
-          const match = fromRaw.match(/<(.+?)>/);
-          const senderEmail = match ? match[1] : fromRaw.trim();
+            // ✅ MANUAL FORWARDING → sender is YOUR gmail
+            const match = fromRaw.match(/<(.+?)>/);
+            const senderEmail = match ? match[1] : fromRaw.trim();
 
-          if (!senderEmail) {
-            return res.status(400).json({ error: "Sender email not found" });
-          }
+            if (!senderEmail) {
+              return res.status(400).json({ error: "Sender email not found" });
+            }
 
-          // 🔹 Find user by email (unchanged)
-          const userSnap = await db
-            .collection("users")
-            .where("email", "==", senderEmail)
-            .limit(1)
-            .get();
+            // 🔍 FIND USER BY SENDER EMAIL
+            const userSnap = await db
+              .collection("users")
+              .where("email", "==", senderEmail)
+              .limit(1)
+              .get();
 
-          if (userSnap.empty) {
-            return res.status(200).json({
-              success: false,
-              message: "User not found",
-              senderEmail,
-            });
-          }
+            if (userSnap.empty) {
+              return res.status(200).json({
+                success: false,
+                message: "User not found",
+                senderEmail,
+              });
+            }
 
-          const uid = userSnap.docs[0].id;
+            const uid = userSnap.docs[0].id;
 
-          let fullText = `
+            const fullText = `
 FROM: ${senderEmail}
 SUBJECT: ${subject}
 
 ${body}
-          `;
+            `;
 
-          // Attachments saved & deleted (unchanged)
-          for (const file of files) {
-            const tempPath = `temp/${Date.now()}-${file.filename}`;
-            await bucket.file(tempPath).save(file.buffer, {
-              contentType: file.mimeType,
+            // 🧹 Save & delete attachments (no OCR yet)
+            for (const file of files) {
+              const tempPath = `temp/${Date.now()}-${file.filename}`;
+              await bucket.file(tempPath).save(file.buffer, {
+                contentType: file.mimeType,
+              });
+              await bucket.file(tempPath).delete().catch(() => {});
+            }
+
+            // 🔐 OPENAI CLASSIFICATION
+            const openai = new OpenAI({
+              apiKey: process.env.OPENAI_API_KEY,
             });
-            await bucket.file(tempPath).delete().catch(() => {});
-          }
 
-          // 🔐 OpenAI (ONLY classification)
-          const openai = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY,
-          });
-
-          const aiResponse = await openai.responses.create({
-            model: "gpt-4.1",
-            input: [
-              {
-                role: "user",
-                content: [
-                  {
-                    type: "input_text",
-                    text: `
+            const aiResponse = await openai.responses.create({
+              model: "gpt-4.1",
+              input: [
+                {
+                  role: "user",
+                  content: [
+                    {
+                      type: "input_text",
+                      text: `
 Analyze this EMAIL and return VALID JSON ONLY.
 
 {
-  "documentType": "invoice | receipt | warranty | unknown",
+  "documentType": "invoice | receipt | warranty | bank_transaction | unknown",
   "storeName": string | null,
   "merchantName": string | null,
   "storeLogo": "public logo url (png/jpg/svg) or null",
-  "confidence": number (0.0 - 1.0)
-  "amount": number | null
+  "confidence": number (0.0 - 1.0),
+  "amount": number | null,
   "currency": string | null
 }
 
 Rules:
 - Ignore marketing/newsletters
+- Bank alerts / transfers → documentType = "bank_transaction"
 - Use sender + subject + body
 - If not a financial document → documentType = "unknown"
-- Store logo: search the web for the logo of the storeName.
-  - If a real public logo URL is found (png/jpg/svg) return it.
-  - If no official logo is found, return null.
-- JSON ONLY, no markdown
-- use body text to find amount as number if possible else null
--use store name from the body if possible unknown otherwise
--also extract currency from body like USD if possible else null
-- DO NOT invent or hallucinate logos.
-DO NOT add explanations or markdown.
+- Logo MUST be official & public, otherwise null
+- DO NOT invent logos
+- Extract store name from email body it is very important
+
+- Extract amount as NUMBER if possible
+- Extract currency like PKR, USD if present
+- JSON ONLY, NO markdown
 
 EMAIL:
 ${fullText}
-                    `,
-                  },
-                ],
+                      `,
+                    },
+                  ],
+                },
+              ],
+            });
+
+            // 🧹 CLEAN RESPONSE
+            let rawText = aiResponse.output_text || "";
+            rawText = rawText.replace(/```json|```/g, "").trim();
+
+            let extracted;
+            try {
+              extracted = JSON.parse(rawText);
+            } catch (e) {
+              return res.status(400).json({
+                error: "Failed to parse AI response",
+                rawText,
+              });
+            }
+
+            // ❌ Ignore unsupported docs
+            const allowedTypes = [
+              "invoice",
+              "receipt",
+              "warranty",
+              "bank_transaction",
+            ];
+
+            if (!allowedTypes.includes(extracted.documentType)) {
+              return res.status(200).json({
+                success: false,
+                reason: "Unsupported document",
+              });
+            }
+
+            // 💾 SAVE DOCUMENT
+            const docRef = await db
+              .collection("users")
+              .doc(uid)
+              .collection("documents")
+              .add({
+                source: "email",
+                from: senderEmail,
+                subject,
+                body,
+                documentType: extracted.documentType,
+                storeName: extracted.storeName ?? "Unknown",
+                merchantName: extracted.merchantName ?? null,
+                storeLogo: extracted.storeLogo ?? null,
+                amount: extracted.amount ?? null,
+                currency: extracted.currency ?? null,
+                confidence: extracted.confidence ?? 0.9,
+                status: "done",
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              });
+
+            // 🔹 Mark email connected
+            await db.collection("users").doc(uid).set(
+              {
+                source: { email: "connected" },
               },
-            ],
-          });
+              { merge: true }
+            );
 
-          let rawText = aiResponse.output_text || "";
-          rawText = rawText.replace(/```json|```/g, "").trim();
-
-          let extracted;
-          try {
-            extracted = JSON.parse(rawText);
-          } catch {
-            return res.status(400).json({
-              error: "Failed to parse AI response",
-              rawText,
-            });
-          }
-
-          // ❌ Ignore unknown documents
-          if (extracted.documentType === "unknown") {
             return res.status(200).json({
-              success: false,
-              reason: "Unsupported document",
+              success: true,
+              documentId: docRef.id,
+              data: extracted,
             });
+          } catch (err) {
+            console.error("INNER ERROR:", err);
+            return res.status(500).json({ error: err.message });
           }
+        });
 
-          // 🔹 Save document (same structure)
-          const docRef = await db
-            .collection("users")
-            .doc(uid)
-            .collection("documents")
-            .add({
-              amount: extracted.amount ?? null,
-              source: "email",
-              from: senderEmail,
-              subject,
-              body,
-              documentType: extracted.documentType,
-              storeName: extracted.storeName ?? "Unknown",
-              storeLogo: extracted.storeLogo ?? null,
-              merchantName: extracted.merchantName ?? null,
-              confidence: extracted.confidence ?? 0.8,
-              status: "done",
-              createdAt: admin.firestore.FieldValue.serverTimestamp(),
-              currency: extracted.currency ?? null,
-            });
-
-          await db.collection("users").doc(uid).update({
-            "source.email": "connected",
-          });
-
-          return res.status(200).json({
-            success: true,
-            documentId: docRef.id,
-            data: extracted,
-          });
-        } catch (err) {
-          console.error("INNER ERROR:", err);
-          return res.status(500).json({ error: err.message });
-        }
-      });
-
-      busboy.end(req.rawBody);
-    } catch (err) {
-      console.error("OUTER ERROR:", err);
-      return res.status(500).json({ error: err.message });
-    }
-  }
+        busboy.end(req.rawBody);
+      } catch (err) {
+        console.error("OUTER ERROR:", err);
+        return res.status(500).json({ error: err.message });
+      }
+    })
 );
 
 exports.deleteUserAccount = onRequest(async (req, res) => {

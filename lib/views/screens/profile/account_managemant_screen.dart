@@ -85,10 +85,9 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                       ),
                       MyTextField(
                         hint: "********",
-                        label: "Password",
+                        label: "Old Password",
                         radius: 12,
 
-                        isReadOnly: true,
                         controller: controller.currentPasswordController,
                       ),
                       MyTextField(

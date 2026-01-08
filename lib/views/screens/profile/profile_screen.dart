@@ -133,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Divider(thickness: 0.09),
                       profileTile(
-                        title: "Phone SMS",
+                        title: "Phone",
                         image: Icons.phone,
                         isConnected: userController.isEmailConnected,
                       ),
