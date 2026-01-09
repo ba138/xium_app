@@ -138,17 +138,7 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                       const SizedBox(height: 40),
                       MyButton(
                         onTap: () {
-                          Get.defaultDialog(
-                            title: "Delete Account",
-                            middleText: "This action is permanent. Continue?",
-                            textConfirm: "Delete",
-                            textCancel: "Cancel",
-                            confirmTextColor: Colors.white,
-                            onConfirm: () {
-                              Get.back();
-                              controller.deleteUserAccount();
-                            },
-                          );
+                          showDeleteAccountDialog(controller);
                         },
                         buttonText: "Delete permanently",
                         radius: 12,
@@ -161,6 +151,78 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void showDeleteAccountDialog(UserController controller) {
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xff0A0D2E), // card over background
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.08)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// TITLE
+              MyText(
+                text: "Delete Account",
+                size: 18,
+                weight: FontWeight.w600,
+                color: Colors.white,
+              ),
+
+              const SizedBox(height: 12),
+
+              /// MESSAGE
+              MyText(
+                text:
+                    "This action is permanent. All your documents and data will be removed permanently.",
+                size: 13,
+                color: Colors.white70,
+              ),
+
+              const SizedBox(height: 24),
+
+              /// ACTION BUTTONS
+              Row(
+                children: [
+                  /// CANCEL
+                  Expanded(
+                    child: MyBorderButton(
+                      buttonText: "Cancel",
+                      radius: 12,
+                      onTap: () => Get.back(),
+                      bgColor: Colors.transparent,
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  /// DELETE
+                  Expanded(
+                    child: MyButton(
+                      buttonText: "Delete",
+                      radius: 12,
+                      onTap: () {
+                        Get.back();
+                        controller.deleteUserAccount();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: true,
     );
   }
 }

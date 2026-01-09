@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:xium_app/views/screens/home/home_screen.dart';
 
 class OcrController extends GetxController {
   final _picker = ImagePicker();
@@ -48,7 +49,8 @@ class OcrController extends GetxController {
       if (uid == null) {
         throw "User not logged in";
       }
-
+      Get.snackbar("Uploading Image", "Image will be processed shortly.");
+      Get.offAll(() => HomeScreen());
       final fileName = "ocr_${DateTime.now().millisecondsSinceEpoch}.jpg";
 
       final ref = _storage.ref().child("users/$uid/ocr/$fileName");
