@@ -26,6 +26,8 @@ class OnboardingScreen3 extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+
                   GlassContainer(
                     height: MediaQuery.of(context).size.height * 0.5,
                     width: double.infinity,
@@ -36,7 +38,7 @@ class OnboardingScreen3 extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 8,
@@ -68,7 +70,7 @@ class OnboardingScreen3 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 50),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.25),
                   MyText(
                     text: "Secure. Simple. Instant",
                     size: 24,

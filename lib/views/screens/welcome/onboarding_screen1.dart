@@ -28,6 +28,8 @@ class OnboardingScreen1 extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+
                   GlassContainer(
                     height: MediaQuery.of(context).size.height * 0.5,
                     width: double.infinity,
@@ -38,7 +40,7 @@ class OnboardingScreen1 extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 8,
@@ -69,7 +71,7 @@ class OnboardingScreen1 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 50),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   MyText(
                     text: "Centralize everything automatically",
                     size: 24,
@@ -80,7 +82,7 @@ class OnboardingScreen1 extends StatelessWidget {
                     text:
                         "Your receipts, invoices and warranties are collected and sorted effortlessly",
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 50),
                   WelcomeButton(
                     title: "Next",
                     ontap: () {

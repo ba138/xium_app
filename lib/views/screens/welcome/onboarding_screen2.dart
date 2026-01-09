@@ -26,6 +26,8 @@ class OnboardingScreen2 extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+
                   GlassContainer(
                     height: MediaQuery.of(context).size.height * 0.5,
                     width: double.infinity,
@@ -36,7 +38,7 @@ class OnboardingScreen2 extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 8,
@@ -67,7 +69,7 @@ class OnboardingScreen2 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 50),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   MyText(
                     text: "Smart retrieval",
                     size: 24,
@@ -79,6 +81,7 @@ class OnboardingScreen2 extends StatelessWidget {
                         "The application automatically detects stores and organizes your documents",
                   ),
                   const SizedBox(height: 50),
+
                   WelcomeButton(
                     title: "Next",
                     ontap: () {

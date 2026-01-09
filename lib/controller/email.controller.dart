@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/views/widgets/my_text.dart';
 
 class MailController extends GetxController {
   final _auth = FirebaseAuth.instance;
@@ -49,81 +51,141 @@ class MailController extends GetxController {
   /// 🔹 Dialog UI
   void _showForwardingDialog(BuildContext context) {
     Get.dialog(
-      AlertDialog(
-        title: const Text("Email Scanning"),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "To automatically classify your documents, forward your emails to this address:",
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 8),
-
-              /// Forwarding Email Box
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8),
+      Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xff0A0D2E), // dark card over #040615
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.08)),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                /// TITLE
+                MyText(
+                  text: "Email Scanning",
+                  size: 18,
+                  weight: FontWeight.w600,
+                  color: Colors.white,
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        forwardingEmail.value,
-                        style: const TextStyle(fontSize: 13),
+
+                const SizedBox(height: 10),
+
+                /// DESCRIPTION
+                MyText(
+                  text:
+                      "To automatically classify your documents, forward your emails to this address:",
+                  size: 13,
+                  color: Colors.white70,
+                ),
+
+                const SizedBox(height: 14),
+
+                /// FORWARDING EMAIL BOX
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff040615), // app background
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.white.withOpacity(0.12)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          forwardingEmail.value,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.copy,
+                          size: 18,
+                          color: Colors.white70,
+                        ),
+                        onPressed: () {
+                          Clipboard.setData(
+                            ClipboardData(text: forwardingEmail.value),
+                          );
+                          Get.snackbar(
+                            "Copied",
+                            "Forwarding email copied",
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 18),
+
+                /// HOW IT WORKS
+                MyText(
+                  text: "How it works",
+                  size: 14,
+                  weight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+
+                const SizedBox(height: 8),
+
+                MyText(
+                  text:
+                      "1. Open any receipt or invoice email\n"
+                      "2. Tap Forward\n"
+                      "3. Paste the XIUM email above\n"
+                      "4. Send the email",
+                  size: 13,
+                  color: Colors.white70,
+                ),
+
+                const SizedBox(height: 14),
+
+                MyText(
+                  text:
+                      "XIUM will automatically detect and organize:\n"
+                      "• Receipts\n"
+                      "• Invoices\n"
+                      "• Warranties\n\n"
+                      "No setup or verification required.",
+                  size: 13,
+                  color: Colors.white60,
+                ),
+
+                const SizedBox(height: 20),
+
+                /// DONE BUTTON
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Get.back(),
+                    child: Text(
+                      "Done",
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.copy, size: 18),
-                      onPressed: () {
-                        Clipboard.setData(
-                          ClipboardData(text: forwardingEmail.value),
-                        );
-                        Get.snackbar(
-                          "Copied",
-                          "Forwarding email copied",
-                          snackPosition: SnackPosition.BOTTOM,
-                        );
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-              const Text(
-                "How it works",
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 8),
-
-              const Text(
-                "1. Open any receipt or invoice email\n"
-                "2. Tap Forward\n"
-                "3. Paste the XIUM email above\n"
-                "4. Send the email\n",
-                style: TextStyle(fontSize: 13),
-              ),
-
-              const SizedBox(height: 12),
-              const Text(
-                "XIUM will automatically detect and organize:\n"
-                "• Receipts\n"
-                "• Invoices\n"
-                "• Warranties\n"
-                "\nNo setup or verification required.",
-                style: TextStyle(fontSize: 13),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text("Done")),
-        ],
       ),
+      barrierDismissible: true,
     );
   }
 }
