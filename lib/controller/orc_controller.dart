@@ -49,7 +49,11 @@ class OcrController extends GetxController {
       if (uid == null) {
         throw "User not logged in";
       }
-      Get.snackbar("Uploading Image", "Image will be processed shortly.");
+      Get.snackbar(
+        "Uploading Image",
+        "Image will be processed shortly.",
+        snackPosition: SnackPosition.TOP,
+      );
       Get.offAll(() => HomeScreen());
       final fileName = "ocr_${DateTime.now().millisecondsSinceEpoch}.jpg";
 
