@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/home_controller.dart';
 import 'package:xium_app/controller/plaid_controller.dart';

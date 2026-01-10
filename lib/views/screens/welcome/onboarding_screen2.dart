@@ -5,7 +5,6 @@ import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/welcome/onboarding_screen3.dart';
 import 'package:xium_app/views/screens/welcome/widgets/welcome_button.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
-import 'package:xium_app/views/widgets/glassy_container.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
 class OnboardingScreen2 extends StatelessWidget {
