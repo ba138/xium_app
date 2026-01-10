@@ -15,82 +15,96 @@ class OnboardingScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: double.infinity,
         decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage(Assets.gobgimage)),
+          image: DecorationImage(
+            image: AssetImage(Assets.gobgimage),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    const Spacer(),
 
-                  GlassContainer(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    width: double.infinity,
-                    child: Center(
-                      child: CommonImageView(
-                        imagePath: Assets.welcomeImage2,
-                        height: 200,
+                    /// IMAGE (same vertical logic as screen 1)
+                    CommonImageView(
+                      imagePath: Assets.welcomeImage2,
+                      height: constraints.maxHeight * 0.22,
+                    ),
+                    const SizedBox(height: 40),
+
+                    /// INDICATOR
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 5,
+                          width: 5,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.grayColor,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          height: 5,
+                          width: 18,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: AppColors.onPrimary,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          height: 5,
+                          width: 5,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.grayColor,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const Spacer(),
+
+                    /// TITLE
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: MyText(
+                        text: "Smart retrieval",
+                        size: 24,
+                        weight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 8,
-                    children: [
-                      Container(
-                        height: 5,
-                        width: 5,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.grayColor,
-                        ),
-                      ),
-                      Container(
-                        height: 5,
-                        width: 18,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(3),
-                          color: AppColors.onPrimary,
-                        ),
-                      ),
-                      Container(
-                        height: 5,
-                        width: 5,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.grayColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                  MyText(
-                    text: "Smart retrieval",
-                    size: 24,
-                    weight: FontWeight.w500,
-                  ),
-                  const SizedBox(height: 12),
-                  MyText(
-                    text:
-                        "The application automatically detects stores and organizes your documents",
-                  ),
-                  const SizedBox(height: 50),
 
-                  WelcomeButton(
-                    title: "Next",
-                    ontap: () {
-                      Get.to(() => OnboardingScreen3());
-                    },
-                  ),
-                ],
-              ),
-            ),
+                    const SizedBox(height: 12),
+
+                    /// SUBTITLE
+                    MyText(
+                      text:
+                          "The application automatically detects stores and organizes your documents",
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    /// BUTTON
+                    WelcomeButton(
+                      title: "Next",
+                      ontap: () {
+                        Get.to(() => OnboardingScreen3());
+                      },
+                    ),
+
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),

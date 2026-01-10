@@ -5,7 +5,6 @@ import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/welcome/onboarding_screen4.dart';
 import 'package:xium_app/views/screens/welcome/widgets/welcome_button.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
-import 'package:xium_app/views/widgets/glassy_container.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
 class OnboardingScreen3 extends StatelessWidget {
@@ -15,82 +14,100 @@ class OnboardingScreen3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: double.infinity,
         decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage(Assets.gobgimage)),
+          image: DecorationImage(
+            image: AssetImage(Assets.gobgimage),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    const Spacer(),
 
-                  GlassContainer(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    width: double.infinity,
-                    child: Center(
-                      child: CommonImageView(
-                        imagePath: Assets.welcomeImage3,
-                        height: 200,
+                    /// IMAGE
+                    CommonImageView(
+                      imagePath: Assets.welcomeImage3,
+                      height: constraints.maxHeight * 0.2,
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    /// INDICATOR
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 5,
+                          width: 5,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.grayColor,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          height: 5,
+                          width: 5,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.grayColor,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          height: 5,
+                          width: 18,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: AppColors.onPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const Spacer(),
+
+                    /// TITLE
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: MyText(
+                        text: "Secure. Simple. Instant",
+                        size: 24,
+                        weight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 8,
-                    children: [
-                      Container(
-                        height: 5,
-                        width: 5,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.grayColor,
-                        ),
-                      ),
 
-                      Container(
-                        height: 5,
-                        width: 5,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.grayColor,
-                        ),
+                    const SizedBox(height: 12),
+
+                    /// SUBTITLE
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: MyText(
+                        text:
+                            "Your data is encrypted and accessible in one gesture.",
                       ),
-                      Container(
-                        height: 5,
-                        width: 18,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(3),
-                          color: AppColors.onPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.25),
-                  MyText(
-                    text: "Secure. Simple. Instant",
-                    size: 24,
-                    weight: FontWeight.w500,
-                  ),
-                  const SizedBox(height: 12),
-                  MyText(
-                    text:
-                        "Your data is encrypted and accessible in one gesture.",
-                  ),
-                  const SizedBox(height: 50),
-                  WelcomeButton(
-                    title: "Next",
-                    ontap: () {
-                      Get.to(() => OnboardingScreen4());
-                    },
-                  ),
-                ],
-              ),
-            ),
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    /// BUTTON
+                    WelcomeButton(
+                      title: "Next",
+                      ontap: () {
+                        Get.to(() => OnboardingScreen4());
+                      },
+                    ),
+
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
