@@ -20,7 +20,7 @@
 <string>This app needs permission to save scanned images.</string>
 
 	<key>CFBundleDisplayName</key>
-	<string>Xium App</string>
+	<string>XIUM</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,7 +28,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>xium_app</string>
+	<string>XIUM</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
