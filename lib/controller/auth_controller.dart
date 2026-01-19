@@ -8,6 +8,10 @@ import 'package:xium_app/views/screens/auth/login_screen.dart';
 import 'package:xium_app/views/screens/starting/need_permission_screens.dart';
 import 'package:xium_app/views/widgets/loading_dialog.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'dart:math';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -22,6 +26,108 @@ class AuthController extends GetxController {
   var isPasswordHidden = false.obs;
   var isShowRegister = false.obs;
   var isShowRepeatPassword = false.obs;
+  String _generateNonce([int length = 32]) {
+    final charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(
+      length,
+      (_) => charset[random.nextInt(charset.length)],
+    ).join();
+  }
+
+  String _sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  Future<void> signInWithApple() async {
+    try {
+      Get.dialog(const LoadingDialogWidget(), barrierDismissible: false);
+
+      final rawNonce = _generateNonce();
+      final nonce = _sha256ofString(rawNonce);
+
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
+
+      final oauthCredential = OAuthProvider(
+        "apple.com",
+      ).credential(idToken: appleCredential.identityToken, rawNonce: rawNonce);
+
+      final UserCredential userCredential = await _auth.signInWithCredential(
+        oauthCredential,
+      );
+
+      final User? firebaseUser = userCredential.user;
+
+      if (firebaseUser == null) {
+        throw Exception("Apple sign-in failed");
+      }
+
+      final docRef = _firestore.collection('users').doc(firebaseUser.uid);
+
+      final doc = await docRef.get();
+
+      /// 🔹 CASE 1: Existing user → Login
+      if (doc.exists) {
+        Get.back();
+
+        Get.snackbar(
+          "Welcome back",
+          "Signed in with Apple",
+          colorText: AppColors.primary,
+        );
+
+        Get.offAll(() => const NeedPermissionScreens());
+        return;
+      }
+
+      /// 🔹 CASE 2: First-time Apple login → Create user
+      final fullName =
+          "${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}"
+              .trim();
+
+      final userModel = UserModel(
+        uid: firebaseUser.uid,
+        username: fullName.isNotEmpty ? fullName : "Apple User",
+        email: firebaseUser.email ?? "",
+        profilePictureUrl:
+            "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+      );
+
+      await docRef.set({
+        ...userModel.toJson(),
+        'createdAt': FieldValue.serverTimestamp(),
+        'provider': 'apple',
+      });
+
+      Get.back();
+
+      Get.snackbar(
+        "Success",
+        "Account created using Apple",
+        colorText: AppColors.primary,
+      );
+
+      Get.offAll(() => const NeedPermissionScreens());
+    } catch (e) {
+      Get.back();
+      debugPrint("Apple Sign-In Error: $e");
+
+      Get.snackbar(
+        "Apple Sign-In Error",
+        e.toString(),
+        colorText: AppColors.primary,
+      );
+    }
+  }
 
   Future<void> createUser() async {
     final fullName = fullNameController.text.trim();
@@ -370,9 +476,20 @@ class AuthController extends GetxController {
 
   Future<void> logoutUser() async {
     try {
+      Get.dialog(const LoadingDialogWidget(), barrierDismissible: false);
+
+      // 🔹 Google sign-out (safe to call even if not logged in with Google)
+      try {
+        await GoogleSignIn().signOut();
+      } catch (_) {}
+
+      // 🔹 Firebase sign-out (covers Email, Apple, Google)
       await _auth.signOut();
+
+      Get.back(); // close loading
       Get.offAll(() => const LoginScreen());
     } catch (e) {
+      Get.back();
       Get.snackbar('Logout Failed', e.toString(), colorText: AppColors.primary);
     }
   }
