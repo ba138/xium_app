@@ -186,7 +186,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ? GlassiyButton(
                         title: "Sign In With Apple",
                         ontap: () {
-                          // authController.signInWithApple();
+                          authController.signInWithApple();
                         },
                         image: Assets.fb,
                       )

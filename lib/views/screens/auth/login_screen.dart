@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ? GlassiyButton(
                         title: "Sign In With Apple",
                         ontap: () {
-                          // authController.signInWithApple();
+                          authController.signInWithApple();
                         },
                         image: Assets.fb,
                       )

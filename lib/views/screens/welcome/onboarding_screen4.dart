@@ -74,7 +74,7 @@ class OnboardingScreen4 extends StatelessWidget {
                     ? GlassiyButton(
                         title: "Sign In With Apple",
                         ontap: () {
-                          // authController.signInWithApple();
+                          authController.signInWithApple();
                         },
                         image: Assets.fb,
                       )
