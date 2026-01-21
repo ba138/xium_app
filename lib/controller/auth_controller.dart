@@ -46,86 +46,46 @@ class AuthController extends GetxController {
     try {
       Get.dialog(const LoadingDialogWidget(), barrierDismissible: false);
 
-      final rawNonce = _generateNonce();
-      final nonce = _sha256ofString(rawNonce);
+      final appleProvider = AppleAuthProvider()
+        ..addScope('email')
+        ..addScope('name');
 
-      final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-        nonce: nonce,
+      final userCredential = await FirebaseAuth.instance.signInWithProvider(
+        appleProvider,
       );
 
-      final oauthCredential = OAuthProvider(
-        "apple.com",
-      ).credential(idToken: appleCredential.identityToken, rawNonce: rawNonce);
-
-      final UserCredential userCredential = await _auth.signInWithCredential(
-        oauthCredential,
-      );
-
-      final User? firebaseUser = userCredential.user;
-
+      final firebaseUser = userCredential.user;
       if (firebaseUser == null) {
         throw Exception("Apple sign-in failed");
       }
 
-      final docRef = _firestore.collection('users').doc(firebaseUser.uid);
-
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(firebaseUser.uid);
       final doc = await docRef.get();
 
-      /// 🔹 CASE 1: Existing user → Login
-      if (doc.exists) {
-        Get.back();
-
-        Get.snackbar(
-          "Welcome back",
-          "Signed in with Apple",
-          colorText: AppColors.primary,
+      if (!doc.exists) {
+        final userModel = UserModel(
+          uid: firebaseUser.uid,
+          username: firebaseUser.displayName ?? "Apple User",
+          email: firebaseUser.email ?? "",
+          profilePictureUrl:
+              "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
         );
 
-        Get.offAll(() => const NeedPermissionScreens());
-        return;
+        await docRef.set({
+          ...userModel.toJson(),
+          'createdAt': FieldValue.serverTimestamp(),
+          'provider': 'apple',
+        });
       }
 
-      /// 🔹 CASE 2: First-time Apple login → Create user
-      final fullName =
-          "${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}"
-              .trim();
-
-      final userModel = UserModel(
-        uid: firebaseUser.uid,
-        username: fullName.isNotEmpty ? fullName : "Apple User",
-        email: firebaseUser.email ?? "",
-        profilePictureUrl:
-            "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-      );
-
-      await docRef.set({
-        ...userModel.toJson(),
-        'createdAt': FieldValue.serverTimestamp(),
-        'provider': 'apple',
-      });
-
       Get.back();
-
-      Get.snackbar(
-        "Success",
-        "Account created using Apple",
-        colorText: AppColors.primary,
-      );
-
       Get.offAll(() => const NeedPermissionScreens());
     } catch (e) {
       Get.back();
       debugPrint("Apple Sign-In Error: $e");
-
-      Get.snackbar(
-        "Apple Sign-In Error",
-        e.toString(),
-        colorText: AppColors.primary,
-      );
+      Get.snackbar("Apple Sign-In Error", e.toString());
     }
   }
 
