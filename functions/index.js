@@ -286,10 +286,13 @@ Analyze this EMAIL and return VALID JSON ONLY.
   "documentType": "invoice | receipt | warranty | bank_transaction | unknown",
   "storeName": string | null,
   "merchantName": string | null,
-  "storeLogo": "public logo url (png/jpg/svg) or null",
   "confidence": number (0.0 - 1.0),
   "amount": number | null,
   "currency": string | null
+  "storeLogo": 
+- MUST be a direct URL ending with .png or .jpg
+- If the official logo is only available as SVG → return null
+- SVG logos are FORBIDDEN,
 }
 
 Rules:
@@ -297,8 +300,9 @@ Rules:
 - Bank alerts / transfers → documentType = "bank_transaction"
 - Use sender + subject + body
 - If not a financial document → documentType = "unknown"
-- Logo MUST be official & public, otherwise null
-- DO NOT invent logos
+- MUST be a direct URL ending with .png or .jpg
+- If the official logo is only available as SVG → return null
+- SVG logos are FORBIDDEN
 - Extract store name from email body it is very important
 
 - Extract amount as NUMBER if possible
@@ -502,15 +506,18 @@ Analyze this image and return VALID JSON ONLY.
   "amount": number | null,
   "currency": string | null,
   "date": "YYYY-MM-DD" | null,
-  "storeLogo": "public logo image url or null"
+storeLogo:
+- MUST be a direct URL ending with .png or .jpg
+- If the official logo is only available as SVG → return null
+- SVG logos are FORBIDDEN
 }
 
 Rules:
-- Find official store logo from the web
-- Logo must be public PNG/JPG/SVG
-- If unsure → storeLogo = null
+- MUST be a direct URL ending with .png or .jpg
+- If the official logo is only available as SVG → return null
+- SVG logos are FORBIDDEN
 - If not a valid document → documentType = "unknown"
-DO NOT add explanations or markdown.
+- DO NOT add explanations or markdown.
 `,
                 },
                 {
