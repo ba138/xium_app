@@ -25,7 +25,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _listenDocuments();
+    listenDocuments();
   }
 
   @override
@@ -35,7 +35,7 @@ class HomeController extends GetxController {
   }
 
   /// 🔥 REALTIME LISTENER
-  void _listenDocuments() {
+  void listenDocuments() {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
 

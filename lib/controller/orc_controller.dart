@@ -7,12 +7,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:xium_app/controller/home_controller.dart';
 import 'package:xium_app/views/screens/home/home_screen.dart';
 
 class OcrController extends GetxController {
   final _picker = ImagePicker();
   final _storage = FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance;
+  HomeController homeController = Get.put(HomeController());
 
   /// 🔹 State
   final RxBool isLoading = false.obs;
@@ -65,6 +67,7 @@ class OcrController extends GetxController {
       uploadedImageUrl.value = imageUrl;
 
       await _sendToCloudFunction(uid, imageUrl);
+      homeController.listenDocuments(); // Refresh documents after processing
     } catch (e) {
       error.value = e.toString();
     } finally {

@@ -130,6 +130,13 @@ class MailController extends GetxController {
                 ),
 
                 const SizedBox(height: 18),
+                MyText(
+                  text:
+                      "Note: When signing up with Apple, a private relay email may be used. To avoid missing emails, please check your email in Settings and update it to your Gmail address if a private email is selected.",
+                  size: 14,
+                  weight: FontWeight.w600,
+                  color: Colors.red,
+                ),
 
                 /// HOW IT WORKS
                 MyText(
