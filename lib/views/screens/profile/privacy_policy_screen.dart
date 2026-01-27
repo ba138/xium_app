@@ -95,7 +95,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
             _SectionTitle("12. Contact Us"),
             _BodyText(
-              "If you have questions or concerns about this Privacy Policy, please contact us at support@xium.app",
+              "If you have questions or concerns about this Privacy Policy, please contact us at contact@xium.io",
               paddingBottom: 24,
             ),
           ],

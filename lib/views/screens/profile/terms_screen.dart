@@ -91,7 +91,7 @@ class TermsOfServiceScreen extends StatelessWidget {
 
             _SectionTitle("13. Contact"),
             _BodyText(
-              "If you have any questions about these Terms, please contact us at support@xium.app",
+              "If you have any questions about these Terms, please contact us at contact@xium.io",
               paddingBottom: 24,
             ),
           ],

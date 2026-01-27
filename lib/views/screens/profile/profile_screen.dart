@@ -6,6 +6,7 @@ import 'package:xium_app/controller/user_controller.dart';
 import 'package:xium_app/views/screens/connect_source/connect_source_screen.dart';
 import 'package:xium_app/views/screens/profile/account_managemant_screen.dart';
 import 'package:xium_app/views/screens/profile/privacy_policy_screen.dart';
+import 'package:xium_app/views/screens/profile/security_screen.dart';
 import 'package:xium_app/views/screens/profile/terms_screen.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -190,7 +191,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                MyText(text: "Security"),
+                MyText(
+                  text: "Security",
+                  onTap: () {
+                    Get.to(() => SecurityScreen());
+                  },
+                ),
                 const SizedBox(height: 20),
                 MyText(
                   text: "Logout",
