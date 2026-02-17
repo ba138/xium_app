@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
-  final plaidController = Get.put(PlaidController());
+  final tinkController = Get.put(TinkController());
   String truncate(String text, int max) {
     if (text.length <= max) return text;
     return text.substring(0, max);

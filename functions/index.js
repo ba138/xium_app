@@ -2,10 +2,13 @@ const { onRequest } = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 const { defineSecret } = require("firebase-functions/params");
-const { detectStore, detectDocumentType } = require("./classification");
-const { ensureStoreExists } = require("./utils");
+
 const { runOCR } = require("./ocr");
 const Busboy = require("busboy");
+const axios = require("axios");
+const functions = require("firebase-functions"); // ✅ needed
+
+
 const { getStoreLogo } = require("./logo");
 const OpenAI = require("openai");
 const fetch = require("node-fetch");
@@ -17,178 +20,141 @@ admin.initializeApp();
 const db = admin.firestore();
 const bucket = admin.storage().bucket();
 
+
+
 // 🔐 Secrets
-const PLAID_CLIENT_ID = defineSecret("PLAID_CLIENT_ID");
-const PLAID_SECRET = defineSecret("PLAID_SECRET");
-const PLAID_ENV = defineSecret("PLAID_ENV");
+const TINK_CLIENT_ID = "39ff2c1100404c7fb39aa32fa78b8a9e"; // store safely via env or Firebase Secret Manager
+const TINK_CLIENT_SECRET = "6165b5d828114728b16dbb91934a39e5";
+const REDIRECT_URI = "yourapp://tink-callback";
 
-const { Configuration, PlaidApi, PlaidEnvironments } = require("plaid");
+// 1️⃣ Provide Tink URL for one-time access
+exports.getTinkLinkUrl = functions.https.onRequest(async (req, res) => {
+  try {
+    const { uid } = req.body;
+    if (!uid) return res.status(400).json({ error: "uid required" });
 
-// 🔹 Plaid Client (lazy)
-function getPlaidClient() {
-  const config = new Configuration({
-    basePath: PlaidEnvironments[PLAID_ENV.value()],
-    baseOptions: {
-      headers: {
-        "PLAID-CLIENT-ID": PLAID_CLIENT_ID.value(),
-        "PLAID-SECRET": PLAID_SECRET.value(),
-      },
-    },
+    const tinkUrl = `https://link.tink.com/1.0/transactions/connect-accounts?client_id=${TINK_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&market=GB&locale=en_US`;
+
+    res.json({ tink_url: tinkUrl });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 2️⃣ Exchange code for access token
+// 1️⃣ Exchange Tink code for user access token
+exports.exchangeTinkToken = functions.https.onRequest(async (req, res) => {
+  try {
+    const { uid, code } = req.body;
+    if (!uid || !code) return res.status(400).json({ error: "uid and code required" });
+
+    // Exchange authorization code for access token
+    const tokenRes = await axios.post(
+      "https://api.tink.com/api/v1/oauth/token",
+      new URLSearchParams({
+        grant_type: "authorization_code",
+        code,
+        client_id: TINK_CLIENT_ID,
+        client_secret: TINK_CLIENT_SECRET
+      }),
+      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+    );
+
+    const accessToken = tokenRes.data.access_token;
+
+    // Store token in Firestore
+    await db.collection("tinkTokens").doc(uid).set({
+      accessToken,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    // ✅ Immediately fetch transactions after storing token
+    const txCount = await syncTinkTransactionsInternal(uid, accessToken);
+
+    res.json({ success: true, synced: txCount });
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    res.status(500).json({ error: err.response?.data || err.message });
+  }
+});
+
+// 2️⃣ Sync Tink transactions function (can be called separately)
+exports.syncTinkTransactions = functions.https.onRequest(async (req, res) => {
+  try {
+    const { uid } = req.body;
+    if (!uid) return res.status(400).json({ error: "uid required" });
+
+    // Get stored access token
+    const tokenSnap = await db.collection("tinkTokens").doc(uid).get();
+    if (!tokenSnap.exists) return res.status(404).json({ error: "No token found" });
+
+    const accessToken = tokenSnap.data().accessToken;
+
+    const txCount = await syncTinkTransactionsInternal(uid, accessToken);
+
+    res.json({ success: true, synced: txCount });
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    res.status(500).json({ error: err.response?.data || err.message });
+  }
+});
+
+// 🔹 Internal helper to fetch and save transactions
+async function syncTinkTransactionsInternal(uid, accessToken) {
+  const txRes = await axios.get("https://api.tink.com/data/v2/transactions", {
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
-  return new PlaidApi(config);
+
+  const transactions = txRes.data.transactions || [];
+
+  const batch = db.batch();
+  transactions.forEach(tx => {
+    const merchantName = tx.descriptions?.display || tx.descriptions?.original || "Unknown";
+    const storeId = merchantName.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const merchantEntityId = tx.merchant?.id || null;
+    const amount = tx.amount?.value?.unscaledValue
+      ? tx.amount.value.unscaledValue / Math.pow(10, tx.amount.value.scale)
+      : 0;
+    const currency = tx.amount?.currencyCode || "USD";
+    const date = tx.dates?.booked || tx.dates?.value || null;
+    const pending = tx.status === "PENDING";
+    const documentType = tx.personal_finance_category?.primary || "bank transaction";
+    const storeLogo = tx.merchant?.logo || null;
+
+    const docRef = db.collection("users").doc(uid).collection("documents").doc(tx.id);
+    batch.set(
+      docRef,
+      {
+        storeId,
+        storeName: merchantName,
+        merchantEntityId,
+        amount,
+        currency,
+        date,
+        pending,
+        documentType,
+        source: "bank",
+        storeLogo,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+  });
+
+  await batch.commit();
+
+  // ✅ Update user document to mark bank as connected
+  await db.collection("users").doc(uid).set(
+    {
+      source: { bank: "connected" }
+    },
+    { merge: true }
+  );
+
+  return transactions.length;
 }
 
-/* ============================================================
-   ✅ CREATE PLAID LINK TOKEN
-============================================================ */
-exports.createPlaidLinkToken = onRequest(
-  {
-    region: "us-central1",
-    secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV],
-    memory: "512MiB",
-    timeoutSeconds: 60,
-  },
-  (req, res) =>
-    cors(req, res, async () => {
-      try {
-        const { uid } = req.body;
-        if (!uid) {
-          return res.status(400).json({ error: "uid is required" });
-        }
-
-        const plaidClient = getPlaidClient();
-
-        const response = await plaidClient.linkTokenCreate({
-          user: { client_user_id: uid },
-          client_name: "Xium App",
-          products: ["transactions"],
-          country_codes: ["US"],
-          language: "en",
-        });
-
-        res.json(response.data);
-      } catch (e) {
-        console.error("createPlaidLinkToken error:", e);
-        res.status(500).json({ error: e.message });
-      }
-    })
-);
-
-/* ============================================================
-   ✅ EXCHANGE PUBLIC TOKEN
-============================================================ */
-exports.exchangePlaidToken = onRequest(
-  { secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV] },
-  (req, res) =>
-    cors(req, res, async () => {
-      try {
-        const { publicToken, uid } = req.body;
-        const plaidClient = getPlaidClient();
-
-        const response = await plaidClient.itemPublicTokenExchange({
-          public_token: publicToken,
-        });
-
-        await db.collection("plaidTokens").doc(uid).set({
-          accessToken: response.data.access_token,
-          itemId: response.data.item_id,
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        });
-
-        res.json({ success: true });
-      } catch (e) {
-        console.error(e);
-        res.status(500).json({ error: e.message });
-      }
-    })
-);
-
-/* ============================================================
-   ✅ SYNC TRANSACTIONS
-============================================================ */
-
-exports.syncTransactions = onRequest(
-  { secrets: [PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV] },
-  (req, res) =>
-    cors(req, res, async () => {
-      try {
-        const { uid } = req.body;
-
-        const tokenSnap = await db.collection("plaidTokens").doc(uid).get();
-        if (!tokenSnap.exists) {
-          return res.status(404).json({ error: "No Plaid token found" });
-        }
-
-        const accessToken = tokenSnap.data().accessToken;
-        const plaidClient = getPlaidClient();
-
-        let cursor = tokenSnap.data().cursor || null;
-        let added = [];
-
-        do {
-          const response = await plaidClient.transactionsSync({
-            access_token: accessToken,
-            cursor,
-          });
-
-          added.push(...response.data.added);
-          cursor = response.data.next_cursor;
-
-          if (!response.data.has_more) break;
-        } while (true);
-
-        const batch = db.batch();
-
-        for (const tx of added) {
-          const merchantName = tx.merchant_name || tx.name || "Unknown";
-          const merchantEntityId = tx.merchant_entity_id || null;
-
-          const storeId = merchantName
-            .toLowerCase()
-            .replace(/[^a-z0-9]/g, "");
-
-          const storeLogo = await getStoreLogo({
-            plaidClient,
-            merchantEntityId,
-            website: tx.website || null,
-          });
-
-          batch.set(
-            db
-              .collection("users")
-              .doc(uid)
-              .collection("documents")
-              .doc(tx.transaction_id),
-            {
-              storeId,
-              storeName: merchantName,
-              merchantEntityId,
-              amount: tx.amount,
-              currency: tx.iso_currency_code,
-              date: tx.date,
-              pending: tx.pending,
-              documentType: tx.personal_finance_category?.primary || null,
-              source: "bank",
-            storeLogo:  tx.logo_url,
-              createdAt: admin.firestore.FieldValue.serverTimestamp(),
-            },
-            { merge: true }
-          );
-        }
-
-        await db.collection("plaidTokens").doc(uid).update({ cursor });
-        await db.collection("users").doc(uid).update({
-          "source.bank": "connected",
-        });
-
-        await batch.commit();
-        res.json({ synced: added.length });
-      } catch (e) {
-        console.error("syncTransactions error:", e);
-        res.status(500).json({ error: e.message });
-      }
-    })
-);
 
 
 exports.processIncomingEmail = onRequest(
