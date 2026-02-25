@@ -161,7 +161,7 @@ class _AddLoyaltyCardScreenState extends State<AddLoyaltyCardScreen> {
                     "If the store is not recognized, you can select it manually.",
                 size: 10,
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 16),
             ],
           ),
         ),

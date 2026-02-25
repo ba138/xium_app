@@ -26,7 +26,7 @@ class _CustomBottomNavState extends State<CustomBottomNav>
     Icons.explore_outlined,
     Icons.add_circle_outline,
 
-    Icons.camera_alt_outlined,
+    Icons.card_giftcard_outlined,
     Icons.settings_outlined,
   ];
 
