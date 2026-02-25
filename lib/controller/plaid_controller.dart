@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'package:xium_app/constants/app_colors.dart';
 
 class TinkController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -41,7 +40,7 @@ class TinkController extends GetxController {
 
       isLoading.value = true;
       await Future.delayed(const Duration(milliseconds: 500));
-      await syncTransactions();
+      // await openTinkLink();
     } catch (e) {
       debugPrint("Auto sync error: $e");
     } finally {
@@ -86,17 +85,6 @@ class TinkController extends GetxController {
 
     try {
       isLoading.value = true;
-
-      final isConnected = await _isBankConnected();
-      if (isConnected) {
-        Get.snackbar(
-          "Bank Already Connected",
-          "Your bank account is already linked.",
-          snackPosition: SnackPosition.TOP,
-          colorText: AppColors.primary,
-        );
-        return;
-      }
 
       final authUrl = await createTinkSession();
 

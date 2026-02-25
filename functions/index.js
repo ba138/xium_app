@@ -24,7 +24,7 @@ const bucket = admin.storage().bucket();
 
 // 🔐 Secrets
 const TINK_CLIENT_ID = "39ff2c1100404c7fb39aa32fa78b8a9e"; // store safely via env or Firebase Secret Manager
-const TINK_CLIENT_SECRET = "6165b5d828114728b16dbb91934a39e5";
+const TINK_CLIENT_SECRET = "9cf66e424de4441690d9372a8efd9e96";
 const REDIRECT_URI = "yourapp://tink-callback";
 
 // 1️⃣ Provide Tink URL for one-time access

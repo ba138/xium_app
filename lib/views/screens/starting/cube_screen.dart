@@ -2,7 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/generated/assets.dart';
-import 'package:xium_app/views/screens/home/home_screen.dart';
+import 'package:xium_app/views/screens/dashboard/nav_bar.dart';
+import 'package:xium_app/views/screens/home/document_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_Text.dart';
 
@@ -34,7 +35,7 @@ class _CubeScreenState extends State<CubeScreen>
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Get.offAll(() => const HomeScreen());
+        Get.offAll(() => const CustomBottomNav());
       }
     });
   }
