@@ -23,7 +23,7 @@ class _CustomBottomNavState extends State<CustomBottomNav>
 
   final List<IconData> _icons = [
     Icons.home_outlined,
-    Icons.explore_outlined,
+    Icons.document_scanner_outlined,
     Icons.add_circle_outline,
 
     Icons.card_giftcard_outlined,

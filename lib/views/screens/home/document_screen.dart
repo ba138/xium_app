@@ -4,7 +4,6 @@ import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/home_controller.dart';
 import 'package:xium_app/controller/plaid_controller.dart';
 import 'package:xium_app/generated/assets.dart';
-import 'package:xium_app/views/screens/home/add_loyalty_card_screen.dart';
 import 'package:xium_app/views/screens/home/store_detail_screen.dart';
 import 'package:xium_app/views/screens/profile/profile_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
@@ -145,7 +144,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   );
                 }),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 18),
             ],
           ),
         ),
