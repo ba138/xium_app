@@ -168,6 +168,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   );
                 }),
               ),
+              const SizedBox(height: 10),
             ],
           ),
         ),

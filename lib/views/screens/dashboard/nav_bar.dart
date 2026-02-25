@@ -169,7 +169,7 @@ class _CustomBottomNavState extends State<CustomBottomNav>
             child: Icon(
               icon,
               size: 28,
-              color: selected ? AppColors.primary : Colors.white,
+              color: selected ? AppColors.buttonColor : Colors.white,
             ),
           ),
         ),
