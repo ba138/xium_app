@@ -3,9 +3,7 @@ import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/home_controller.dart';
 import 'package:xium_app/controller/plaid_controller.dart';
-import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/home/store_detail_screen.dart';
-import 'package:xium_app/views/screens/profile/profile_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 import 'package:xium_app/views/widgets/my_text_field.dart';
@@ -35,29 +33,6 @@ class _DocumentScreenState extends State<DocumentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.arrow_back_ios, color: AppColors.onPrimary),
-                      MyText(text: "Back", size: 16),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(() => ProfileScreen());
-                    },
-                    child: CommonImageView(
-                      imagePath: Assets.setting,
-                      height: 24,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
               MyText(text: "Your Stores", size: 20, weight: FontWeight.bold),
               MyText(
                 text: "Select a store to view all your related documents.",
