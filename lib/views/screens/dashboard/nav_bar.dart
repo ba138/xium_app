@@ -151,7 +151,7 @@ class _CustomBottomNavState extends State<CustomBottomNav>
           width: 56,
           height: 56,
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.2),
+            color: AppColors.grayColor.withValues(alpha: 0.1),
             shape: BoxShape.circle,
             border: Border.all(
               color: Colors.white.withValues(alpha: 0.2),
