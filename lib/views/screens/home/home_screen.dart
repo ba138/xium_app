@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/views/widgets/my_text.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,9 +15,8 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _overviewSection(),
-              const SizedBox(height: 20),
-              _monthlySpending(),
+              _overviewSection(context),
+
               const SizedBox(height: 24),
               _quickActions(),
               const SizedBox(height: 24),
@@ -26,6 +27,7 @@ class HomeScreen extends StatelessWidget {
               _levelCard(),
               const SizedBox(height: 24),
               _comingSoon(),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -33,8 +35,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _glassContainer({required Widget child, double radius = 24}) {
+  Widget _glassContainer({
+    required Widget child,
+    double radius = 24,
+    double height = 200,
+  }) {
     return Container(
+      height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
         gradient: LinearGradient(
@@ -51,8 +58,9 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _overviewSection() {
+  Widget _overviewSection(BuildContext context) {
     return _glassContainer(
+      height: MediaQuery.of(context).size.height * 0.48,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -80,6 +88,8 @@ class HomeScreen extends StatelessWidget {
             crossAxisCount: 2,
             shrinkWrap: true,
             crossAxisSpacing: 12,
+            childAspectRatio: 1.2, // 👈 increase this to reduce height
+
             mainAxisSpacing: 12,
             physics: const NeverScrollableScrollPhysics(),
             children: const [
@@ -87,44 +97,27 @@ class HomeScreen extends StatelessWidget {
                 title: "Documents",
                 value: "247",
                 subtitle: "+12 this month",
+                icon: Icons.description_outlined,
               ),
               _StatCard(
                 title: "Monthly Spending",
                 value: "€1,248",
                 subtitle: "-5.1% vs last",
+                icon: Icons.bar_chart_outlined,
               ),
               _StatCard(
                 title: "Active Warranties",
                 value: "18",
                 subtitle: "3 expiring soon",
+                icon: Icons.verified_user_outlined,
               ),
               _StatCard(
                 title: "Subscriptions",
                 value: "190",
                 subtitle: "€186/mo total",
+                icon: Icons.payment_outlined,
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _monthlySpending() {
-    return _glassContainer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text(
-            "Monthly Spending",
-            style: TextStyle(color: Colors.white, fontSize: 16),
-          ),
-          SizedBox(height: 80),
-          Center(
-            child: Text(
-              "Chart Placeholder",
-              style: TextStyle(color: Colors.white38),
-            ),
           ),
         ],
       ),
@@ -164,7 +157,9 @@ class HomeScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(18),
                     gradient: LinearGradient(
-                      colors: [Colors.blue.shade600, Colors.blue.shade900],
+                      colors: [AppColors.buttonColor, Colors.blue.shade900],
+                      begin: AlignmentGeometry.topCenter,
+                      end: AlignmentGeometry.bottomCenter,
                     ),
                   ),
                   child: Icon(items[index], color: Colors.white),
@@ -325,11 +320,13 @@ class _StatCard extends StatelessWidget {
   final String title;
   final String value;
   final String subtitle;
+  final IconData icon;
 
   const _StatCard({
     required this.title,
     required this.value,
     required this.subtitle,
+    required this.icon,
   });
 
   @override
@@ -342,9 +339,29 @@ class _StatCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(title, style: const TextStyle(color: Colors.white70)),
-          const Spacer(),
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.buttonColor,
+                ),
+                child: Center(child: Icon(icon, color: Colors.white)),
+              ),
+              const SizedBox(width: 8),
+              MyText(
+                text: title,
+                size: 10,
+                weight: FontWeight.w500,
+                color: AppColors.onPrimary,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
           Text(
             value,
             style: const TextStyle(
