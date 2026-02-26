@@ -15,6 +15,31 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  CircleAvatar(backgroundColor: Colors.amber, radius: 24),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      MyText(
+                        text: "Welcome back, Bas!",
+                        size: 16,
+                        weight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+
+                      MyText(
+                        text: "Here's your financial snapshot",
+                        size: 12,
+                        color: Colors.white54,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+
               _overviewSection(context),
 
               const SizedBox(height: 24),
