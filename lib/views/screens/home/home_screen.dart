@@ -319,13 +319,74 @@ class HomeScreen extends StatelessWidget {
 
   Widget _levelCard() {
     return _glassContainer(
+      height: 110,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text(
-            "XIUM Level 7",
-            style: TextStyle(color: Colors.white, fontSize: 18),
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.buttonColor,
+                    ),
+                    child: Center(child: Icon(Icons.star, color: Colors.white)),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 4),
+                      Text(
+                        "XIUM Level",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "7",
+                        style: TextStyle(
+                          color: AppColors.onPrimary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 4),
+                  Text(
+                    "Points",
+                    style: TextStyle(
+                      color: AppColors.onPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "200",
+                    style: TextStyle(
+                      color: AppColors.buttonColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
+
           SizedBox(height: 12),
           LinearProgressIndicator(
             value: 0.78,
@@ -333,7 +394,6 @@ class HomeScreen extends StatelessWidget {
             color: Colors.blue,
           ),
           SizedBox(height: 8),
-          Text("2340 pts / 3000 pts", style: TextStyle(color: Colors.white70)),
         ],
       ),
     );
