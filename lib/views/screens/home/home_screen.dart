@@ -232,11 +232,19 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
-                color: Colors.blueGrey.shade900.withOpacity(0.6),
+                color: Color(0xff6C7278).withOpacity(0.3),
               ),
               child: Row(
-                children: const [
-                  Icon(Icons.home, color: Colors.white),
+                children: [
+                  Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.buttonColor.withValues(alpha: 0.3),
+                    ),
+                    child: Icon(Icons.home, color: Colors.white),
+                  ),
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
