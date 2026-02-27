@@ -285,6 +285,7 @@ class HomeScreen extends StatelessWidget {
           children: const [
             Expanded(
               child: _InsightCard(
+                icon: Icons.sell_outlined,
                 title: "Top Category",
                 value: "Shopping",
                 subtitle: "34% of expenses",
@@ -293,6 +294,8 @@ class HomeScreen extends StatelessWidget {
             SizedBox(width: 12),
             Expanded(
               child: _InsightCard(
+                icon: Icons.store_rounded,
+
                 title: "Top Merchant",
                 value: "Amazon",
                 subtitle: "23 transactions",
@@ -301,6 +304,8 @@ class HomeScreen extends StatelessWidget {
             SizedBox(width: 12),
             Expanded(
               child: _InsightCard(
+                icon: Icons.payment_outlined,
+
                 title: "Largest Expense",
                 value: "€950",
                 subtitle: "Rent - Feb 20",
@@ -426,27 +431,47 @@ class _InsightCard extends StatelessWidget {
   final String title;
   final String value;
   final String subtitle;
+  final IconData icon;
 
   const _InsightCard({
     required this.title,
     required this.value,
     required this.subtitle,
+    required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 120,
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
-        color: Colors.blueGrey.shade900.withOpacity(0.6),
+        color: Color(0xff6C7278).withValues(alpha: 0.3),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(title, style: const TextStyle(color: Colors.white54)),
-          const Spacer(),
+          Icon(icon, color: AppColors.buttonColor),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 20,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.buttonColor.withValues(alpha: 0.3),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(color: Colors.white54, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          ),
           Text(
             value,
             style: const TextStyle(
