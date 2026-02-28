@@ -335,7 +335,12 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       color: AppColors.buttonColor,
                     ),
-                    child: Center(child: Icon(Icons.star, color: Colors.white)),
+                    child: Center(
+                      child: Icon(
+                        Icons.emoji_events_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Column(

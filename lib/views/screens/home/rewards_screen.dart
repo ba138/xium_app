@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xium_app/views/widgets/glassy_container.dart';
 
 class RewardsScreen extends StatelessWidget {
   const RewardsScreen({super.key});
@@ -28,9 +29,7 @@ class RewardsScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white54),
               ),
               const SizedBox(height: 20),
-
-              /// Total Points Card
-              _glassCard(
+              GlassContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -107,6 +106,7 @@ class RewardsScreen extends StatelessWidget {
                 ),
               ),
 
+              /// Total Points Card
               const SizedBox(height: 28),
 
               /// Quick Actions
@@ -261,6 +261,29 @@ class RewardsScreen extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
       ),
+      child: child,
+    );
+  }
+
+  Widget _glassContainer({
+    required Widget child,
+    double radius = 24,
+    double height = 200,
+  }) {
+    return Container(
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius),
+        gradient: LinearGradient(
+          colors: [
+            Colors.blueGrey.shade800.withOpacity(0.6),
+            Colors.blue.shade900.withOpacity(0.6),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      padding: const EdgeInsets.all(16),
       child: child,
     );
   }
