@@ -117,73 +117,22 @@ class RewardsScreen extends StatelessWidget {
               const Text(
                 "Missions",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
 
-              _missionTile(progress: 1, completed: true),
-              const SizedBox(height: 12),
-              _missionTile(progress: 0.5),
-              const SizedBox(height: 12),
-              _missionTile(progress: 0.8),
-              const SizedBox(height: 28),
-
-              /// Referral
-              const Text(
-                "Referral",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              _missionTile(
+                progress: 1,
+                completed: true,
+                title: "Scan a document",
               ),
-              const SizedBox(height: 16),
-
-              _glassCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Invite Your Contacts And Earn Additional Points",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white.withOpacity(0.08),
-                      ),
-                      child: const Text(
-                        "XIUM-7K2F9X",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
-                      children: [
-                        Icon(Icons.people, color: Colors.white54),
-                        SizedBox(width: 6),
-                        Text(
-                          "5 referrals",
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                        SizedBox(width: 20),
-                        Icon(Icons.stars, color: Colors.white54),
-                        SizedBox(width: 6),
-                        Text(
-                          "100 pts earned",
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
+              const SizedBox(height: 12),
+              _missionTile(progress: 0.5, title: "Import a doc from email"),
+              const SizedBox(height: 12),
+              _missionTile(progress: 0.8, title: "Import a doc from bank"),
               const SizedBox(height: 28),
 
               /// User Status
@@ -293,21 +242,71 @@ class RewardsScreen extends StatelessWidget {
     );
   }
 
-  Widget _missionTile({required double progress, bool completed = false}) {
-    return _glassCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _missionTile({
+    required double progress,
+    bool completed = false,
+    required String title,
+  }) {
+    return Container(
+      height: 80,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white.withValues(alpha: 0.2),
+      ),
+      child: Row(
         children: [
-          const Text(
-            "Invite a friend",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+          Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.buttonColor,
+                  Colors.blue.shade900.withValues(alpha: 0.9),
+                ],
+                begin: AlignmentGeometry.topCenter,
+                end: AlignmentGeometry.bottomCenter,
+              ),
+            ),
+            child: Center(
+              child: Icon(Icons.scanner_outlined, color: Colors.white),
+            ),
           ),
-          const SizedBox(height: 10),
-          LinearProgressIndicator(
-            value: progress,
-            backgroundColor: Colors.white24,
-            color: completed ? Colors.green : Colors.blue,
-            minHeight: 6,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Text(
+                      "+100 pts",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 6),
+                LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: Colors.white24,
+                  color: completed ? Colors.green : Colors.blue,
+                  minHeight: 6,
+                ),
+              ],
+            ),
           ),
         ],
       ),
