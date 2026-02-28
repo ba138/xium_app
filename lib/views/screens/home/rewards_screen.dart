@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xium_app/views/widgets/glassy_container.dart';
+import 'package:xium_app/constants/app_colors.dart';
 
 class RewardsScreen extends StatelessWidget {
   const RewardsScreen({super.key});
@@ -29,7 +29,8 @@ class RewardsScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white54),
               ),
               const SizedBox(height: 20),
-              GlassContainer(
+              _glassContainer(
+                height: MediaQuery.of(context).size.height * 0.25,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -67,14 +68,14 @@ class RewardsScreen extends StatelessWidget {
                       ),
                       child: const Text(
                         "Intermediate",
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const LinearProgressIndicator(
+                    LinearProgressIndicator(
                       value: 0.6,
                       backgroundColor: Colors.white24,
-                      color: Colors.blue,
+                      color: AppColors.buttonColor,
                       minHeight: 6,
                     ),
                     const SizedBox(height: 12),
@@ -83,25 +84,6 @@ class RewardsScreen extends StatelessWidget {
                       style: TextStyle(color: Colors.white70),
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF5C8DFF), Color(0xFF3A66FF)],
-                        ),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "View my benefits",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -109,27 +91,27 @@ class RewardsScreen extends StatelessWidget {
               /// Total Points Card
               const SizedBox(height: 28),
 
-              /// Quick Actions
-              const Text(
-                "Quick Actions",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(child: _smallStat("Documents\nAdded", "247")),
-                  const SizedBox(width: 12),
-                  Expanded(child: _smallStat("Connected\nSources", "4")),
-                  const SizedBox(width: 12),
-                  Expanded(child: _smallStat("Invited\nFriends", "5")),
-                ],
-              ),
+              // /// Quick Actions
+              // const Text(
+              //   "Quick Actions",
+              //   style: TextStyle(
+              //     fontSize: 18,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.white,
+              //   ),
+              // ),
+              // const SizedBox(height: 16),
+              // Row(
+              //   children: [
+              //     Expanded(child: _smallStat("Documents\nAdded", "247")),
+              //     const SizedBox(width: 12),
+              //     Expanded(child: _smallStat("Connected\nSources", "4")),
+              //     const SizedBox(width: 12),
+              //     Expanded(child: _smallStat("Invited\nFriends", "5")),
+              //   ],
+              // ),
 
-              const SizedBox(height: 28),
+              // const SizedBox(height: 28),
 
               /// Missions
               const Text(
