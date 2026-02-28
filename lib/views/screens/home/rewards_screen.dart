@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/views/widgets/my_text.dart';
 
 class RewardsScreen extends StatelessWidget {
   const RewardsScreen({super.key});
@@ -124,53 +125,169 @@ class RewardsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              _missionTile(
-                progress: 1,
-                completed: true,
-                title: "Scan a document",
-              ),
+              _missionTile(progress: 1, title: "Scan a document"),
               const SizedBox(height: 12),
-              _missionTile(progress: 0.5, title: "Import a doc from email"),
+              _missionTile(progress: 0, title: "Import a doc from email"),
               const SizedBox(height: 12),
-              _missionTile(progress: 0.8, title: "Import a doc from bank"),
+              _missionTile(progress: 0, title: "Import a doc from bank"),
               const SizedBox(height: 28),
 
               /// User Status
               const Text(
                 "User Status",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 16),
 
-              _glassCard(
+              _glassContainer(
+                height: MediaQuery.of(context).size.height * 0.36,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "CURRENT LEVEL",
-                      style: TextStyle(color: Colors.white54),
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(18),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.buttonColor,
+                                Colors.blue.shade900.withValues(alpha: 0.9),
+                              ],
+                              begin: AlignmentGeometry.topCenter,
+                              end: AlignmentGeometry.bottomCenter,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.star_border_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "CURRENT LEVEL",
+                              style: TextStyle(color: Colors.white54),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              "Beginner",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      "Beginner",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+
                     SizedBox(height: 12),
                     Text(
                       "Your level evolves based on your activity within the application.",
                       style: TextStyle(color: Colors.white70),
                     ),
+                    const SizedBox(height: 12),
+                    Text(
+                      "Possible Benefits",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.blue.withOpacity(0.2),
+                          ),
+                          child: const Icon(
+                            Icons.star_half_outlined,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        MyText(
+                          text: "Early access to new features",
+                          weight: FontWeight.w500,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.blue.withOpacity(0.2),
+                          ),
+                          child: const Icon(
+                            Icons.star_half_outlined,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        MyText(
+                          text: "Early access to new features",
+                          weight: FontWeight.w500,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.blue.withOpacity(0.2),
+                          ),
+                          child: const Icon(
+                            Icons.star_half_outlined,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        MyText(
+                          text: "Early access to new features",
+                          weight: FontWeight.w500,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
+              const SizedBox(height: 28),
             ],
           ),
         ),
