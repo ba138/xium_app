@@ -225,7 +225,7 @@ class RewardsScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         MyText(
-                          text: "Early access to new features",
+                          text: "Point bonuses on each activity",
                           weight: FontWeight.w500,
                         ),
                       ],
@@ -245,14 +245,14 @@ class RewardsScreen extends StatelessWidget {
                             color: Colors.blue.withOpacity(0.2),
                           ),
                           child: const Icon(
-                            Icons.star_half_outlined,
+                            Icons.watch_later_outlined,
                             color: Colors.white,
                             size: 20,
                           ),
                         ),
                         const SizedBox(width: 8),
                         MyText(
-                          text: "Early access to new features",
+                          text: "Early access to certain features",
                           weight: FontWeight.w500,
                         ),
                       ],
@@ -272,14 +272,14 @@ class RewardsScreen extends StatelessWidget {
                             color: Colors.blue.withOpacity(0.2),
                           ),
                           child: const Icon(
-                            Icons.star_half_outlined,
+                            Icons.shield_outlined,
                             color: Colors.white,
                             size: 20,
                           ),
                         ),
                         const SizedBox(width: 8),
                         MyText(
-                          text: "Early access to new features",
+                          text: "Priority status during new updates",
                           weight: FontWeight.w500,
                         ),
                       ],
