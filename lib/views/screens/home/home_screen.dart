@@ -118,27 +118,27 @@ class HomeScreen extends StatelessWidget {
 
             mainAxisSpacing: 12,
             physics: const NeverScrollableScrollPhysics(),
-            children: const [
+            children: [
               _StatCard(
-                title: "Documents",
+                title: "Documents".tr,
                 value: "247",
-                subtitle: "+12 this month",
+                subtitle: "+12 this month".tr,
                 icon: Icons.description_outlined,
               ),
               _StatCard(
-                title: "Monthly Spending",
+                title: "Monthly Spending".tr,
                 value: "€1,248",
                 subtitle: "-5.1% vs last",
                 icon: Icons.bar_chart_outlined,
               ),
               _StatCard(
-                title: "Active Warranties",
+                title: "Active Warranties".tr,
                 value: "18",
-                subtitle: "3 expiring soon",
+                subtitle: "3 expiring soon".tr,
                 icon: Icons.verified_user_outlined,
               ),
               _StatCard(
-                title: "Subscriptions",
+                title: "Subscriptions".tr,
                 value: "190",
                 subtitle: "€186/mo total",
                 icon: Icons.payment_outlined,
