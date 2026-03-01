@@ -153,19 +153,18 @@ class HomeScreen extends StatelessWidget {
   Widget _quickActions() {
     final items = [
       Icons.qr_code_scanner,
-      Icons.upload,
       Icons.mail,
       Icons.account_balance,
       Icons.phone_iphone,
     ];
 
-    final labels = ["Scan", "Import", "Email", "Bank", "Phone"];
+    final labels = ["Scan".tr, "Email".tr, "Bank".tr, "Phone".tr];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Quick Actions",
+        Text(
+          "Quick Actions".tr,
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -179,6 +178,8 @@ class HomeScreen extends StatelessWidget {
             return Column(
               children: [
                 Container(
+                  width: 80,
+                  height: 80,
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(18),
@@ -191,7 +192,7 @@ class HomeScreen extends StatelessWidget {
                       end: AlignmentGeometry.bottomCenter,
                     ),
                   ),
-                  child: Icon(items[index], color: Colors.white),
+                  child: Icon(items[index], color: Colors.white, size: 28),
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -212,16 +213,15 @@ class HomeScreen extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Text(
-              "Recent Activity",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            MyText(
+              text: "Recent Activity".tr,
+              size: 18,
+              weight: FontWeight.bold,
+              color: Colors.white,
             ),
+
             const Spacer(),
-            MyText(text: "See All", size: 12, color: Colors.blueAccent),
+            MyText(text: "See All".tr, size: 14, color: Colors.blueAccent),
           ],
         ),
         const SizedBox(height: 12),
@@ -273,23 +273,22 @@ class HomeScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Insights",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+        MyText(
+          text: "Insights".tr,
+          size: 18,
+          color: Colors.white,
+          weight: FontWeight.bold,
         ),
         const SizedBox(height: 12),
+
         Row(
-          children: const [
+          children: [
             Expanded(
               child: _InsightCard(
                 icon: Icons.sell_outlined,
-                title: "Top Category",
-                value: "Shopping",
-                subtitle: "34% of expenses",
+                title: "Top Category".tr,
+                value: "Shopping".tr,
+                subtitle: "34% of expenses".tr,
               ),
             ),
             SizedBox(width: 12),
@@ -297,9 +296,9 @@ class HomeScreen extends StatelessWidget {
               child: _InsightCard(
                 icon: Icons.store_rounded,
 
-                title: "Top Merchant",
-                value: "Amazon",
-                subtitle: "23 transactions",
+                title: "Top Merchant".tr,
+                value: "Amazon".tr,
+                subtitle: "23 transactions".tr,
               ),
             ),
             SizedBox(width: 12),
@@ -307,9 +306,9 @@ class HomeScreen extends StatelessWidget {
               child: _InsightCard(
                 icon: Icons.payment_outlined,
 
-                title: "Largest Expense",
+                title: "Largest Expense".tr,
                 value: "€950",
-                subtitle: "Rent - Feb 20",
+                subtitle: "Feb 20",
               ),
             ),
           ],
@@ -349,7 +348,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       const SizedBox(height: 4),
                       Text(
-                        "XIUM Level",
+                        "XIUM Level".tr,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -413,12 +412,12 @@ class HomeScreen extends StatelessWidget {
         color: Colors.blueGrey.shade900.withOpacity(0.7),
       ),
       child: Row(
-        children: const [
+        children: [
           Icon(Icons.rocket_launch, color: Colors.white),
           SizedBox(width: 12),
           Expanded(
             child: Text(
-              "XIUM is evolving\nAI-powered categorization & smart alerts coming soon",
+              "xium_evolving".tr,
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -520,7 +519,12 @@ class _InsightCard extends StatelessWidget {
         children: [
           Icon(icon, color: AppColors.buttonColor),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(
+              left: 4.0,
+              right: 4.0,
+              top: 8.0,
+              bottom: 8,
+            ),
             child: Container(
               height: 20,
               decoration: BoxDecoration(
@@ -532,7 +536,7 @@ class _InsightCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(color: Colors.white54, fontSize: 12),
+                    style: const TextStyle(color: Colors.white54, fontSize: 10),
                   ),
                 ],
               ),
