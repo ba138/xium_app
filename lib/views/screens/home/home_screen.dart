@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -21,9 +22,9 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       MyText(
-                        text: "Welcome back, Bas!",
+                        text: "Welcome back".tr,
                         size: 16,
                         weight: FontWeight.bold,
                         color: Colors.white,

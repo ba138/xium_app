@@ -5,12 +5,14 @@ class AppTranslations extends Translations {
   Map<String, Map<String, String>> get keys => {
     'en_US': {
       'rewards': 'Rewards',
+      "Welcome back": "Welcome back, Bas!",
       'quick_actions': 'Quick Actions',
       'missions': 'Missions',
       'invite_friend': 'Invite a friend',
     },
     'fr_FR': {
       'rewards': 'Récompenses',
+      "Welcome back": "Bon retour, Bas!",
       'quick_actions': 'Actions Rapides',
       'missions': 'Missions',
       'invite_friend': 'Inviter un ami',
