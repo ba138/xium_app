@@ -22,12 +22,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   var authController = Get.put(AuthController());
   var userController = Get.put(UserController());
-  final box = GetStorage();
-
-  void changeLanguage(Locale locale) {
-    Get.updateLocale(locale);
-    box.write('lang', locale.languageCode);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -291,11 +285,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _languageTile({required String title, required Locale locale}) {
     final isSelected = Get.locale?.languageCode == locale.languageCode;
+    final box = GetStorage();
 
     return InkWell(
       onTap: () {
         Get.updateLocale(locale);
-        Get.back(); // close bottom sheet
+
+        // ✅ SAVE LANGUAGE HERE
+        box.write('lang', locale.languageCode);
+
+        Get.back();
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),

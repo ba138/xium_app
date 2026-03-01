@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                       ),
 
                       MyText(
-                        text: "Here's your financial snapshot",
+                        text: "Here's your financial snapshot".tr,
                         size: 12,
                         color: Colors.white54,
                       ),
@@ -90,8 +90,8 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Overview",
+          Text(
+            "Overview".tr,
             style: TextStyle(color: Colors.white70, fontSize: 16),
           ),
           const SizedBox(height: 8),
