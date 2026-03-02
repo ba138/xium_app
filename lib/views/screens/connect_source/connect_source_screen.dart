@@ -24,29 +24,29 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
     {
       "key": "email",
       "icon": Icons.email,
-      "title": "Email",
-      "subtitle": "Automatically import receipts from your inbox",
+      "title": "Email".tr,
+      "subtitle": "Automatically import receipts from your inbox".tr,
       "ontap": () => Get.to(() => ConnectEmailScreen()),
     },
     {
       "key": "sms",
       "icon": Icons.phone,
-      "title": "Phone",
-      "subtitle": "Automatically import receipts from your inbox",
+      "title": "Phone".tr,
+      "subtitle": "Automatically import receipts from your inbox".tr,
       "ontap": () => Get.to(() => ConnectPhoneScreen()),
     },
     {
       "key": "bank",
       "icon": Icons.account_balance,
-      "title": "Bank Card",
-      "subtitle": "Automatically import receipts from your bank",
+      "title": "Bank".tr,
+      "subtitle": "Automatically import receipts from your bank".tr,
       "ontap": () => Get.to(() => ConnectBankCard()),
     },
     {
       "key": "osr",
       "icon": Icons.credit_card,
-      "title": "Loyalty Cards",
-      "subtitle": "Sync receipts from loyalty accounts",
+      "title": "Loyalty Cards".tr,
+      "subtitle": "Sync receipts from loyalty accounts".tr,
       "ontap": () => Get.to(() => AddLoyaltyInfoScreen()),
     },
   ];
@@ -70,13 +70,13 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  MyText(text: "Back", size: 16),
+                  MyText(text: "Back".tr, size: 16),
                   const Spacer(),
                 ],
               ),
               const SizedBox(height: 30),
 
-              MyText(text: "Connect Sources", size: 20),
+              MyText(text: "Connect Sources".tr, size: 20),
               const SizedBox(height: 10),
 
               MyText(

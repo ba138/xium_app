@@ -85,6 +85,17 @@ class AppTranslations extends Translations {
       "Privacy Policy": "Privacy Policy",
       "Security": "Security",
       "Logout": "Logout",
+      "Automatically import receipts from your inbox":
+          "Automatically import receipts from your inbox",
+      "Automatically import receipts from your bank":
+          "Automatically import receipts from your bank",
+      "Loyalty Cards": "Loyalty Cards",
+      "Sync receipts from loyalty accounts":
+          "Sync receipts from loyalty accounts",
+      "Back": "Back",
+      "Connect Sources": "Connect Sources",
+      "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.":
+          "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.",
     },
     'fr_FR': {
       'rewards': 'Récompenses',
@@ -169,6 +180,17 @@ class AppTranslations extends Translations {
       "Privacy Policy": "Politique de confidentialité",
       "Security": "Sécurité",
       "Logout": "Se déconnecter",
+      "Automatically import receipts from your inbox":
+          "Importer automatiquement les reçus de votre boîte de réception",
+      "Automatically import receipts from your bank":
+          "Importer automatiquement les reçus de votre banque",
+      "Loyalty Cards": "Cartes de fidélité",
+      "Sync receipts from loyalty accounts":
+          "Synchroniser les reçus des comptes de fidélité",
+      "Back": "Retour",
+      "Connect Sources": "Connecter les sources",
+      "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.":
+          "Connectez vos sources pour collecter et organiser automatiquement tous vos reçus, factures et garanties.",
     },
   };
 }
