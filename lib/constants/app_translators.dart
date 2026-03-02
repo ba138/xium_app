@@ -55,6 +55,16 @@ class AppTranslations extends Translations {
       "Rewards": "Rewards",
       "Track your points, missions & benefits":
           "Track your points, missions & benefits",
+      "Total XIUM Points": "Total XIUM Points",
+      "Intermediate": "Intermediate",
+      "760 more points to reach the next level":
+          "760 more points to reach the next level",
+      "Scan a document": "Scan a document",
+      "Import a doc from email": "Import a doc from email",
+      "Import a doc from bank": "Import a doc from bank",
+      "User Status": "User Status",
+      "Current Level": "Current Level",
+      "Beginner": "Beginner",
     },
     'fr_FR': {
       'rewards': 'Récompenses',
@@ -108,6 +118,16 @@ class AppTranslations extends Translations {
       "Rewards": "Récompenses",
       "Track your points, missions & benefits":
           "Suivez vos points, missions et avantages",
+      "Total XIUM Points": "Total de points XIUM",
+      "Intermediate": "Intermédiaire",
+      "760 more points to reach the next level":
+          "760 points de plus pour atteindre le niveau suivant",
+      "Scan a document": "Scanner un document",
+      "Import a doc from email": "Importer un document depuis l'email",
+      "Import a doc from bank": "Importer un document depuis la banque",
+      "User Status": "Statut de l'utilisateur",
+      "Current Level": "Niveau actuel",
+      "Beginner": "Débutant",
     },
   };
 }

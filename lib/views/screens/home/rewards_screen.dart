@@ -36,7 +36,7 @@ class RewardsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
                         Icon(
                           Icons.emoji_events_outlined,
@@ -44,7 +44,7 @@ class RewardsScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          "Total XIUM Points",
+                          "Total XIUM Points".tr,
                           style: TextStyle(color: Colors.white70),
                         ),
                       ],
@@ -68,8 +68,8 @@ class RewardsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.blue.withOpacity(0.2),
                       ),
-                      child: const Text(
-                        "Intermediate",
+                      child: Text(
+                        "Intermediate".tr,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -81,8 +81,8 @@ class RewardsScreen extends StatelessWidget {
                       minHeight: 6,
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      "760 more points to reach the next level",
+                    Text(
+                      "760 more points to reach the next level".tr,
                       style: TextStyle(color: Colors.white70),
                     ),
                     const SizedBox(height: 16),
@@ -116,8 +116,8 @@ class RewardsScreen extends StatelessWidget {
               // const SizedBox(height: 28),
 
               /// Missions
-              const Text(
-                "Missions",
+              Text(
+                "missions".tr,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -126,16 +126,16 @@ class RewardsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              _missionTile(progress: 1, title: "Scan a document"),
+              _missionTile(progress: 1, title: "Scan a document".tr),
               const SizedBox(height: 12),
-              _missionTile(progress: 0, title: "Import a doc from email"),
+              _missionTile(progress: 0, title: "Import a doc from email".tr),
               const SizedBox(height: 12),
-              _missionTile(progress: 0, title: "Import a doc from bank"),
+              _missionTile(progress: 0, title: "Import a doc from bank".tr),
               const SizedBox(height: 28),
 
               /// User Status
-              const Text(
-                "User Status",
+              Text(
+                "User Status".tr,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -174,7 +174,7 @@ class RewardsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "CURRENT LEVEL",
+                              "CURRENT LEVEL".tr,
                               style: TextStyle(color: Colors.white54),
                             ),
                             SizedBox(height: 4),
@@ -375,7 +375,8 @@ class RewardsScreen extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(18),
+            height: 60,
+            width: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               gradient: LinearGradient(
@@ -404,6 +405,7 @@ class RewardsScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
+                        fontSize: 11,
                       ),
                     ),
                     const Text(
