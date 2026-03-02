@@ -35,6 +35,11 @@ class AppTranslations extends Translations {
       "XIUM Level": "XIUM Level",
       'xium_evolving':
           'XIUM is evolving\nAI-powered categorization & smart alerts coming soon',
+      "Your Stores": "Your Stores",
+      "Select a store to view all your related documents.":
+          "Select a store to view all your related documents.",
+      "Search a store": "Search a store",
+      "No stores found": "No stores found",
     },
     'fr_FR': {
       'rewards': 'Récompenses',
@@ -68,6 +73,11 @@ class AppTranslations extends Translations {
       "XIUM Level": "Niveau XIUM",
       'xium_evolving':
           'XIUM évolue\nCatégorisation intelligente & alertes intelligentes bientôt disponibles',
+      "Your Stores": "Vos Magasins",
+      "Select a store to view all your related documents.":
+          "Sélectionnez un magasin pour voir tous vos documents liés.",
+      "Search a store": "Rechercher un magasin",
+      "No stores found": "Aucun magasin trouvé",
     },
   };
 }

@@ -33,15 +33,15 @@ class _DocumentScreenState extends State<DocumentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyText(text: "Your Stores", size: 20, weight: FontWeight.bold),
+              MyText(text: "Your Stores".tr, size: 20, weight: FontWeight.bold),
               MyText(
-                text: "Select a store to view all your related documents.",
+                text: "Select a store to view all your related documents.".tr,
               ),
 
               const SizedBox(height: 20),
 
               MyTextField(
-                hint: "Search a store",
+                hint: "Search a store".tr,
                 radius: 12,
                 prefix: const Icon(Icons.search),
                 onChanged: (value) {
@@ -59,7 +59,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   }
 
                   if (controller.filteredStores.isEmpty) {
-                    return const Center(child: MyText(text: "No stores found"));
+                    return Center(child: MyText(text: "No stores found".tr));
                   }
 
                   return GridView.builder(
