@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
@@ -16,8 +17,8 @@ class RewardsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Rewards",
+              Text(
+                "Rewards".tr,
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -25,8 +26,8 @@ class RewardsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
-                "Track your points, missions & benefits",
+              Text(
+                "Track your points, missions & benefits".tr,
                 style: TextStyle(color: Colors.white54),
               ),
               const SizedBox(height: 20),

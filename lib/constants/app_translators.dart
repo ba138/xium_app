@@ -52,6 +52,9 @@ class AppTranslations extends Translations {
       "Uploading Image": "Uploading Image",
       "Please wait while we process your document.":
           "Please wait while we process your document.",
+      "Rewards": "Rewards",
+      "Track your points, missions & benefits":
+          "Track your points, missions & benefits",
     },
     'fr_FR': {
       'rewards': 'Récompenses',
@@ -102,6 +105,9 @@ class AppTranslations extends Translations {
       "Uploading Image": "Téléchargement de l'image",
       "Please wait while we process your document.":
           "Veuillez patienter pendant que nous traitons votre document.",
+      "Rewards": "Récompenses",
+      "Track your points, missions & benefits":
+          "Suivez vos points, missions et avantages",
     },
   };
 }
