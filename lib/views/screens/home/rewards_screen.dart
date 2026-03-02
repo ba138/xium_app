@@ -179,7 +179,7 @@ class RewardsScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              "Beginner",
+                              "Beginner".tr,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -193,7 +193,8 @@ class RewardsScreen extends StatelessWidget {
 
                     SizedBox(height: 12),
                     Text(
-                      "Your level evolves based on your activity within the application.",
+                      "Your level evolves based on your activity within the application."
+                          .tr,
                       style: TextStyle(color: Colors.white70),
                     ),
                     const SizedBox(height: 12),
@@ -226,8 +227,9 @@ class RewardsScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         MyText(
-                          text: "Point bonuses on each activity",
+                          text: "Point bonuses on each activity".tr,
                           weight: FontWeight.w500,
+                          size: 12,
                         ),
                       ],
                     ),
@@ -253,8 +255,9 @@ class RewardsScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         MyText(
-                          text: "Early access to certain features",
+                          text: "Early access to certain features".tr,
                           weight: FontWeight.w500,
+                          size: 12,
                         ),
                       ],
                     ),
@@ -280,8 +283,9 @@ class RewardsScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         MyText(
-                          text: "Priority status during new updates",
+                          text: "Priority status during new updates".tr,
                           weight: FontWeight.w500,
+                          size: 12,
                         ),
                       ],
                     ),

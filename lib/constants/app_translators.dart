@@ -65,6 +65,13 @@ class AppTranslations extends Translations {
       "User Status": "User Status",
       "Current Level": "Current Level",
       "Beginner": "Beginner",
+      "Your level evolves based on your activity within the application.":
+          "Your level evolves based on your activity within the application.",
+      "Possible Benefits": "Possible Benefits",
+      "Point bonuses on each activity": "Point bonuses on each activity",
+      "Early access to certain features": "Early access to certain features",
+      "Priority status during new updates":
+          "Priority status during new updates",
     },
     'fr_FR': {
       'rewards': 'Récompenses',
@@ -128,6 +135,14 @@ class AppTranslations extends Translations {
       "User Status": "Statut de l'utilisateur",
       "Current Level": "Niveau actuel",
       "Beginner": "Débutant",
+      "Your level evolves based on your activity within the application.":
+          "Votre niveau évolue en fonction de votre activité au sein de l'application.",
+      "Possible Benefits": "Avantages possibles",
+      "Point bonuses on each activity": "Bonus de points sur chaque activité",
+      "Early access to certain features":
+          "Accès anticipé à certaines fonctionnalités",
+      "Priority status during new updates":
+          "Statut prioritaire lors des nouvelles mises à jour",
     },
   };
 }
