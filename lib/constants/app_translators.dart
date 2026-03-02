@@ -96,6 +96,7 @@ class AppTranslations extends Translations {
       "Connect Sources": "Connect Sources",
       "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.":
           "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.",
+      "Continue without connecting": "Continue without connecting",
     },
     'fr_FR': {
       'rewards': 'Récompenses',
@@ -191,6 +192,7 @@ class AppTranslations extends Translations {
       "Connect Sources": "Connecter les sources",
       "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.":
           "Connectez vos sources pour collecter et organiser automatiquement tous vos reçus, factures et garanties.",
+      "Continue without connecting": "Continuer sans connecter",
     },
   };
 }

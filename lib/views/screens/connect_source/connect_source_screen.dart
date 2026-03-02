@@ -81,7 +81,8 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
 
               MyText(
                 text:
-                    "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.",
+                    "Connect your sources to automatically collect and organize all your receipts, invoices and warranties."
+                        .tr,
                 size: 12,
                 color: AppColors.grayColor,
               ),
@@ -174,8 +175,8 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
                                     ),
                                     child: MyText(
                                       text: connected
-                                          ? "Connected"
-                                          : "Not Connected",
+                                          ? "Connected".tr
+                                          : "Not Connected".tr,
                                       size: 10,
                                       weight: FontWeight.w500,
                                       color: connected
@@ -207,7 +208,7 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
                 onTap: () {
                   Get.to(() => CubeScreen());
                 },
-                buttonText: "Continue without connecting",
+                buttonText: "Continue without connecting".tr,
                 radius: 12,
               ),
               const SizedBox(height: 30),
