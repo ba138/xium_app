@@ -47,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     const SizedBox(width: 10),
 
-                    MyText(text: "Profile & Setting", size: 16),
+                    MyText(text: "Profile & Setting".tr, size: 16),
 
                     const Spacer(),
 
@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 const SizedBox(height: 30),
-                MyText(text: "User Information", size: 10),
+                MyText(text: "User Information".tr, size: 10),
                 const SizedBox(height: 12),
                 Obx(() {
                   return Row(
@@ -126,31 +126,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                 }),
                 const SizedBox(height: 30),
-                MyText(text: "Connections & Integrations", size: 10),
+                MyText(text: "Connections & Integrations".tr, size: 10),
                 const SizedBox(height: 20),
                 Obx(() {
                   return Column(
                     children: [
                       profileTile(
-                        title: "Gmail",
+                        title: "Gmail".tr,
                         image: Icons.email,
                         isConnected: userController.isEmailConnected,
                       ),
                       Divider(thickness: 0.09),
                       profileTile(
-                        title: "Phone",
+                        title: "Phone".tr,
                         image: Icons.phone,
                         isConnected: userController.isEmailConnected,
                       ),
                       Divider(thickness: 0.09),
                       profileTile(
-                        title: "Bank",
+                        title: "Bank".tr,
                         image: Icons.account_balance,
                         isConnected: userController.isBankConnected,
                       ),
                       Divider(thickness: 0.09),
                       profileTile(
-                        title: "Loyalty",
+                        title: "Loyalty".tr,
                         image: Icons.credit_card,
                         isConnected: userController.isOcrConnected,
                       ),
@@ -159,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }),
                 const SizedBox(height: 40),
                 MyBorderButton(
-                  buttonText: "Manage Connection",
+                  buttonText: "Manage Connection".tr,
                   onTap: () {
                     Get.to(() => ConnectSourceScreen());
                   },
@@ -168,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderColor: AppColors.buttonColor,
                 ),
                 const SizedBox(height: 30),
-                MyText(text: "Application Settings", size: 10),
+                MyText(text: "Application Settings".tr, size: 10),
                 const SizedBox(height: 20),
                 InkWell(
                   onTap: () {
@@ -176,7 +176,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   child: Row(
                     children: [
-                      MyText(text: "Language"),
+                      MyText(text: "Language".tr),
                       const Spacer(),
                       MyText(
                         text: Get.locale?.languageCode == 'fr'
@@ -195,14 +195,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 20),
                 MyText(
-                  text: "Terms of Service",
+                  text: "Terms of Service".tr,
                   onTap: () {
                     Get.to(() => TermsOfServiceScreen());
                   },
                 ),
                 const SizedBox(height: 20),
                 MyText(
-                  text: "Privacy Policy",
+                  text: "Privacy Policy".tr,
                   onTap: () {
                     Get.to(() => PrivacyPolicyScreen());
                   },
@@ -210,14 +210,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 20),
 
                 MyText(
-                  text: "Security",
+                  text: "Security".tr,
                   onTap: () {
                     Get.to(() => SecurityScreen());
                   },
                 ),
                 const SizedBox(height: 20),
                 MyText(
-                  text: "Logout",
+                  text: "Logout".tr,
                   onTap: () {
                     authController.logoutUser();
                   },
@@ -242,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         MyText(text: title, size: 16),
         Spacer(),
         MyText(
-          text: isConnected ? "Connected" : "Not Connected",
+          text: isConnected ? "Connected".tr : "Not Connected".tr,
           color: AppColors.grayColor,
         ),
       ],
