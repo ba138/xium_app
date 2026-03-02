@@ -50,8 +50,8 @@ class OcrController extends GetxController {
         throw "User not logged in";
       }
       Get.snackbar(
-        "Uploading Image",
-        "Image will be processed shortly.",
+        "Uploading Image".tr,
+        "Please wait while we process your document.".tr,
         snackPosition: SnackPosition.TOP,
       );
       Get.offAll(() => DocumentScreen());

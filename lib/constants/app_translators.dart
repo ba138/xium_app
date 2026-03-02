@@ -49,6 +49,9 @@ class AppTranslations extends Translations {
           "Position your documents inside the frame.",
       "If the store is not recognized, you can select it manually.":
           "If the store is not recognized, you can select it manually.",
+      "Uploading Image": "Uploading Image",
+      "Please wait while we process your document.":
+          "Please wait while we process your document.",
     },
     'fr_FR': {
       'rewards': 'Récompenses',
@@ -96,6 +99,9 @@ class AppTranslations extends Translations {
           "Positionnez vos documents à l'intérieur du cadre.",
       "If the store is not recognized, you can select it manually.":
           "Si le magasin n'est pas reconnu, vous pouvez le sélectionner manuellement.",
+      "Uploading Image": "Téléchargement de l'image",
+      "Please wait while we process your document.":
+          "Veuillez patienter pendant que nous traitons votre document.",
     },
   };
 }
