@@ -36,13 +36,13 @@ class _AddLoyaltyCardScreenState extends State<AddLoyaltyCardScreen> {
               ),
             ),
 
-            MyText(text: "Select Image Source", size: 16),
+            MyText(text: "Select Image Source".tr, size: 16),
 
             const SizedBox(height: 24),
 
             sheetTile(
               icon: Icons.camera_alt,
-              title: "Camera",
+              title: "Camera".tr,
               onTap: () {
                 Get.back();
                 orcController.pickImage(fromCamera: true);
@@ -53,7 +53,7 @@ class _AddLoyaltyCardScreenState extends State<AddLoyaltyCardScreen> {
 
             sheetTile(
               icon: Icons.photo_library,
-              title: "Gallery",
+              title: "Gallery".tr,
               onTap: () {
                 Get.back();
                 orcController.pickImage(fromCamera: false);
@@ -117,13 +117,14 @@ class _AddLoyaltyCardScreenState extends State<AddLoyaltyCardScreen> {
               SizedBox(height: 30),
               MyText(
                 text:
-                    "Scan your invoice | receipt | warranty  to help XIUM detect documents.",
+                    "Scan your invoice | receipt | warranty  to help XIUM detect documents."
+                        .tr,
                 size: 20,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
               MyText(
-                text: "Position your documents inside the frame.",
+                text: "Position your documents inside the frame.".tr,
                 size: 14,
               ),
               const SizedBox(height: 50),

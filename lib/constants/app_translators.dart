@@ -40,6 +40,15 @@ class AppTranslations extends Translations {
           "Select a store to view all your related documents.",
       "Search a store": "Search a store",
       "No stores found": "No stores found",
+      "Select Image Source": "Select Image Source",
+      "Camera": "Camera",
+      "Gallery": "Gallery",
+      "Scan your invoice | receipt | warranty  to help XIUM detect documents.":
+          "Scan your invoice | receipt | warranty  to help XIUM detect documents.",
+      "Position your documents inside the frame.":
+          "Position your documents inside the frame.",
+      "If the store is not recognized, you can select it manually.":
+          "If the store is not recognized, you can select it manually.",
     },
     'fr_FR': {
       'rewards': 'Récompenses',
@@ -78,6 +87,15 @@ class AppTranslations extends Translations {
           "Sélectionnez un magasin pour voir tous vos documents liés.",
       "Search a store": "Rechercher un magasin",
       "No stores found": "Aucun magasin trouvé",
+      "Select Image Source": "Sélectionnez la source de l'image",
+      "Camera": "Caméra",
+      "Gallery": "Galerie",
+      "Scan your invoice | receipt | warranty  to help XIUM detect documents.":
+          "Scannez votre facture | reçu | garantie pour aider XIUM à détecter les documents.",
+      "Position your documents inside the frame.":
+          "Positionnez vos documents à l'intérieur du cadre.",
+      "If the store is not recognized, you can select it manually.":
+          "Si le magasin n'est pas reconnu, vous pouvez le sélectionner manuellement.",
     },
   };
 }

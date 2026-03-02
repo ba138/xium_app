@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
 
       locale: lang == 'fr'
           ? const Locale('fr', 'FR')
-          : const Locale('en', 'US'), // ✅ Correct place
+          : const Locale('en', 'US'),
 
       fallbackLocale: const Locale('en', 'US'),
 
