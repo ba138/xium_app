@@ -167,6 +167,60 @@ class AppTranslations extends Translations {
       "Deleting your account will permanently remove all documents and data. This cannot be undone":
           "Deleting your account will permanently remove all documents and data. This cannot be undone",
       "Delete permanently": "Delete permanently",
+      "terms_of_service": "Terms of Service",
+      "effective_date": "Effective Date: 01 January 2026",
+
+      "about_xium_title": "1. About Xium",
+      "about_xium_body":
+          "Xium is a document classification and management application that helps users organize financial and non-financial documents. The app allows users to connect bank accounts using Tink, forward invoices via email, upload documents, scan receipts, warranties, and store loyalty card information.",
+
+      "user_eligibility_title": "2. User Eligibility",
+      "user_eligibility_body":
+          "You must be at least 18 years old to use Xium. By using the app, you confirm that you meet this requirement.",
+
+      "user_data_title": "3. User Data & Permissions",
+      "user_data_body":
+          "Xium may request access to bank data via Tink, emails you choose to share, and your device camera or gallery for document uploads. You are responsible for ensuring the data you share is accurate and lawful.",
+
+      "bank_data_title": "4. Bank Data & Tink Integration",
+      "bank_data_body":
+          "Xium uses Tink to securely connect to your bank accounts. Xium does not store your banking credentials. All bank connections are governed by Tink’s terms and privacy policies.",
+
+      "email_forwarding_title": "5. Email Forwarding",
+      "email_forwarding_body":
+          "When emails are forwarded to Xium, only the email text is processed. Attachments such as PDFs or images may not be accessible due to third-party security restrictions. For best results, users should upload documents directly.",
+
+      "classification_title": "6. Document Classification",
+      "classification_body":
+          "Xium uses automated and AI-based systems to classify documents. While we strive for accuracy, classification results may not always be correct. Users should verify critical information independently.",
+
+      "loyalty_title": "7. Loyalty Cards & Phone Numbers",
+      "loyalty_body":
+          "If you choose to store loyalty card details or phone numbers, you confirm that the information belongs to you and is stored solely to provide app functionality.",
+
+      "data_security_title": "8. Data Security",
+      "data_security_body":
+          "We take reasonable measures to protect your data. However, no system is completely secure, and Xium cannot guarantee absolute data security.",
+
+      "prohibited_use_title": "9. Prohibited Use",
+      "prohibited_use_body":
+          "You agree not to misuse the app, upload unauthorized content, or attempt to reverse engineer or disrupt the service.",
+
+      "disclaimer_title": "10. Disclaimer",
+      "disclaimer_body":
+          "Xium is provided on an “as-is” basis. Xium does not provide financial, legal, or tax advice.",
+
+      "liability_title": "11. Limitation of Liability",
+      "liability_body":
+          "To the maximum extent permitted by law, Xium shall not be liable for any indirect or consequential damages arising from use of the app.",
+
+      "changes_title": "12. Changes to Terms",
+      "changes_body":
+          "We may update these Terms from time to time. Continued use of the app indicates acceptance of the updated Terms.",
+
+      "contact_title": "13. Contact",
+      "contact_body":
+          "If you have any questions about these Terms, please contact us at contact@xium.io",
     },
     'fr_FR': {
       "Deleting your account will permanently remove all documents and data. This cannot be undone":
@@ -335,6 +389,60 @@ class AppTranslations extends Translations {
       "Continue without connecting": "Continuer sans connecter",
       "Sign In with Gmail": "Se connecter avec Gmail",
       "Sign In with Outlook": "Se connecter avec Outlook",
+      "terms_of_service": "Conditions d'utilisation",
+      "effective_date": "Date d'entrée en vigueur : 01 janvier 2026",
+
+      "about_xium_title": "1. À propos de Xium",
+      "about_xium_body":
+          "Xium est une application de classification et de gestion de documents qui aide les utilisateurs à organiser des documents financiers et non financiers. L'application permet aux utilisateurs de connecter des comptes bancaires via Tink, de transférer des factures par e-mail, de télécharger des documents, de scanner des reçus, des garanties et de stocker des informations de cartes de fidélité.",
+
+      "user_eligibility_title": "2. Éligibilité de l'utilisateur",
+      "user_eligibility_body":
+          "Vous devez avoir au moins 18 ans pour utiliser Xium. En utilisant l'application, vous confirmez que vous remplissez cette condition.",
+
+      "user_data_title": "3. Données utilisateur et autorisations",
+      "user_data_body":
+          "Xium peut demander l'accès aux données bancaires via Tink, aux e-mails que vous choisissez de partager, ainsi qu'à la caméra ou à la galerie de votre appareil pour le téléchargement de documents. Vous êtes responsable de l'exactitude et de la légalité des données que vous partagez.",
+
+      "bank_data_title": "4. Données bancaires et intégration Tink",
+      "bank_data_body":
+          "Xium utilise Tink pour se connecter en toute sécurité à vos comptes bancaires. Xium ne stocke pas vos identifiants bancaires. Toutes les connexions bancaires sont régies par les conditions et politiques de confidentialité de Tink.",
+
+      "email_forwarding_title": "5. Transfert d'e-mails",
+      "email_forwarding_body":
+          "Lorsque des e-mails sont transférés à Xium, seul le texte de l'e-mail est traité. Les pièces jointes telles que les PDF ou images peuvent ne pas être accessibles en raison de restrictions de sécurité de tiers. Pour de meilleurs résultats, les utilisateurs doivent télécharger les documents directement.",
+
+      "classification_title": "6. Classification des documents",
+      "classification_body":
+          "Xium utilise des systèmes automatisés et basés sur l'IA pour classer les documents. Bien que nous nous efforcions d'assurer l'exactitude, les résultats peuvent ne pas toujours être corrects. Les utilisateurs doivent vérifier les informations importantes de manière indépendante.",
+
+      "loyalty_title": "7. Cartes de fidélité et numéros de téléphone",
+      "loyalty_body":
+          "Si vous choisissez de stocker des détails de cartes de fidélité ou des numéros de téléphone, vous confirmez que ces informations vous appartiennent et sont stockées uniquement pour fournir les fonctionnalités de l'application.",
+
+      "data_security_title": "8. Sécurité des données",
+      "data_security_body":
+          "Nous prenons des mesures raisonnables pour protéger vos données. Cependant, aucun système n'est totalement sécurisé et Xium ne peut garantir une sécurité absolue des données.",
+
+      "prohibited_use_title": "9. Utilisation interdite",
+      "prohibited_use_body":
+          "Vous acceptez de ne pas utiliser l'application de manière abusive, de ne pas télécharger de contenu non autorisé ou de ne pas tenter de rétroconcevoir ou perturber le service.",
+
+      "disclaimer_title": "10. Avertissement",
+      "disclaimer_body":
+          "Xium est fourni « tel quel ». Xium ne fournit pas de conseils financiers, juridiques ou fiscaux.",
+
+      "liability_title": "11. Limitation de responsabilité",
+      "liability_body":
+          "Dans la mesure maximale permise par la loi, Xium ne pourra être tenu responsable de tout dommage indirect ou consécutif résultant de l'utilisation de l'application.",
+
+      "changes_title": "12. Modifications des conditions",
+      "changes_body":
+          "Nous pouvons mettre à jour ces Conditions de temps à autre. L'utilisation continue de l'application indique l'acceptation des Conditions mises à jour.",
+
+      "contact_title": "13. Contact",
+      "contact_body":
+          "Si vous avez des questions concernant ces Conditions, veuillez nous contacter à contact@xium.io",
     },
   };
 }
