@@ -174,7 +174,7 @@ class MailController extends GetxController {
                   child: TextButton(
                     onPressed: () => Get.back(),
                     child: Text(
-                      "Done",
+                      "Done".tr,
                       style: TextStyle(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
