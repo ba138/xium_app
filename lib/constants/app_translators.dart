@@ -137,8 +137,47 @@ class AppTranslations extends Translations {
           "Phone Number\nConnected Successfully",
       "SMS-based receipts will be detected automatically.":
           "SMS-based receipts will be detected automatically.",
+      "Connect your bank account": "Connect your bank account",
+      "XIUM will detect store names from your transactions to organize your receipts automatically.":
+          "XIUM will detect store names from your transactions to organize your receipts automatically.",
+      "Secure, encrypted, removable anytime.":
+          "Secure, encrypted, removable anytime.",
+      "Continue with secure banking": "Continue with secure banking",
+      "Add Loyalty Card": "Add Loyalty Card",
+      "Save your loyalty cards to automatically link receipts and track rewards.":
+          "Save your loyalty cards to automatically link receipts and track rewards.",
+      "Store Name": "Store Name",
+      "e.g. Nike, Amazon, Starbucks": "e.g. Nike, Amazon, Starbucks",
+      "Loyalty Card Number": "Loyalty Card Number",
+      "Enter membership ID": "Enter membership ID",
+      "Nickname (Optional)": "Nickname (Optional)",
+      "e.g. My Nike Card": "e.g. My Nike Card",
+      "Save Loyalty Card": "Save Loyalty Card",
+      "Store name and card number are required":
+          "Store name and card number are required",
+      "Loyalty card added successfully": "Loyalty card added successfully",
     },
     'fr_FR': {
+      "Loyalty card added successfully":
+          "Carte de fidélité ajoutée avec succès",
+      "Store name and card number are required":
+          "Le nom du magasin et le numéro de carte sont requis",
+      "Save Loyalty Card": "Enregistrer la carte de fidélité",
+      "e.g. My Nike Card": "ex. Ma carte Nike",
+      "Nickname (Optional)": "Surnom (Optionnel)",
+      "Loyalty Card Number": "Numéro de carte de fidélité",
+      "Enter membership ID": "Entrez l'ID d'adhésion",
+      "e.g. Nike, Amazon, Starbucks": "ex. Nike, Amazon, Starbucks",
+      "Store Name": "Nom du magasin",
+      "Save your loyalty cards to automatically link receipts and track rewards.":
+          "Enregistrez vos cartes de fidélité pour lier automatiquement les reçus et suivre les récompenses.",
+      "Add Loyalty Card": "Ajouter une carte de fidélité",
+      "Continue with secure banking": "Continuer avec une banque sécurisée",
+      "Secure, encrypted, removable anytime.":
+          "Sécurisé, crypté, amovible à tout moment.",
+      "XIUM will detect store names from your transactions to organize your receipts automatically.":
+          "XIUM détectera les noms des magasins à partir de vos transactions pour organiser automatiquement vos reçus.",
+      "Connect your bank account": "Connectez votre compte bancaire",
       "SMS-based receipts will be detected automatically.":
           "Les reçus basés sur SMS seront détectés automatiquement.",
       'Phone Number\nConnected Successfully':

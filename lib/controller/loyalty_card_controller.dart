@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:xium_app/constants/app_colors.dart';
 
 class LoyaltyCardController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -18,12 +19,16 @@ class LoyaltyCardController extends GetxController {
     try {
       final uid = _auth.currentUser?.uid;
       if (uid == null) {
-        Get.snackbar("Error", "User not logged in");
+        Get.snackbar("Error", "User not logged in".tr);
         return;
       }
 
       if (storeName.isEmpty || cardNumber.isEmpty) {
-        Get.snackbar("Error", "Store name and card number are required");
+        Get.snackbar(
+          "Error",
+          "Store name and card number are required".tr,
+          colorText: AppColors.onPrimary,
+        );
         return;
       }
 
@@ -52,7 +57,7 @@ class LoyaltyCardController extends GetxController {
 
       Get.snackbar(
         "Success",
-        "Loyalty card added successfully",
+        "Loyalty card added successfully".tr,
         colorText: Colors.white,
       );
     } catch (e) {

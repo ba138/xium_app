@@ -34,7 +34,7 @@ class _ConnectBankCardState extends State<ConnectBankCard> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  MyText(text: "Back", size: 16),
+                  MyText(text: "Back".tr, size: 16),
                   const Spacer(),
                 ],
               ),
@@ -47,12 +47,13 @@ class _ConnectBankCardState extends State<ConnectBankCard> {
                 color: AppColors.buttonColor,
               ),
 
-              MyText(text: "Connect your bank account", size: 20),
+              MyText(text: "Connect your bank account".tr, size: 20),
               const SizedBox(height: 10),
 
               MyText(
                 text:
-                    "XIUM will detect store names from your transactions to organize your receipts automatically.",
+                    "XIUM will detect store names from your transactions to organize your receipts automatically."
+                        .tr,
                 size: 12,
                 color: AppColors.grayColor,
                 textAlign: TextAlign.center,
@@ -61,7 +62,7 @@ class _ConnectBankCardState extends State<ConnectBankCard> {
               const SizedBox(height: 18),
 
               MyText(
-                text: "Secure, encrypted, removable anytime.",
+                text: "Secure, encrypted, removable anytime.".tr,
                 color: AppColors.buttonColor,
               ),
 
@@ -72,7 +73,7 @@ class _ConnectBankCardState extends State<ConnectBankCard> {
                   tinkController.openTinkLink();
                   // () => _openBankSelectionSheet()
                 },
-                buttonText: "Continue with secure banking",
+                buttonText: "Continue with secure banking".tr,
                 radius: 12,
               ),
               const SizedBox(height: 30),

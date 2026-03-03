@@ -33,7 +33,7 @@ class AddLoyaltyInfoScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  MyText(text: "Back", size: 16),
+                  MyText(text: "Back".tr, size: 16),
                 ],
               ),
 
@@ -41,7 +41,7 @@ class AddLoyaltyInfoScreen extends StatelessWidget {
 
               /// 🏷 Title
               MyText(
-                text: "Add Loyalty Card",
+                text: "Add Loyalty Card".tr,
                 size: 22,
                 weight: FontWeight.w600,
               ),
@@ -50,7 +50,8 @@ class AddLoyaltyInfoScreen extends StatelessWidget {
 
               MyText(
                 text:
-                    "Save your loyalty cards to automatically link receipts and track rewards.",
+                    "Save your loyalty cards to automatically link receipts and track rewards."
+                        .tr,
                 size: 12,
                 color: AppColors.grayColor,
               ),
@@ -75,8 +76,8 @@ class AddLoyaltyInfoScreen extends StatelessWidget {
                       children: [
                         _inputField(
                           controller: storeController,
-                          label: "Store Name",
-                          hint: "e.g. Nike, Amazon, Starbucks",
+                          label: "Store Name".tr,
+                          hint: "e.g. Nike, Amazon, Starbucks".tr,
                           icon: Icons.store,
                         ),
 
@@ -84,8 +85,8 @@ class AddLoyaltyInfoScreen extends StatelessWidget {
 
                         _inputField(
                           controller: cardNumberController,
-                          label: "Loyalty Card Number",
-                          hint: "Enter membership ID",
+                          label: "Loyalty Card Number".tr,
+                          hint: "Enter membership ID".tr,
                           icon: Icons.credit_card,
                         ),
 
@@ -93,8 +94,8 @@ class AddLoyaltyInfoScreen extends StatelessWidget {
 
                         _inputField(
                           controller: nicknameController,
-                          label: "Nickname (Optional)",
-                          hint: "e.g. My Nike Card",
+                          label: "Nickname (Optional)".tr,
+                          hint: "e.g. My Nike Card".tr,
                           icon: Icons.edit,
                         ),
                       ],
@@ -107,7 +108,7 @@ class AddLoyaltyInfoScreen extends StatelessWidget {
 
               /// 💾 Save Button
               MyButton(
-                buttonText: "Save Loyalty Card",
+                buttonText: "Save Loyalty Card".tr,
                 radius: 14,
                 onTap: () {
                   // 🔜 Connect logic later
