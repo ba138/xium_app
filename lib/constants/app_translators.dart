@@ -115,8 +115,22 @@ class AppTranslations extends Translations {
           '2. Tap Forward\n'
           '3. Paste the XIUM email above\n'
           '4. Send the email',
+      'auto_detect_info':
+          'XIUM will automatically detect and organize:\n'
+          '• Receipts\n'
+          '• Invoices\n'
+          '• Warranties\n\n'
+          'No setup or verification required.',
+      "Done": "Done",
     },
     'fr_FR': {
+      "Done": "Terminé",
+      'auto_detect_info':
+          'XIUM détectera et organisera automatiquement :\n'
+          '• Reçus\n'
+          '• Factures\n'
+          '• Garanties\n\n'
+          'Aucune configuration ou vérification requise.',
       'email_steps':
           '1. Ouvrez un e-mail de reçu ou de facture\n'
           '2. Appuyez sur Transférer\n'

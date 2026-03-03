@@ -161,12 +161,7 @@ class MailController extends GetxController {
                 const SizedBox(height: 14),
 
                 MyText(
-                  text:
-                      "XIUM will automatically detect and organize:\n"
-                      "• Receipts\n"
-                      "• Invoices\n"
-                      "• Warranties\n\n"
-                      "No setup or verification required.",
+                  text: 'auto_detect_info'.tr,
                   size: 13,
                   color: Colors.white60,
                 ),
