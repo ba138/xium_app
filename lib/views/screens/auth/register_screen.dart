@@ -23,6 +23,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.onError),
+        ),
+        title: MyText(text: "Register".tr, size: 18, color: AppColors.onError),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -30,15 +41,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-                MyText(
-                  text: "Register",
-                  size: 32,
-                  textAlign: TextAlign.start,
-                  weight: FontWeight.bold,
-                ),
                 SizedBox(height: 8),
-                MyText(text: "Create your Account"),
+                MyText(text: "Create your Account", size: 16),
                 SizedBox(height: 40),
                 Form(
                   key: authController.formKey,

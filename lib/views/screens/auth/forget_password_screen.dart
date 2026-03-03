@@ -42,15 +42,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-                MyText(
-                  text: "forgot_password".tr,
-                  size: 32,
-                  textAlign: TextAlign.start,
-                  weight: FontWeight.bold,
-                ),
                 SizedBox(height: 8),
-                MyText(text: "enter_email_reset".tr),
+                MyText(text: "enter_email_reset".tr, size: 16),
                 SizedBox(height: 40),
 
                 MyTextField(
