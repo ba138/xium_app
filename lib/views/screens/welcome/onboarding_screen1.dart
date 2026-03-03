@@ -27,7 +27,7 @@ class OnboardingScreen1 extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    Spacer(),
+                    const Spacer(),
 
                     /// IMAGE
                     CommonImageView(
@@ -53,7 +53,7 @@ class OnboardingScreen1 extends StatelessWidget {
                         Container(
                           height: 5,
                           width: 5,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: AppColors.grayColor,
                           ),
@@ -62,7 +62,7 @@ class OnboardingScreen1 extends StatelessWidget {
                         Container(
                           height: 5,
                           width: 5,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: AppColors.grayColor,
                           ),
@@ -74,7 +74,7 @@ class OnboardingScreen1 extends StatelessWidget {
 
                     /// TITLE
                     MyText(
-                      text: "Centralize everything automatically",
+                      text: "onboard1_title".tr,
                       size: 24,
                       weight: FontWeight.w500,
                     ),
@@ -82,17 +82,15 @@ class OnboardingScreen1 extends StatelessWidget {
                     const SizedBox(height: 12),
 
                     /// SUBTITLE
-                    MyText(
-                      text:
-                          "Your receipts, invoices and warranties are collected and sorted effortlessly",
-                    ),
+                    MyText(text: "onboard1_subtitle".tr),
+
                     const SizedBox(height: 40),
 
                     /// BUTTON
                     WelcomeButton(
-                      title: "Next",
+                      title: "next_button".tr,
                       ontap: () {
-                        Get.to(() => OnboardingScreen2());
+                        Get.to(() => const OnboardingScreen2());
                       },
                     ),
 

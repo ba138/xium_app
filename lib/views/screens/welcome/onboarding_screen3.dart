@@ -76,7 +76,7 @@ class OnboardingScreen3 extends StatelessWidget {
                     Align(
                       alignment: Alignment.topLeft,
                       child: MyText(
-                        text: "Secure. Simple. Instant",
+                        text: "onboard3_title".tr,
                         size: 24,
                         weight: FontWeight.w500,
                       ),
@@ -87,17 +87,14 @@ class OnboardingScreen3 extends StatelessWidget {
                     /// SUBTITLE
                     Align(
                       alignment: Alignment.topLeft,
-                      child: MyText(
-                        text:
-                            "Your data is encrypted and accessible in one gesture.",
-                      ),
+                      child: MyText(text: "onboard3_subtitle".tr),
                     ),
 
                     const SizedBox(height: 40),
 
                     /// BUTTON
                     WelcomeButton(
-                      title: "Next",
+                      title: "next_button".tr,
                       ontap: () {
                         Get.to(() => OnboardingScreen4());
                       },

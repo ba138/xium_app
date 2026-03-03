@@ -75,7 +75,7 @@ class OnboardingScreen2 extends StatelessWidget {
                     Align(
                       alignment: Alignment.topLeft,
                       child: MyText(
-                        text: "Smart retrieval",
+                        text: "onboard2_title".tr,
                         size: 24,
                         weight: FontWeight.w500,
                       ),
@@ -84,16 +84,13 @@ class OnboardingScreen2 extends StatelessWidget {
                     const SizedBox(height: 12),
 
                     /// SUBTITLE
-                    MyText(
-                      text:
-                          "The application automatically detects stores and organizes your documents",
-                    ),
+                    MyText(text: "onboard2_subtitle".tr),
 
                     const SizedBox(height: 40),
 
                     /// BUTTON
                     WelcomeButton(
-                      title: "Next",
+                      title: "next_button".tr,
                       ontap: () {
                         Get.to(() => OnboardingScreen3());
                       },

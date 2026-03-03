@@ -280,8 +280,50 @@ class AppTranslations extends Translations {
       "privacy_contact_title": "12. Contact Us",
       "privacy_contact_body":
           "If you have questions or concerns about this Privacy Policy, please contact us at contact@xium.io",
+      "onboard1_title": "Centralize everything automatically",
+
+      "onboard1_subtitle":
+          "Your receipts, invoices and warranties are collected and sorted effortlessly",
+
+      "next_button": "Next",
+      "onboard2_title": "Smart retrieval",
+
+      "onboard2_subtitle":
+          "The application automatically detects stores and organizes your documents",
+      "onboard3_title": "Secure. Simple. Instant",
+
+      "onboard3_subtitle":
+          "Your data is encrypted and accessible in one gesture.",
+      "login_email": "Login with Email and Password",
+
+      "or_login_with": "Or login with",
+
+      "sign_in_google": "Sign In With Google",
+
+      "sign_in_apple": "Sign In With Apple",
     },
     'fr_FR': {
+      "login_email": "Se connecter avec e-mail et mot de passe",
+
+      "or_login_with": "Ou se connecter avec",
+
+      "sign_in_google": "Se connecter avec Google",
+
+      "sign_in_apple": "Se connecter avec Apple",
+      "onboard3_title": "Sécurisé. Simple. Instantané",
+
+      "onboard3_subtitle":
+          "Vos données sont chiffrées et accessibles en un seul geste.",
+      "onboard2_title": "Recherche intelligente",
+
+      "onboard2_subtitle":
+          "L'application détecte automatiquement les magasins et organise vos documents",
+      "onboard1_title": "Centralisez tout automatiquement",
+
+      "onboard1_subtitle":
+          "Vos reçus, factures et garanties sont collectés et triés sans effort",
+
+      "next_button": "Suivant",
       "privacy_policy": "Politique de confidentialité",
       "privacy_effective_date": "Date d'entrée en vigueur : 01 janvier 2026",
 

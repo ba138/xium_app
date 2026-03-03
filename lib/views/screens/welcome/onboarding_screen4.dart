@@ -31,16 +31,21 @@ class OnboardingScreen4 extends StatelessWidget {
                 const SizedBox(height: 60),
                 CommonImageView(imagePath: Assets.logo, height: 300),
                 Spacer(),
+
+                /// 🔹 Login with Email
                 MyButton(
                   onTap: () {
                     Get.offAll(() => LoginScreen());
                   },
-                  buttonText: "Login with Email and Password",
+                  buttonText: "login_email".tr,
                   radius: 12,
                   hasicon: true,
                   choiceIcon: Assets.phone,
                 ),
+
                 const SizedBox(height: 20),
+
+                /// 🔹 OR Divider
                 Row(
                   spacing: 8,
                   children: [
@@ -50,7 +55,7 @@ class OnboardingScreen4 extends StatelessWidget {
                         color: AppColors.grayColor,
                       ),
                     ),
-                    MyText(text: "Or login with "),
+                    MyText(text: "or_login_with".tr),
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
@@ -59,26 +64,33 @@ class OnboardingScreen4 extends StatelessWidget {
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 20),
+
+                /// 🔹 Google Login
                 Platform.isAndroid
                     ? GlassiyButton(
-                        title: "Sign In With Google",
+                        title: "sign_in_google".tr,
                         ontap: () {
                           authController.signInWithGoogle();
                         },
                         image: Assets.google,
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
+
                 const SizedBox(height: 12),
+
+                /// 🔹 Apple Login
                 Platform.isIOS
                     ? GlassiyButton(
-                        title: "Sign In With Apple",
+                        title: "sign_in_apple".tr,
                         ontap: () {
                           authController.signInWithApple();
                         },
                         image: Assets.fb,
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
+
                 const SizedBox(height: 20),
               ],
             ),
