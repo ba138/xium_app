@@ -40,18 +40,19 @@ class _ConnectPhoneScreenState extends State<ConnectPhoneScreen> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  MyText(text: "Back", size: 16),
+                  MyText(text: "Back".tr, size: 16),
                   const Spacer(),
                 ],
               ),
               const SizedBox(height: 30),
 
-              MyText(text: "Connect Phone number", size: 20),
+              MyText(text: "Connect Phone number".tr, size: 20),
               const SizedBox(height: 10),
 
               MyText(
                 text:
-                    "Receive digital receipts automatically from stores\nthat send SMS confirmations.",
+                    "Receive digital receipts automatically from stores\nthat send SMS confirmations."
+                        .tr,
                 size: 12,
                 color: AppColors.grayColor,
                 textAlign: TextAlign.center,

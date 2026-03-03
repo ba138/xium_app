@@ -122,8 +122,14 @@ class AppTranslations extends Translations {
           '• Warranties\n\n'
           'No setup or verification required.',
       "Done": "Done",
+      "Connect Phone number": "Connect Phone number",
+      "Receive":
+          "Receive digital receipts automatically from stores\nthat send SMS confirmations.",
     },
     'fr_FR': {
+      "Receive":
+          "Recevez automatiquement des reçus numériques des magasins\nqui envoient des confirmations par SMS.",
+      'Connect Phone number': "Connecter le numéro de téléphone",
       "Done": "Terminé",
       'auto_detect_info':
           'XIUM détectera et organisera automatiquement :\n'
