@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/views/screens/connect_source/add_loyalty_card_info_screen.dart';
+import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
+import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
+import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
+import 'package:xium_app/views/screens/home/add_loyalty_card_screen.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -159,6 +165,12 @@ class HomeScreen extends StatelessWidget {
     ];
 
     final labels = ["Email".tr, "Bank".tr, "Phone".tr, "Loyalty".tr];
+    final tap = {
+      0: () => Get.to(() => ConnectEmailScreen()),
+      1: () => Get.to(() => ConnectBankCard()),
+      2: () => Get.to(() => ConnectPhoneScreen()),
+      3: () => Get.to(() => AddLoyaltyInfoScreen()),
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,22 +189,27 @@ class HomeScreen extends StatelessWidget {
           children: List.generate(items.length, (index) {
             return Column(
               children: [
-                Container(
-                  width: 80,
-                  height: 80,
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.buttonColor,
-                        Colors.blue.shade900.withValues(alpha: 0.9),
-                      ],
-                      begin: AlignmentGeometry.topCenter,
-                      end: AlignmentGeometry.bottomCenter,
+                GestureDetector(
+                  onTap: () {
+                    tap[index]?.call();
+                  },
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.buttonColor,
+                          Colors.blue.shade900.withValues(alpha: 0.9),
+                        ],
+                        begin: AlignmentGeometry.topCenter,
+                        end: AlignmentGeometry.bottomCenter,
+                      ),
                     ),
+                    child: Icon(items[index], color: Colors.white, size: 28),
                   ),
-                  child: Icon(items[index], color: Colors.white, size: 28),
                 ),
                 const SizedBox(height: 6),
                 Text(
