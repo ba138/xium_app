@@ -16,7 +16,7 @@ class PhoneConnectController extends GetxController {
   Future<void> connectPhone(String phoneNumber, String countryCode) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) {
-      Get.snackbar("Error", "User not logged in");
+      Get.snackbar("Error", "User not logged in".tr);
       return;
     }
 
@@ -27,7 +27,7 @@ class PhoneConnectController extends GetxController {
       final userSnap = await userRef.get();
 
       if (!userSnap.exists) {
-        Get.snackbar("Error", "User not found");
+        Get.snackbar("Error", "User not found".tr);
         return;
       }
 
@@ -37,8 +37,8 @@ class PhoneConnectController extends GetxController {
       /// ✅ Check if already connected
       if (source['sms'] == 'connected') {
         Get.snackbar(
-          "Already Connected",
-          "Phone number is already connected",
+          "Already Connected".tr,
+          "Phone number is already connected".tr,
           colorText: AppColors.primary,
         );
         return;
@@ -46,7 +46,7 @@ class PhoneConnectController extends GetxController {
 
       /// ✅ Validate input
       if (countryCode.isEmpty || phoneNumber.isEmpty) {
-        Get.snackbar("Error", "Please enter phone number");
+        Get.snackbar("Error", "Please enter phone number".tr);
         return;
       }
 
@@ -97,7 +97,7 @@ class PhoneConnectController extends GetxController {
 
               /// TITLE
               MyText(
-                text: "Phone Number\nConnected Successfully",
+                text: "Phone Number\nConnected Successfully".tr,
                 size: 18,
                 weight: FontWeight.w600,
                 textAlign: TextAlign.center,
@@ -107,7 +107,7 @@ class PhoneConnectController extends GetxController {
 
               /// SUBTITLE
               MyText(
-                text: "SMS-based receipts will be detected automatically.",
+                text: "SMS-based receipts will be detected automatically.".tr,
                 size: 10,
                 color: Colors.white70,
                 textAlign: TextAlign.center,

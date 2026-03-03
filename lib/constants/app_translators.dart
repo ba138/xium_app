@@ -128,8 +128,27 @@ class AppTranslations extends Translations {
       "Add Phone No": "Add Phone No",
       "Number":
           "Your number is used only to detect receipts.\nNo SMS will be sent.",
+      "User not logged in": "User not logged in",
+      "User not found": "User not found",
+      "Already Connected": "Already Connected",
+      "Phone number is already connected": "Phone number is already connected",
+      "Please enter phone number": "Please enter phone number",
+      "Phone Number\nConnected Successfully":
+          "Phone Number\nConnected Successfully",
+      "SMS-based receipts will be detected automatically.":
+          "SMS-based receipts will be detected automatically.",
     },
     'fr_FR': {
+      "SMS-based receipts will be detected automatically.":
+          "Les reçus basés sur SMS seront détectés automatiquement.",
+      'Phone Number\nConnected Successfully':
+          "Numéro de téléphone\nconnecté avec succès",
+      "Please enter phone number": "Veuillez entrer le numéro de téléphone",
+      "Already Connected": "Déjà connecté",
+      "Phone number is already connected":
+          "Le numéro de téléphone est déjà connecté",
+      "User not found": "Utilisateur non trouvé",
+      "User not logged in": "Utilisateur non connecté",
       "Number":
           "Votre numéro est utilisé uniquement pour détecter les reçus.\nAucun SMS ne sera envoyé.",
       "Add Phone No": "Ajouter le numéro de téléphone",
