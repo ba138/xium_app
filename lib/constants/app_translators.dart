@@ -97,8 +97,42 @@ class AppTranslations extends Translations {
       "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.":
           "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.",
       "Continue without connecting": "Continue without connecting",
+      "Sign In with Outlook": "Sign In with Outlook",
+      "Sign In with Gmail": "Sign In with Gmail",
+      "Connect Email": "Connect Email",
+      "Connect your email address": "Connect your email address",
+      "To automatically retrieve your invoices, receipts and warranties sent by email":
+          "To automatically retrieve your invoices, receipts and warranties sent by email",
+      "Save Changes": "Save Changes",
+      "Email Scanning": "Email Scanning",
+      "To automatically classify your documents, forward your emails to this address:":
+          "To automatically classify your documents, forward your emails to this address:",
+      "Note: When signing up with Apple, a private relay email may be used. To avoid missing emails, please check your email in Settings and update it to your Gmail address if a private email is selected.":
+          "Note: When signing up with Apple, a private relay email may be used. To avoid missing emails, please check your email in Settings and update it to your Gmail address if a private email is selected.",
+      "How it works": "How it works",
+      'email_steps':
+          '1. Open any receipt or invoice email\n'
+          '2. Tap Forward\n'
+          '3. Paste the XIUM email above\n'
+          '4. Send the email',
     },
     'fr_FR': {
+      'email_steps':
+          '1. Ouvrez un e-mail de reçu ou de facture\n'
+          '2. Appuyez sur Transférer\n'
+          '3. Collez l\'adresse e-mail XIUM ci-dessus\n'
+          '4. Envoyez l\'e-mail',
+      "How it works": "Comment ça marche",
+      "Note: When signing up with Apple, a private relay email may be used. To avoid missing emails, please check your email in Settings and update it to your Gmail address if a private email is selected.":
+          "Remarque : Lors de l'inscription avec Apple, une adresse e-mail de relais privé peut être utilisée. Pour éviter de manquer des e-mails, veuillez vérifier votre e-mail dans les paramètres et le mettre à jour avec votre adresse Gmail si une adresse e-mail privée est sélectionnée.",
+      "To automatically classify your documents, forward your emails to this address:":
+          "Pour classer automatiquement vos documents, transférez vos e-mails à cette adresse :",
+      "Email Scanning": "Analyse des e-mails",
+      "Save Changes": "Enregistrer les modifications",
+      "To automatically retrieve your invoices, receipts and warranties sent by email":
+          "Pour récupérer automatiquement vos factures, reçus et garanties envoyés par e-mail",
+      "Connect your email address": "Connectez votre adresse e-mail",
+      "Connect Email": "Connecter l'email",
       'rewards': 'Récompenses',
       "Documents": "Documents",
       "Welcome back": "Bon retour",
@@ -193,6 +227,8 @@ class AppTranslations extends Translations {
       "Connect your sources to automatically collect and organize all your receipts, invoices and warranties.":
           "Connectez vos sources pour collecter et organiser automatiquement tous vos reçus, factures et garanties.",
       "Continue without connecting": "Continuer sans connecter",
+      "Sign In with Gmail": "Se connecter avec Gmail",
+      "Sign In with Outlook": "Se connecter avec Outlook",
     },
   };
 }

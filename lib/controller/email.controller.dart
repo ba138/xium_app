@@ -70,7 +70,7 @@ class MailController extends GetxController {
               children: [
                 /// TITLE
                 MyText(
-                  text: "Email Scanning",
+                  text: "Email Scanning".tr,
                   size: 18,
                   weight: FontWeight.w600,
                   color: Colors.white,
@@ -81,7 +81,8 @@ class MailController extends GetxController {
                 /// DESCRIPTION
                 MyText(
                   text:
-                      "To automatically classify your documents, forward your emails to this address:",
+                      "To automatically classify your documents, forward your emails to this address:"
+                          .tr,
                   size: 13,
                   color: Colors.white70,
                 ),
@@ -136,7 +137,8 @@ class MailController extends GetxController {
                   visible: Platform.isIOS,
                   child: MyText(
                     text:
-                        "Note: When signing up with Apple, a private relay email may be used. To avoid missing emails, please check your email in Settings and update it to your Gmail address if a private email is selected.",
+                        "Note: When signing up with Apple, a private relay email may be used. To avoid missing emails, please check your email in Settings and update it to your Gmail address if a private email is selected."
+                            .tr,
                     size: 14,
                     weight: FontWeight.w600,
                     color: Colors.red,
@@ -146,7 +148,7 @@ class MailController extends GetxController {
 
                 /// HOW IT WORKS
                 MyText(
-                  text: "How it works",
+                  text: "How it works".tr,
                   size: 14,
                   weight: FontWeight.w600,
                   color: Colors.white,
@@ -154,15 +156,7 @@ class MailController extends GetxController {
 
                 const SizedBox(height: 8),
 
-                MyText(
-                  text:
-                      "1. Open any receipt or invoice email\n"
-                      "2. Tap Forward\n"
-                      "3. Paste the XIUM email above\n"
-                      "4. Send the email",
-                  size: 13,
-                  color: Colors.white70,
-                ),
+                MyText(text: 'email_steps'.tr, size: 13, color: Colors.white70),
 
                 const SizedBox(height: 14),
 

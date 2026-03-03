@@ -19,8 +19,8 @@ class _ConnectEmailScreenState extends State<ConnectEmailScreen> {
   int selectedIndex = -1; // nothing selected initially
 
   final List<Map<String, dynamic>> emailOptions = [
-    {"image": Assets.gmail, "title": "Sign In with Gmail"},
-    {"image": Assets.outlook, "title": "Sign In with Outlook"},
+    {"image": Assets.gmail, "title": "Sign In with Gmail".tr},
+    {"image": Assets.outlook, "title": "Sign In with Outlook".tr},
     // {"image": Assets.mail, "title": "Sign in with another address"},
   ];
   var emailController = Get.put(MailController());
@@ -43,16 +43,17 @@ class _ConnectEmailScreenState extends State<ConnectEmailScreen> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  MyText(text: "Connect Email", size: 16),
+                  MyText(text: "Connect Email".tr, size: 16),
                   const Spacer(),
                 ],
               ),
               const SizedBox(height: 30),
-              MyText(text: "Connect your email address", size: 20),
+              MyText(text: "Connect your email address".tr, size: 20),
               const SizedBox(height: 10),
               MyText(
                 text:
-                    "To automatically retrieve your invoices, receipts and warranties sent by email",
+                    "To automatically retrieve your invoices, receipts and warranties sent by email"
+                        .tr,
                 size: 12,
                 color: AppColors.grayColor,
                 textAlign: TextAlign.center,
@@ -143,7 +144,7 @@ class _ConnectEmailScreenState extends State<ConnectEmailScreen> {
                 onTap: () {
                   emailController.handleEmailSetup(context);
                 },
-                buttonText: "Save Changes",
+                buttonText: "Save Changes".tr,
                 radius: 12,
               ),
             ],
