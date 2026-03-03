@@ -301,15 +301,35 @@ class AppTranslations extends Translations {
       "sign_in_google": "Sign In With Google",
 
       "sign_in_apple": "Sign In With Apple",
+      "sign_in_account": "Sign in to your Account",
+      "email": "Email",
+      "password": "Password",
+      "forget_password": "Forget Password?",
+      "login": "Login",
+
+      "dont_have_account": "Don’t have an account?",
+      "register": "Register",
+      "forgot_password": "Forgot Password",
+      "enter_email_reset": "Enter your email account to reset password",
+      "continue": "Continue",
     },
     'fr_FR': {
+      "forgot_password": "Mot de passe oublié",
+      "enter_email_reset":
+          "Entrez votre email pour réinitialiser le mot de passe",
+      "continue": "Continuer",
+      "sign_in_account": "Connectez-vous à votre compte",
+      "email": "Email",
+      "password": "Mot de passe",
+      "forget_password": "Mot de passe oublié ?",
+      "login": "Se connecter",
+      "or_login_with": "Ou connectez-vous avec",
+      "sign_in_google": "Se connecter avec Google",
+      "sign_in_apple": "Se connecter avec Apple",
+      "dont_have_account": "Vous n'avez pas de compte ?",
+      "register": "S'inscrire",
       "login_email": "Se connecter avec e-mail et mot de passe",
 
-      "or_login_with": "Ou se connecter avec",
-
-      "sign_in_google": "Se connecter avec Google",
-
-      "sign_in_apple": "Se connecter avec Apple",
       "onboard3_title": "Sécurisé. Simple. Instantané",
 
       "onboard3_subtitle":

@@ -22,6 +22,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+
   @override
   void dispose() {
     emailController.dispose();
@@ -30,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   var authController = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,26 +44,26 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.09),
                 MyText(
-                  text: "Sign in to your Account",
+                  text: "sign_in_account".tr,
                   size: 32,
                   textAlign: TextAlign.start,
                   weight: FontWeight.bold,
                 ),
                 SizedBox(height: 8),
-                MyText(text: "Sign in to your Account"),
+                MyText(text: "sign_in_account".tr),
                 SizedBox(height: 40),
 
                 MyTextField(
-                  hint: "Alexanold@mail.com",
+                  hint: "example@gmail.com",
                   radius: 12,
-                  label: "Email",
+                  label: "email".tr,
                   controller: emailController,
                 ),
                 Obx(() {
                   return MyTextField(
-                    hint: "******",
+                    hint: "*********",
                     radius: 12,
-                    label: "Password",
+                    label: "password".tr,
                     suffix: GestureDetector(
                       onTap: () {
                         authController.isPasswordHidden.value =
@@ -83,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.topRight,
                   child: MyText(
-                    text: "Forget Password?",
+                    text: "forget_password".tr,
                     color: AppColors.buttonColor,
                     onTap: () {
                       Get.to(() => ForgetPasswordScreen());
@@ -98,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       passwordController.text,
                     );
                   },
-                  buttonText: "Login",
+                  buttonText: "login".tr,
                   radius: 12,
                 ),
                 const SizedBox(height: 20),
@@ -111,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: AppColors.grayColor,
                       ),
                     ),
-                    MyText(text: "Or login with "),
+                    MyText(text: "or_login_with".tr),
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
@@ -123,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 Platform.isAndroid
                     ? GlassiyButton(
-                        title: "Sign In With Google",
+                        title: "sign_in_google".tr,
                         ontap: () {
                           authController.signInWithGoogle();
                         },
@@ -133,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 12),
                 Platform.isIOS
                     ? GlassiyButton(
-                        title: "Sign In With Apple",
+                        title: "sign_in_apple".tr,
                         ontap: () {
                           authController.signInWithApple();
                         },
@@ -146,10 +148,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   spacing: 6,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    MyText(text: "Dont’t have an account?"),
-
+                    MyText(text: "dont_have_account".tr),
                     MyText(
-                      text: "Register",
+                      text: "register".tr,
                       color: AppColors.buttonColor,
                       weight: FontWeight.bold,
                       onTap: () {

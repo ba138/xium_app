@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/auth_controller.dart';
 import 'package:xium_app/views/widgets/my_button.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -15,9 +16,25 @@ class ForgetPasswordScreen extends StatefulWidget {
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   var emailController = TextEditingController();
   var authController = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.onError),
+        ),
+        title: MyText(
+          text: "forgot_password".tr,
+          size: 18,
+          color: AppColors.onError,
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -27,19 +44,19 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.09),
                 MyText(
-                  text: "Forgot Password",
+                  text: "forgot_password".tr,
                   size: 32,
                   textAlign: TextAlign.start,
                   weight: FontWeight.bold,
                 ),
                 SizedBox(height: 8),
-                MyText(text: "Enter your email account to reset password"),
+                MyText(text: "enter_email_reset".tr),
                 SizedBox(height: 40),
 
                 MyTextField(
-                  hint: "Alexanold@mail.com",
+                  hint: "example@gmail.com",
                   radius: 12,
-                  label: "Email",
+                  label: "email".tr,
                   controller: emailController,
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.4),
@@ -47,7 +64,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   onTap: () {
                     authController.resetPassword(emailController.text);
                   },
-                  buttonText: "Continue",
+                  buttonText: "continue".tr,
                   radius: 12,
                 ),
               ],
