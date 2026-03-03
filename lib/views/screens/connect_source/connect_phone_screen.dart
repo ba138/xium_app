@@ -50,9 +50,7 @@ class _ConnectPhoneScreenState extends State<ConnectPhoneScreen> {
               const SizedBox(height: 10),
 
               MyText(
-                text:
-                    "Receive digital receipts automatically from stores\nthat send SMS confirmations."
-                        .tr,
+                text: "Receive".tr,
                 size: 12,
                 color: AppColors.grayColor,
                 textAlign: TextAlign.center,
