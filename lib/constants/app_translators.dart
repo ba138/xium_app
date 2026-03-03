@@ -221,8 +221,126 @@ class AppTranslations extends Translations {
       "contact_title": "13. Contact",
       "contact_body":
           "If you have any questions about these Terms, please contact us at contact@xium.io",
+      "privacy_policy": "Privacy Policy",
+      "privacy_effective_date": "Effective Date: 01 January 2026",
+
+      "privacy_intro_title": "1. Introduction",
+      "privacy_intro_body":
+          "Xium values your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use the Xium mobile application.",
+
+      "privacy_collect_title": "2. Information We Collect",
+      "privacy_collect_body":
+          "Xium may collect the following types of information:\n"
+          "• Bank-related data via Tink (with your consent)\n"
+          "• Emails and document content you choose to share\n"
+          "• Uploaded images, PDFs, invoices, receipts, and warranties\n"
+          "• Loyalty card details and phone numbers\n"
+          "• Basic app usage and diagnostic data",
+
+      "privacy_bank_title": "3. Bank Data & Tink",
+      "privacy_bank_body":
+          "Xium uses Tink to securely connect to your bank accounts. We do not store your banking login credentials. All bank data access is handled according to Tink’s security standards and privacy policies.",
+
+      "privacy_use_title": "4. How We Use Your Information",
+      "privacy_use_body":
+          "Your information is used solely to:\n"
+          "• Classify and organize documents\n"
+          "• Display transactions and records\n"
+          "• Improve app functionality and reliability\n"
+          "• Provide customer support",
+
+      "privacy_email_title": "5. Email Forwarding & Attachments",
+      "privacy_email_body":
+          "When you forward emails to Xium, only the content you share is processed. Attachments may not always be accessible due to third-party security restrictions. For best results, documents should be uploaded directly using the camera or file picker.",
+
+      "privacy_security_title": "6. Data Storage & Security",
+      "privacy_security_body":
+          "We apply reasonable technical and organizational measures to protect your data. However, no digital system can be guaranteed to be completely secure.",
+
+      "privacy_sharing_title": "7. Data Sharing",
+      "privacy_sharing_body":
+          "Xium does not sell or rent your personal data. Your data is shared only with trusted services (such as Tink) when required to provide app functionality or comply with legal obligations.",
+
+      "privacy_retention_title": "8. Data Retention",
+      "privacy_retention_body":
+          "We retain your data for as long as your account is active or as needed to provide the Service. You may request deletion of your data by contacting support.",
+
+      "privacy_rights_title": "9. Your Rights",
+      "privacy_rights_body":
+          "You have the right to access, update, or delete your personal data. You may manage most of your data directly within the app settings.",
+
+      "privacy_children_title": "10. Children’s Privacy",
+      "privacy_children_body":
+          "Xium is not intended for users under the age of 18. We do not knowingly collect data from children.",
+
+      "privacy_changes_title": "11. Changes to This Policy",
+      "privacy_changes_body":
+          "We may update this Privacy Policy from time to time. Continued use of the app indicates acceptance of the updated policy.",
+
+      "privacy_contact_title": "12. Contact Us",
+      "privacy_contact_body":
+          "If you have questions or concerns about this Privacy Policy, please contact us at contact@xium.io",
     },
     'fr_FR': {
+      "privacy_policy": "Politique de confidentialité",
+      "privacy_effective_date": "Date d'entrée en vigueur : 01 janvier 2026",
+
+      "privacy_intro_title": "1. Introduction",
+      "privacy_intro_body":
+          "Xium accorde une grande importance à votre vie privée. Cette Politique de confidentialité explique comment nous collectons, utilisons et protégeons vos informations lorsque vous utilisez l'application mobile Xium.",
+
+      "privacy_collect_title": "2. Informations collectées",
+      "privacy_collect_body":
+          "Xium peut collecter les types d'informations suivants :\n"
+          "• Données bancaires via Tink (avec votre consentement)\n"
+          "• E-mails et contenus de documents que vous choisissez de partager\n"
+          "• Images, PDF, factures, reçus et garanties téléchargés\n"
+          "• Détails des cartes de fidélité et numéros de téléphone\n"
+          "• Données d'utilisation de base et données de diagnostic",
+
+      "privacy_bank_title": "3. Données bancaires et Tink",
+      "privacy_bank_body":
+          "Xium utilise Tink pour se connecter en toute sécurité à vos comptes bancaires. Nous ne stockons pas vos identifiants bancaires. L'accès aux données bancaires est géré conformément aux normes de sécurité et aux politiques de confidentialité de Tink.",
+
+      "privacy_use_title": "4. Utilisation de vos informations",
+      "privacy_use_body":
+          "Vos informations sont utilisées uniquement pour :\n"
+          "• Classer et organiser les documents\n"
+          "• Afficher les transactions et enregistrements\n"
+          "• Améliorer la fonctionnalité et la fiabilité de l'application\n"
+          "• Fournir une assistance client",
+
+      "privacy_email_title": "5. Transfert d'e-mails et pièces jointes",
+      "privacy_email_body":
+          "Lorsque vous transférez des e-mails à Xium, seul le contenu partagé est traité. Les pièces jointes peuvent ne pas toujours être accessibles en raison de restrictions de sécurité de tiers. Pour de meilleurs résultats, les documents doivent être téléchargés directement via la caméra ou le sélecteur de fichiers.",
+
+      "privacy_security_title": "6. Stockage et sécurité des données",
+      "privacy_security_body":
+          "Nous appliquons des mesures techniques et organisationnelles raisonnables pour protéger vos données. Cependant, aucun système numérique ne peut être garanti comme totalement sécurisé.",
+
+      "privacy_sharing_title": "7. Partage des données",
+      "privacy_sharing_body":
+          "Xium ne vend ni ne loue vos données personnelles. Vos données sont partagées uniquement avec des services de confiance (comme Tink) lorsque cela est nécessaire pour fournir les fonctionnalités de l'application ou respecter des obligations légales.",
+
+      "privacy_retention_title": "8. Conservation des données",
+      "privacy_retention_body":
+          "Nous conservons vos données tant que votre compte est actif ou aussi longtemps que nécessaire pour fournir le Service. Vous pouvez demander la suppression de vos données en contactant le support.",
+
+      "privacy_rights_title": "9. Vos droits",
+      "privacy_rights_body":
+          "Vous avez le droit d'accéder, de mettre à jour ou de supprimer vos données personnelles. Vous pouvez gérer la plupart de vos données directement dans les paramètres de l'application.",
+
+      "privacy_children_title": "10. Protection des mineurs",
+      "privacy_children_body":
+          "Xium n'est pas destiné aux utilisateurs de moins de 18 ans. Nous ne collectons pas sciemment de données concernant des mineurs.",
+
+      "privacy_changes_title": "11. Modifications de cette politique",
+      "privacy_changes_body":
+          "Nous pouvons mettre à jour cette Politique de confidentialité de temps à autre. L'utilisation continue de l'application indique l'acceptation de la politique mise à jour.",
+
+      "privacy_contact_title": "12. Contactez-nous",
+      "privacy_contact_body":
+          "Si vous avez des questions ou préoccupations concernant cette Politique de confidentialité, veuillez nous contacter à contact@xium.io",
       "Deleting your account will permanently remove all documents and data. This cannot be undone":
           "La suppression de votre compte supprimera définitivement tous les documents et données. Cela ne peut pas être annulé",
       "Delete permanently": "Supprimer définitivement",
