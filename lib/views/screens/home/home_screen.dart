@@ -152,13 +152,13 @@ class HomeScreen extends StatelessWidget {
 
   Widget _quickActions() {
     final items = [
-      Icons.qr_code_scanner,
-      Icons.mail,
-      Icons.account_balance,
+      Icons.mail_outline,
+      Icons.account_balance_outlined,
       Icons.phone_iphone,
+      Icons.credit_card_outlined,
     ];
 
-    final labels = ["Scan".tr, "Email".tr, "Bank".tr, "Phone".tr];
+    final labels = ["Email".tr, "Bank".tr, "Phone".tr, "Loyalty".tr];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
