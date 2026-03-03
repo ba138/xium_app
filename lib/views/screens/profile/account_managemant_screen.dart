@@ -54,7 +54,7 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
 
                     const SizedBox(width: 10),
 
-                    MyText(text: "Account Management", size: 16),
+                    MyText(text: "Account Management".tr, size: 16),
 
                     const Spacer(),
 
@@ -69,30 +69,30 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 10),
-                      MyText(text: "Edit my information", size: 16),
+                      MyText(text: "Edit my information".tr, size: 16),
                       const SizedBox(height: 20),
                       MyTextField(
                         hint: "Your Full Name",
-                        label: "Name",
+                        label: "Name".tr,
                         radius: 12,
                         controller: controller.nameController,
                       ),
                       MyTextField(
                         hint: "Salmanuix@gmail.com",
-                        label: "Email",
+                        label: "Email".tr,
                         radius: 12,
                         controller: controller.emailController,
                       ),
                       MyTextField(
                         hint: "********",
-                        label: "Old Password",
+                        label: "Old Password".tr,
                         radius: 12,
 
                         controller: controller.currentPasswordController,
                       ),
                       MyTextField(
                         hint: "********",
-                        label: "New Password",
+                        label: "New Password".tr,
                         radius: 12,
                         controller: controller.newPasswordController,
                       ),
@@ -101,13 +101,14 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                         onTap: () {
                           controller.updateUserInfo();
                         },
-                        buttonText: "Save Changes",
+                        buttonText: "Save Changes".tr,
                         radius: 12,
                       ),
                       const SizedBox(height: 30),
                       Center(
                         child: MyText(
-                          text: "Update your information and save the changes",
+                          text:
+                              "Update your information and save the changes".tr,
                           size: 12,
                           color: AppColors.grayColor,
                         ),
@@ -124,7 +125,7 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                     children: [
                       const SizedBox(height: 10),
                       MyText(
-                        text: "Delete my account",
+                        text: "Delete my account".tr,
                         color: Colors.red,
                         size: 16,
                       ),
@@ -140,7 +141,7 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                         onTap: () {
                           showDeleteAccountDialog(controller);
                         },
-                        buttonText: "Delete permanently",
+                        buttonText: "Delete permanently".tr,
                         radius: 12,
                       ),
                     ],

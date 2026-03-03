@@ -156,8 +156,30 @@ class AppTranslations extends Translations {
       "Store name and card number are required":
           "Store name and card number are required",
       "Loyalty card added successfully": "Loyalty card added successfully",
+      "Account Management": "Account Management",
+      "Edit my information": "Edit my information",
+      "Name": "Name",
+      "Old Password": "Old Password",
+      "New Password": "New Password",
+      "Update your information and save the changes":
+          "Update your information and save the changes",
+      "Delete my account": "Delete my account",
+      "Deleting your account will permanently remove all documents and data. This cannot be undone":
+          "Deleting your account will permanently remove all documents and data. This cannot be undone",
+      "Delete permanently": "Delete permanently",
     },
     'fr_FR': {
+      "Deleting your account will permanently remove all documents and data. This cannot be undone":
+          "La suppression de votre compte supprimera définitivement tous les documents et données. Cela ne peut pas être annulé",
+      "Delete permanently": "Supprimer définitivement",
+      "Old Password": "Ancien mot de passe",
+      "New Password": "Nouveau mot de passe",
+      "Delete my account": "Supprimer mon compte",
+      "Update your information and save the changes":
+          "Mettez à jour vos informations et enregistrez les modifications",
+      "Name": "Nom",
+      "Edit my information": "Modifier mes informations",
+      "Account Management": "Gestion du compte",
       "Loyalty card added successfully":
           "Carte de fidélité ajoutée avec succès",
       "Store name and card number are required":
