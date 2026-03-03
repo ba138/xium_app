@@ -132,7 +132,8 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                       const SizedBox(height: 10),
                       MyText(
                         text:
-                            "Deleting your account will permanently remove all documents and data. This cannot be undone",
+                            "Deleting your account will permanently remove all documents and data. This cannot be undone"
+                                .tr,
                         size: 12,
                         color: AppColors.grayColor,
                       ),
