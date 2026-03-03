@@ -65,7 +65,7 @@ class _ConnectPhoneScreenState extends State<ConnectPhoneScreen> {
                 children: [
                   Icon(Icons.phone, color: Colors.white, size: 18),
                   SizedBox(width: 8),
-                  MyText(text: "Add Phone No", weight: FontWeight.bold),
+                  MyText(text: "Add Phone No".tr, weight: FontWeight.bold),
                 ],
               ),
 
@@ -136,16 +136,16 @@ class _ConnectPhoneScreenState extends State<ConnectPhoneScreen> {
                     selectedCode,
                   );
                 },
-                buttonText: "Connect phone number",
+                buttonText: "Connect Phone number".tr,
                 radius: 12,
               ),
 
               const SizedBox(height: 18),
 
               /// FOOTER TEXT
-              const Center(
+              Center(
                 child: Text(
-                  "Your number is used only to detect receipts.\nNo SMS will be sent.",
+                  "Number".tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white54, fontSize: 11),
                 ),
