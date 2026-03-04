@@ -132,24 +132,27 @@ class DocViewScreen extends StatelessWidget {
                 /// 📧 EMAIL DOCUMENT
                 if (!isBank) ...[
                   docTile(
-                    title: "Document Type",
+                    title: "Document Type".tr,
                     subTitle: document.documentType ?? "N/A",
                   ),
                   docTile(
-                    title: "Store",
+                    title: "Store".tr,
                     subTitle: document.storeName ?? "N/A",
                   ),
                   docTile(
-                    title: "Amount",
+                    title: "Amount".tr,
                     subTitle: formatAmount(document.amount, document.currency),
                   ),
                   docTile(
-                    title: "Date",
+                    title: "Date".tr,
                     subTitle: formatDate(document.createdAt?.toDate()),
                   ),
-                  docTile(title: "Source", subTitle: document.source ?? "N/A"),
                   docTile(
-                    title: "Subject",
+                    title: "Source".tr,
+                    subTitle: document.source ?? "N/A",
+                  ),
+                  docTile(
+                    title: "Subject".tr,
                     subTitle: document.subject ?? "N/A",
                   ),
                 ],
@@ -157,19 +160,19 @@ class DocViewScreen extends StatelessWidget {
                 /// 🏦 BANK DOCUMENT
                 if (isBank) ...[
                   docTile(
-                    title: "Merchant",
+                    title: "Merchant".tr,
                     subTitle: document.storeName ?? "N/A",
                   ),
                   docTile(
-                    title: "Amount",
+                    title: "Amount".tr,
                     subTitle: formatAmount(document.amount, document.currency),
                   ),
                   docTile(
-                    title: "Category",
+                    title: "Category".tr,
                     subTitle: document.documentType ?? "N/A",
                   ),
-                  docTile(title: "Date", subTitle: document.date ?? "N/A"),
-                  docTile(title: "Source", subTitle: "Bank"),
+                  docTile(title: "Date".tr, subTitle: document.date ?? "N/A"),
+                  docTile(title: "Source".tr, subTitle: "Bank"),
                 ],
               ],
             ),
