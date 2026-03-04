@@ -24,7 +24,12 @@ class StoreDetailScreen extends StatefulWidget {
 }
 
 class _StoreDetailScreenState extends State<StoreDetailScreen> {
-  final List<String> tags = ["All", "Receipt", "invoice", "Warrantie"];
+  final List<String> tags = [
+    "All".tr,
+    "Receipt".tr,
+    "invoice".tr,
+    "Warrantie".tr,
+  ];
   int selectedIndex = 0; // default = All selected
   String selectedValue = "Newest";
 
@@ -69,7 +74,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                       color: AppColors.onPrimary,
                     ),
                   ),
-                  MyText(text: "Back", size: 16),
+                  MyText(text: "Back".tr, size: 16),
                 ],
               ),
               const SizedBox(height: 20),
@@ -158,14 +163,14 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MyText(
-                    text: "Sort Results",
+                    text: "Sort Results".tr,
                     size: 12,
                     color: AppColors.grayColor,
                   ),
                   Row(
                     spacing: 8,
                     children: [
-                      MyText(text: "Sort By:", size: 12),
+                      MyText(text: "Sort By:".tr, size: 12),
 
                       Container(
                         height: 30,
@@ -227,8 +232,8 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                     }
 
                     if (controller.documents.isEmpty) {
-                      return const Center(
-                        child: MyText(text: "No documents found"),
+                      return Center(
+                        child: MyText(text: "No documents found".tr),
                       );
                     }
 
@@ -241,10 +246,10 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                           headingRowHeight: 35,
                           dividerThickness: 0.6,
                           dataRowHeight: 50,
-                          columns: const [
+                          columns: [
                             DataColumn(
                               label: Text(
-                                'Doc Type',
+                                'Doc Type'.tr,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -253,7 +258,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                             ),
                             DataColumn(
                               label: Text(
-                                'Date',
+                                'Date'.tr,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -262,7 +267,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                             ),
                             DataColumn(
                               label: Text(
-                                'Amount',
+                                'Amount'.tr,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -271,7 +276,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                             ),
                             DataColumn(
                               label: Text(
-                                'Source',
+                                'Source'.tr,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -280,7 +285,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                             ),
                             DataColumn(
                               label: Text(
-                                'View',
+                                'View'.tr,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
