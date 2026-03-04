@@ -31,9 +31,9 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
     "Warrantie".tr,
   ];
   int selectedIndex = 0; // default = All selected
-  String selectedValue = "Newest";
+  String selectedValue = "Newest".tr;
 
-  final List<String> options = ["Newest", "Oldest", "A–Z", "Z–A"];
+  final List<String> options = ["Newest".tr, "Oldest".tr, "A–Z", "Z–A"];
   final controller = Get.put(StoreDetailController());
   String formatDate(DateTime? date) {
     if (date == null) return "N/A";
@@ -170,11 +170,10 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                   Row(
                     spacing: 8,
                     children: [
-                      MyText(text: "Sort By:".tr, size: 12),
+                      MyText(text: "Sort By".tr, size: 12),
 
                       Container(
                         height: 30,
-                        width: 100,
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
@@ -253,6 +252,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
+                                  color: AppColors.buttonColor,
                                 ),
                               ),
                             ),
@@ -262,6 +262,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
+                                  color: AppColors.buttonColor,
                                 ),
                               ),
                             ),
@@ -271,6 +272,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
+                                  color: AppColors.buttonColor,
                                 ),
                               ),
                             ),
@@ -280,6 +282,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
+                                  color: AppColors.buttonColor,
                                 ),
                               ),
                             ),
@@ -289,6 +292,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
+                                  color: AppColors.buttonColor,
                                 ),
                               ),
                             ),
