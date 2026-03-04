@@ -154,7 +154,7 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
                                       const SizedBox(width: 6),
                                       MyText(
                                         text: item["title"],
-                                        size: 14,
+                                        size: 12,
                                         weight: FontWeight.w600,
                                       ),
                                     ],

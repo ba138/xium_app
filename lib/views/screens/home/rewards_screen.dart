@@ -32,7 +32,7 @@ class RewardsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               _glassContainer(
-                height: MediaQuery.of(context).size.height * 0.25,
+                height: MediaQuery.of(context).size.height * 0.275,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -85,7 +85,6 @@ class RewardsScreen extends StatelessWidget {
                       "760 more points to reach the next level".tr,
                       style: TextStyle(color: Colors.white70),
                     ),
-                    const SizedBox(height: 16),
                   ],
                 ),
               ),
@@ -126,11 +125,23 @@ class RewardsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              _missionTile(progress: 1, title: "Scan a document".tr),
+              _missionTile(
+                progress: 1,
+                title: "Scan a document".tr,
+                icon: Icons.scanner_outlined,
+              ),
               const SizedBox(height: 12),
-              _missionTile(progress: 0, title: "Import a doc from email".tr),
+              _missionTile(
+                progress: 0,
+                title: "Import a doc from email".tr,
+                icon: Icons.email_outlined,
+              ),
               const SizedBox(height: 12),
-              _missionTile(progress: 0, title: "Import a doc from bank".tr),
+              _missionTile(
+                progress: 0,
+                title: "Import a doc from bank".tr,
+                icon: Icons.account_balance_outlined,
+              ),
               const SizedBox(height: 28),
 
               /// User Status
@@ -145,7 +156,7 @@ class RewardsScreen extends StatelessWidget {
               const SizedBox(height: 16),
 
               _glassContainer(
-                height: MediaQuery.of(context).size.height * 0.36,
+                height: MediaQuery.of(context).size.height * 0.38,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -368,6 +379,7 @@ class RewardsScreen extends StatelessWidget {
     required double progress,
     bool completed = false,
     required String title,
+    required IconData icon,
   }) {
     return Container(
       height: 80,
@@ -379,8 +391,8 @@ class RewardsScreen extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            height: 60,
-            width: 60,
+            height: 40,
+            width: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               gradient: LinearGradient(
@@ -392,9 +404,7 @@ class RewardsScreen extends StatelessWidget {
                 end: AlignmentGeometry.bottomCenter,
               ),
             ),
-            child: Center(
-              child: Icon(Icons.scanner_outlined, color: Colors.white),
-            ),
+            child: Center(child: Icon(icon, color: Colors.white)),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -412,11 +422,12 @@ class RewardsScreen extends StatelessWidget {
                         fontSize: 11,
                       ),
                     ),
-                    const Text(
+                    Text(
                       "+100 pts",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.buttonColor,
                         fontWeight: FontWeight.w500,
+                        fontSize: 10,
                       ),
                     ),
                   ],
