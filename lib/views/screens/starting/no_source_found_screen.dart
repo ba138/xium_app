@@ -55,23 +55,23 @@ class NoSourceFoundScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               MyText(
-                text: "No stores detected yet.",
+                text: "No stores detected yet.".tr,
                 size: 20,
                 weight: FontWeight.bold,
               ),
               const SizedBox(height: 8),
-              MyText(text: "Connect a source to start automatic retrieval"),
+              MyText(text: "Connect a source to start automatic retrieval".tr),
               Spacer(),
               MyButton(
                 onTap: () {
                   Get.to(() => ConnectSourceScreen());
                 },
-                buttonText: "Connect_Sources",
+                buttonText: "Connect Sources".tr,
                 radius: 12,
               ),
               const SizedBox(height: 10),
               MyBorderButton(
-                buttonText: "Skip",
+                buttonText: "Skip".tr,
                 onTap: () {
                   Get.to(() => CubeScreen());
                 },

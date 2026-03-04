@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
@@ -28,7 +29,7 @@ class _NeedPermissionScreensState extends State<NeedPermissionScreens> {
             children: [
               CommonImageView(imagePath: Assets.shiled, height: 60),
               MyText(
-                text: "Enable Accessibility",
+                text: "Enable Accessibility".tr,
                 size: 24,
                 textAlign: TextAlign.start,
                 weight: FontWeight.bold,
@@ -49,26 +50,30 @@ class _NeedPermissionScreensState extends State<NeedPermissionScreens> {
                   children: [
                     MyText(
                       text:
-                          "You can modify these authorizations at any time in the settings.",
+                          "You can modify these authorizations at any time in the settings."
+                              .tr,
                       size: 16,
                       weight: FontWeight.bold,
                     ),
                     const SizedBox(height: 6),
-                    MyText(text: "Allow the List of permissions below"),
+                    MyText(text: "Allow the List of permissions below".tr),
                     const SizedBox(height: 12),
-                    permissionRow(title: "Email", icon: Icons.email),
+                    permissionRow(title: "Email".tr, icon: Icons.email),
                     const SizedBox(height: 10),
 
-                    permissionRow(title: "Camera", icon: Icons.camera_alt),
+                    permissionRow(title: "Camera".tr, icon: Icons.camera_alt),
                     const SizedBox(height: 10),
 
                     permissionRow(
-                      title: "Notification",
+                      title: "Notification".tr,
                       icon: Icons.notifications,
                     ),
                     const SizedBox(height: 10),
 
-                    permissionRow(title: "Bank", icon: Icons.account_balance),
+                    permissionRow(
+                      title: "Bank".tr,
+                      icon: Icons.account_balance,
+                    ),
                   ],
                 ),
               ),
@@ -77,12 +82,12 @@ class _NeedPermissionScreensState extends State<NeedPermissionScreens> {
                 onTap: () {
                   Get.to(() => NoSourceFoundScreen());
                 },
-                buttonText: "Allow and continue",
+                buttonText: "Allow and continue".tr,
                 radius: 12,
               ),
               const SizedBox(height: 10),
               MyBorderButton(
-                buttonText: "Later",
+                buttonText: "Later".tr,
                 onTap: () {
                   Get.to(() => CubeScreen());
                 },

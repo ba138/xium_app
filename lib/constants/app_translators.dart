@@ -312,8 +312,37 @@ class AppTranslations extends Translations {
       "forgot_password": "Forgot Password",
       "enter_email_reset": "Enter your email account to reset password",
       "continue": "Continue",
+      "Enable Accessibility": "Enable Accessibility",
+      "XIUM needs certain authorizations to automatically retrieve your documents and provide you with a smooth  and secure experience":
+          "XIUM needs certain authorizations to automatically retrieve your documents and provide you with a smooth  and secure experience",
+      "You can modify these authorizations at any time in the settings.":
+          "You can modify these authorizations at any time in the settings.",
+      "Allow the List of permissions below":
+          "Allow the List of permissions below",
+      "Notification": "Notification",
+      "Allow and continue": "Allow and continue",
+      "Later": "Later",
+      "No stores detected yet.": "No stores detected yet.",
+      "Connect a source to start automatic retrieval":
+          "Connect a source to start automatic retrieval",
+      "Skip": "Skip",
     },
     'fr_FR': {
+      "Skip": "Passer",
+      "Connect a source to start automatic retrieval":
+          "Connectez une source pour démarrer la récupération automatique",
+      "No stores detected yet.": "Aucun magasin détecté pour le moment.",
+      "Later": "Plus tard",
+      "Allow and continue": "Autoriser et continuer",
+      "Notification": "Notification",
+      "Camera": "Caméra",
+      "Allow the List of permissions below":
+          "Autoriser la liste des permissions ci-dessous",
+      "You can modify these authorizations at any time in the settings.":
+          "Vous pouvez modifier ces autorisations à tout moment dans les paramètres.",
+      "XIUM needs certain authorizations to automatically retrieve your documents and provide you with a smooth  and secure experience":
+          "XIUM a besoin de certaines autorisations pour récupérer automatiquement vos documents et vous offrir une expérience fluide et sécurisée",
+      "Enable Accessibility": "Activer l'accessibilité",
       "forgot_password": "Mot de passe oublié",
       "enter_email_reset":
           "Entrez votre email pour réinitialiser le mot de passe",
