@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/views/screens/connect_source/add_loyalty_card_info_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
-import 'package:xium_app/views/screens/home/add_loyalty_card_screen.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -298,37 +296,37 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 12),
 
-        Row(
-          children: [
-            Expanded(
-              child: _InsightCard(
+        SizedBox(
+          height: 120,
+          child: ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+
+            children: [
+              _InsightCard(
                 icon: Icons.sell_outlined,
                 title: "Top Category".tr,
                 value: "Shopping".tr,
                 subtitle: "34% of expenses".tr,
               ),
-            ),
-            SizedBox(width: 12),
-            Expanded(
-              child: _InsightCard(
+              SizedBox(width: 12),
+              _InsightCard(
                 icon: Icons.store_rounded,
 
                 title: "Top Merchant".tr,
                 value: "Amazon".tr,
                 subtitle: "23 transactions".tr,
               ),
-            ),
-            SizedBox(width: 12),
-            Expanded(
-              child: _InsightCard(
+              SizedBox(width: 12),
+              _InsightCard(
                 icon: Icons.payment_outlined,
 
                 title: "Largest Expense".tr,
                 value: "€950",
                 subtitle: "Feb 20",
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -461,7 +459,7 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         color: Colors.white.withOpacity(0.08),
@@ -526,6 +524,7 @@ class _InsightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 120,
+      width: MediaQuery.of(context).size.width * 0.35,
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),

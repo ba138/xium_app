@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
@@ -144,7 +146,16 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                       onTap: () {
                         setState(() {
                           selectedIndex = index;
-                          controller.filterByType(tags[index]);
+
+                          if (index == 0) {
+                            controller.filterByType("All");
+                          } else if (index == 1) {
+                            controller.filterByType("Receipt");
+                          } else if (index == 2) {
+                            controller.filterByType("Invoice");
+                          } else if (index == 3) {
+                            controller.filterByType("Warrantie");
+                          }
                         });
                       },
                       child: DynamicContainer(
