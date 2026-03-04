@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/dashboard/nav_bar.dart';
-import 'package:xium_app/views/screens/home/document_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_Text.dart';
 
@@ -78,7 +77,7 @@ class _CubeScreenState extends State<CubeScreen>
               const SizedBox(height: 8),
 
               MyText(
-                text: "Tap to enter your XIUM space",
+                text: "Tap to enter your XIUM space".tr,
                 size: 16,
                 color: Colors.white,
               ),

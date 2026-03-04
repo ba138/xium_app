@@ -326,8 +326,11 @@ class AppTranslations extends Translations {
       "Connect a source to start automatic retrieval":
           "Connect a source to start automatic retrieval",
       "Skip": "Skip",
+      "Tap to enter your XIUM space": "Tap to enter your XIUM space",
     },
     'fr_FR': {
+      "Tap to enter your XIUM space":
+          "Appuyez pour entrer dans votre espace XIUM",
       "Skip": "Passer",
       "Connect a source to start automatic retrieval":
           "Connectez une source pour démarrer la récupération automatique",

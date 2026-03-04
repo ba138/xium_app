@@ -58,9 +58,13 @@ class NoSourceFoundScreen extends StatelessWidget {
                 text: "No stores detected yet.".tr,
                 size: 20,
                 weight: FontWeight.bold,
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
-              MyText(text: "Connect a source to start automatic retrieval".tr),
+              MyText(
+                text: "Connect a source to start automatic retrieval".tr,
+                textAlign: TextAlign.center,
+              ),
               Spacer(),
               MyButton(
                 onTap: () {
