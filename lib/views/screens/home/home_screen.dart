@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 24),
               _insights(dashboardController),
               const SizedBox(height: 24),
-              _levelCard(),
+              _levelCard(dashboardController),
               const SizedBox(height: 24),
               _comingSoon(),
               const SizedBox(height: 24),
@@ -386,89 +386,90 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _levelCard() {
+  Widget _levelCard(DashboardController controller) {
     return _glassContainer(
       height: 110,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: AppColors.buttonColor,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.emoji_events_outlined,
-                        color: Colors.white,
+      child: Obx(
+        () => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: AppColors.buttonColor,
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 4),
-                      Text(
-                        "XIUM Level".tr,
-                        style: TextStyle(
+                      child: Center(
+                        child: Icon(
+                          Icons.emoji_events_outlined,
                           color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        "7",
-                        style: TextStyle(
-                          color: AppColors.onPrimary,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 4),
+                        Text(
+                          "XIUM Level".tr,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+                        Text(
+                          "${controller.userLevel.value}",
+                          style: TextStyle(
+                            color: AppColors.onPrimary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 4),
+                    Text(
+                      "Points".tr,
+                      style: TextStyle(
+                        color: AppColors.onPrimary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 4),
-                  Text(
-                    "Points",
-                    style: TextStyle(
-                      color: AppColors.onPrimary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  Text(
-                    "200",
-                    style: TextStyle(
-                      color: AppColors.buttonColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      "${controller.userPoints.value}",
+                      style: TextStyle(
+                        color: AppColors.buttonColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-
-          SizedBox(height: 12),
-          LinearProgressIndicator(
-            value: 0.78,
-            backgroundColor: Colors.white24,
-            color: Colors.blue,
-          ),
-          SizedBox(height: 8),
-        ],
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            LinearProgressIndicator(
+              value: controller.levelProgress.value,
+              backgroundColor: Colors.white24,
+              color: Colors.blue,
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }

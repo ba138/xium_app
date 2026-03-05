@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
@@ -10,7 +11,8 @@ class DashboardController extends GetxController {
   var monthlyTotalPrice = 0.0.obs;
   var totalAmountAllDocs = 0.0.obs;
   var topSpendingDate = "-".obs; // NEW: date of highest spending
-
+  var userPoints = 0.obs; // Points from user collection
+  var userLevel = 0.obs;
   // Insight Data
   var topDocType = "".obs;
   var topDocTypeCount = 0.obs;
@@ -29,6 +31,7 @@ class DashboardController extends GetxController {
     String uid = auth.currentUser!.uid;
     listenDashboardData(uid); // realtime totals
     insightData(uid); // top insights
+    fetchUserPointsAndLevel(); // user points and level
     super.onInit();
   }
 
@@ -155,4 +158,68 @@ class DashboardController extends GetxController {
         .limit(3)
         .snapshots();
   }
+
+  Future<void> fetchUserPointsAndLevel() async {
+    try {
+      String uid = auth.currentUser!.uid;
+
+      DocumentSnapshot userDoc = await _firestore
+          .collection("users")
+          .doc(uid)
+          .get();
+
+      int points = 0;
+
+      if (userDoc.exists && userDoc.data() != null) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        points = (data["points"] ?? 0) as int;
+      }
+
+      userPoints.value = points;
+      userLevel.value = calculateLevel(points);
+      updateLevelProgress(); // Update progress for the level
+    } catch (e) {
+      userPoints.value = 0;
+      userLevel.value = 0;
+    }
+  }
+
+  /// Calculate level based on points (each 2000 points per level, max 10)
+  int calculateLevel(int points) {
+    int level = 1;
+    for (int i = 1; i <= 10; i++) {
+      if (points <= i * 2000) {
+        level = i;
+        break;
+      }
+    }
+    return level;
+  }
+
+  /// Progress for LinearProgressIndicator relative to total levels (0.1 per level)
+  void updateLevelProgress() {
+    int currentLevel = userLevel.value;
+
+    // base progress for completed levels (each level = 0.1)
+    double baseProgress = (currentLevel - 1) * 0.1;
+
+    // progress within the current level (fraction of 2000 points)
+    double minPointsForLevel = (currentLevel - 1) * 2000.0;
+    double maxPointsForLevel = currentLevel * 2000.0;
+
+    double levelFraction = 0.0;
+    if (userPoints.value > minPointsForLevel) {
+      levelFraction = (userPoints.value - minPointsForLevel) / 2000.0 * 0.1;
+    }
+
+    // total progress = base + fraction within level
+    levelProgress.value = (baseProgress + levelFraction).clamp(0.0, 1.0);
+
+    debugPrint(
+      "Points: ${userPoints.value}, Level: $currentLevel, Progress: ${levelProgress.value}",
+    );
+  }
+
+  /// Optional: progress value for LinearProgressIndicator
+  var levelProgress = 0.0.obs;
 }
