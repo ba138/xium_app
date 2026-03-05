@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
@@ -255,51 +256,73 @@ class _HomeScreenState extends State<HomeScreen> {
               weight: FontWeight.bold,
               color: Colors.white,
             ),
-
             const Spacer(),
             MyText(text: "See All".tr, size: 14, color: Colors.blueAccent),
           ],
         ),
         const SizedBox(height: 12),
-        Column(
-          children: List.generate(
-            3,
-            (index) => Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
-                color: Color(0xff6C7278).withOpacity(0.3),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: AppColors.buttonColor.withValues(alpha: 0.3),
-                    ),
-                    child: Icon(Icons.home, color: Colors.white),
+
+        StreamBuilder<QuerySnapshot>(
+          stream: dashboardController.getRecentActivities(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Text(
+                "No Activity",
+                style: TextStyle(color: Colors.white),
+              );
+            }
+
+            var docs = snapshot.data!.docs;
+
+            return Column(
+              children: List.generate(docs.length, (index) {
+                var data = docs[index];
+
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    color: const Color(0xff6C7278).withOpacity(0.3),
                   ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      "Rent Payment\nHousing",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColors.buttonColor.withOpacity(0.3),
+                        ),
+                        child: const Icon(Icons.home, color: Colors.white),
+                      ),
+
+                      const SizedBox(width: 12),
+
+                      Expanded(
+                        child: Text(
+                          "${data['storeName']}\n${data['documentType']}",
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+
+                      Text(
+                        "€${data['amount']}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "€950.00",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                );
+              }),
+            );
+          },
         ),
       ],
     );

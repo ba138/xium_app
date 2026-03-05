@@ -70,4 +70,14 @@ class DashboardController extends GetxController {
           totalAmountAllDocs.value = totalPrice;
         });
   }
+
+  Stream<QuerySnapshot> getRecentActivities() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection("documents") // your collection
+        .orderBy('createdAt', descending: true)
+        .limit(3)
+        .snapshots();
+  }
 }
