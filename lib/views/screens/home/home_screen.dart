@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 24),
               _recentActivity(),
               const SizedBox(height: 24),
-              _insights(),
+              _insights(dashboardController),
               const SizedBox(height: 24),
               _levelCard(),
               const SizedBox(height: 24),
@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(height: 12),
 
         StreamBuilder<QuerySnapshot>(
-          stream: dashboardController.getRecentActivities(),
+          stream: dashboardController.getTopNewestDocs(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -311,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                       Text(
-                        "€${data['amount']}",
+                        "${data['currency']}${data['amount']}",
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -328,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _insights() {
+  Widget _insights(DashboardController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -342,34 +342,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
         SizedBox(
           height: 120,
-          child: ListView(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-
-            children: [
-              _InsightCard(
-                icon: Icons.sell_outlined,
-                title: "Top Category".tr,
-                value: "Shopping".tr,
-                subtitle: "34% of expenses".tr,
-              ),
-              SizedBox(width: 12),
-              _InsightCard(
-                icon: Icons.store_rounded,
-
-                title: "Top Merchant".tr,
-                value: "Amazon".tr,
-                subtitle: "23 transactions".tr,
-              ),
-              SizedBox(width: 12),
-              _InsightCard(
-                icon: Icons.payment_outlined,
-
-                title: "Largest Expense".tr,
-                value: "€950",
-                subtitle: "Feb 20",
-              ),
-            ],
+          child: Obx(
+            () => ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                _InsightCard(
+                  icon: Icons.sell_outlined,
+                  title: "Top Category".tr,
+                  value: controller.topDocType.value.isEmpty
+                      ? "-".tr
+                      : controller.topDocType.value,
+                  subtitle: controller.topDocTypeCount.value > 0
+                      ? "${controller.topDocTypeCount.value} ${"documents".tr}"
+                      : "-".tr,
+                ),
+                const SizedBox(width: 12),
+                _InsightCard(
+                  icon: Icons.store_rounded,
+                  title: "Top Merchant".tr,
+                  value: controller.topStoreName.value.isEmpty
+                      ? "-".tr
+                      : controller.topStoreName.value,
+                  subtitle: controller.topStoreCount.value > 0
+                      ? "${controller.topStoreCount.value} ${"transactions".tr}"
+                      : "-".tr,
+                ),
+                const SizedBox(width: 12),
+                _InsightCard(
+                  icon: Icons.payment_outlined,
+                  title: "Largest Expense".tr,
+                  value:
+                      "€${controller.topSpendingAmount.value.toStringAsFixed(2)}",
+                  subtitle: controller.topSpendingDoc.value.isEmpty
+                      ? "-"
+                      : controller.topSpendingDoc.value,
+                ),
+              ],
+            ),
           ),
         ),
       ],
