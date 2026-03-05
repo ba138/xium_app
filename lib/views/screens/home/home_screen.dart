@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/dashboard_controller.dart';
 import 'package:xium_app/views/screens/connect_source/add_loyalty_card_info_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var dashboardController = Get.put(DashboardController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +52,17 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              _overviewSection(context),
+              Obx(
+                () => _overviewSection(
+                  dashboardController.totalDocs.value.toString(),
+                  dashboardController.totalWarranties.value.toString(),
+                  dashboardController.totalSubscriptions.value.toString(),
+                  dashboardController.monthlyTotalPrice.value.toStringAsFixed(
+                    2,
+                  ),
+                  dashboardController.totalAmountAllDocs.value.toString(),
+                ),
+              ),
 
               const SizedBox(height: 24),
               _quickActions(),
@@ -88,7 +105,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _overviewSection(BuildContext context) {
+  Widget _overviewSection(
+    String totlDocs,
+    String totalWarranties,
+    String totalSubscriptions,
+    String monthlyTotalPrice,
+    String totalAmountAllDocs,
+  ) {
     return _glassContainer(
       height: MediaQuery.of(context).size.height * 0.48,
       child: Column(
@@ -100,17 +123,15 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Row(
-            children: const [
+            children: [
               Text(
-                "€14,832",
-                style: TextStyle(
+                "€${(double.tryParse(totalAmountAllDocs) ?? 0).toStringAsFixed(2)}",
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(width: 8),
-              Text("+3.2%", style: TextStyle(color: Colors.blueAccent)),
             ],
           ),
           const SizedBox(height: 16),
@@ -125,26 +146,26 @@ class HomeScreen extends StatelessWidget {
             children: [
               _StatCard(
                 title: "Documents".tr,
-                value: "247",
+                value: totlDocs,
                 subtitle: "+12 this month".tr,
                 icon: Icons.description_outlined,
               ),
               _StatCard(
                 title: "Monthly Spending".tr,
-                value: "€1,248",
-                subtitle: "-5.1% vs last",
+                value: "€$monthlyTotalPrice",
+                subtitle: "vs last",
                 icon: Icons.bar_chart_outlined,
               ),
               _StatCard(
                 title: "Active Warranties".tr,
-                value: "18",
-                subtitle: "3 expiring soon".tr,
+                value: totalWarranties,
+                subtitle: "expiring soon".tr,
                 icon: Icons.verified_user_outlined,
               ),
               _StatCard(
                 title: "Subscriptions".tr,
-                value: "190",
-                subtitle: "€186/mo total",
+                value: totalWarranties,
+                subtitle: "mo total",
                 icon: Icons.payment_outlined,
               ),
             ],
