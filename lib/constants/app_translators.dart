@@ -57,8 +57,8 @@ class AppTranslations extends Translations {
           "Track your points, missions & benefits",
       "Total XIUM Points": "Total XIUM Points",
       "Intermediate": "Intermediate",
-      "760 more points to reach the next level":
-          "760 more points to reach the next level",
+      "more_points_next_level": "@points more points to reach the next level",
+      "max_level_reached": "Max level reached",
       "Scan a document": "Scan a document",
       "Import a doc from email": "Import a doc from email",
       "Import a doc from bank": "Import a doc from bank",
@@ -594,8 +594,8 @@ class AppTranslations extends Translations {
           "Suivez vos points, missions et avantages",
       "Total XIUM Points": "Total de points XIUM",
       "Intermediate": "Intermédiaire",
-      "760 more points to reach the next level":
-          "760 points de plus pour atteindre le niveau suivant",
+      "more_points_next_level": "@points more points to reach the next level",
+      "max_level_reached": "Max level reached",
       "Scan a document": "Scanner un document",
       "Import a doc from email": "Importer un document depuis l'email",
       "Import a doc from bank": "Importer un document depuis la banque",

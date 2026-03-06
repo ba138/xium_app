@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:xium_app/constants/app_colors.dart';
+import 'package:xium_app/controller/reward_controller.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
-class RewardsScreen extends StatelessWidget {
+class RewardsScreen extends StatefulWidget {
   const RewardsScreen({super.key});
 
+  @override
+  State<RewardsScreen> createState() => _RewardsScreenState();
+}
+
+class _RewardsScreenState extends State<RewardsScreen> {
+  var controller = Get.put(RewardController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,61 +39,76 @@ class RewardsScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white54),
               ),
               const SizedBox(height: 20),
-              _glassContainer(
-                height: MediaQuery.of(context).size.height * 0.275,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.emoji_events_outlined,
-                          color: Colors.white70,
+              Obx(
+                () => _glassContainer(
+                  height: MediaQuery.of(context).size.height * 0.275,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.emoji_events_outlined,
+                            color: Colors.white70,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "Total XIUM Points".tr,
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Text(
+                        controller.userPoints.value.toString(),
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                        SizedBox(width: 8),
-                        Text(
-                          "Total XIUM Points".tr,
-                          style: TextStyle(color: Colors.white70),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      "12,400",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blue.withOpacity(0.2),
+                        ),
+                        child: Text(
+                          controller.userLevelName.value,
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
+
+                      const SizedBox(height: 16),
+
+                      LinearProgressIndicator(
+                        value: controller.levelProgress.value,
+                        backgroundColor: Colors.white24,
+                        color: AppColors.buttonColor,
+                        minHeight: 6,
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blue.withOpacity(0.2),
+
+                      const SizedBox(height: 12),
+
+                      Text(
+                        controller.pointsToNextLevel.value == 0
+                            ? "max_level_reached".tr
+                            : "more_points_next_level".trParams({
+                                "points": controller.pointsToNextLevel.value
+                                    .toString(),
+                              }),
+                        style: TextStyle(color: Colors.white70),
                       ),
-                      child: Text(
-                        "Intermediate".tr,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    LinearProgressIndicator(
-                      value: 0.6,
-                      backgroundColor: Colors.white24,
-                      color: AppColors.buttonColor,
-                      minHeight: 6,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      "760 more points to reach the next level".tr,
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
