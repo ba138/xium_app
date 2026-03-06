@@ -148,22 +148,32 @@ class _RewardsScreenState extends State<RewardsScreen> {
               ),
               const SizedBox(height: 8),
 
-              _missionTile(
-                progress: 1,
-                title: "Scan a document".tr,
-                icon: Icons.scanner_outlined,
+              Obx(
+                () => _missionTile(
+                  progress: controller.scanProgress.value,
+                  title: "Scan a document".tr,
+                  icon: Icons.scanner_outlined,
+                ),
               ),
+
               const SizedBox(height: 12),
-              _missionTile(
-                progress: 0,
-                title: "Import a doc from email".tr,
-                icon: Icons.email_outlined,
+
+              Obx(
+                () => _missionTile(
+                  progress: controller.emailProgress.value,
+                  title: "Import a doc from email".tr,
+                  icon: Icons.email_outlined,
+                ),
               ),
+
               const SizedBox(height: 12),
-              _missionTile(
-                progress: 0,
-                title: "Import a doc from bank".tr,
-                icon: Icons.account_balance_outlined,
+
+              Obx(
+                () => _missionTile(
+                  progress: controller.bankProgress.value,
+                  title: "Import a doc from bank".tr,
+                  icon: Icons.account_balance_outlined,
+                ),
               ),
               const SizedBox(height: 28),
 

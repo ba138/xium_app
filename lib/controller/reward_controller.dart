@@ -14,12 +14,18 @@ class RewardController extends GetxController {
   // points needed for next level
   var pointsToNextLevel = 0.obs;
 
+  /// Mission progress
+  var scanProgress = 0.0.obs;
+  var emailProgress = 0.0.obs;
+  var bankProgress = 0.0.obs;
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
     fetchUserPointsAndLevel();
+    listenTodayDocuments();
     super.onInit();
   }
 
@@ -45,34 +51,77 @@ class RewardController extends GetxController {
 
     if (points <= 3500) {
       userLevelName.value = "Beginner";
-
       minLevelPoints = 0;
       nextLevelTarget = 3500;
     } else if (points <= 7000) {
       userLevelName.value = "Intermediate";
-
       minLevelPoints = 3500;
       nextLevelTarget = 7000;
     } else {
       userLevelName.value = "Expert";
-
       minLevelPoints = 7000;
-      nextLevelTarget = 10000; // optional cap
+      nextLevelTarget = 10000;
     }
 
-    // progress inside current level
     levelProgress.value =
         ((points - minLevelPoints) / (nextLevelTarget - minLevelPoints)).clamp(
           0.0,
           1.0,
         );
 
-    // points needed for next level
     pointsToNextLevel.value = (nextLevelTarget - points).clamp(0, 100000);
 
-    // if expert already
     if (points > 7000) {
       pointsToNextLevel.value = 0;
+    }
+  }
+
+  /// NEW FUNCTION
+  /// Check if user added document today from each source
+  void listenTodayDocuments() {
+    try {
+      String uid = auth.currentUser!.uid;
+
+      DateTime now = DateTime.now();
+      DateTime startOfDay = DateTime(now.year, now.month, now.day);
+
+      _firestore
+          .collection("users")
+          .doc(uid)
+          .collection("documents")
+          .snapshots()
+          .listen((snapshot) {
+            double scan = 0;
+            double email = 0;
+            double bank = 0;
+
+            for (var doc in snapshot.docs) {
+              var data = doc.data();
+
+              String source = data["source"] ?? "";
+              Timestamp? createdAt = data["createdAt"];
+
+              if (createdAt == null) continue;
+
+              DateTime date = createdAt.toDate();
+
+              if (date.isAfter(startOfDay)) {
+                if (source == "ocr") {
+                  scan = 1;
+                } else if (source == "email") {
+                  email = 1;
+                } else if (source == "bank") {
+                  bank = 1;
+                }
+              }
+            }
+
+            scanProgress.value = scan;
+            emailProgress.value = email;
+            bankProgress.value = bank;
+          });
+    } catch (e) {
+      print(e);
     }
   }
 }

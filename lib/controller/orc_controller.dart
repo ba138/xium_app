@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/views/screens/home/document_screen.dart';
 
 class OcrController extends GetxController {
@@ -53,8 +54,8 @@ class OcrController extends GetxController {
         "Uploading Image".tr,
         "Please wait while we process your document.".tr,
         snackPosition: SnackPosition.TOP,
+        colorText: AppColors.onPrimary,
       );
-      Get.offAll(() => DocumentScreen());
       final fileName = "ocr_${DateTime.now().millisecondsSinceEpoch}.jpg";
 
       final ref = _storage.ref().child("users/$uid/ocr/$fileName");
@@ -81,7 +82,6 @@ class OcrController extends GetxController {
     );
 
     if (response.statusCode != 200) {
-      debugPrint("Cloud Function response: ${response.body}");
       throw "OCR processing failed";
     }
   }

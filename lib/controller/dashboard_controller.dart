@@ -163,24 +163,23 @@ class DashboardController extends GetxController {
     try {
       String uid = auth.currentUser!.uid;
 
-      DocumentSnapshot userDoc = await _firestore
-          .collection("users")
-          .doc(uid)
-          .get();
+      // Listen to user document changes
+      _firestore.collection("users").doc(uid).snapshots().listen((userDoc) {
+        int points = 0;
 
-      int points = 0;
+        if (userDoc.exists && userDoc.data() != null) {
+          Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+          points = (data["points"] ?? 0) as int;
+        }
 
-      if (userDoc.exists && userDoc.data() != null) {
-        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
-        points = (data["points"] ?? 0) as int;
-      }
-
-      userPoints.value = points;
-      userLevel.value = calculateLevel(points);
-      updateLevelProgress(); // Update progress for the level
+        userPoints.value = points;
+        userLevel.value = calculateLevel(points);
+        updateLevelProgress(); // Update progress for the level
+      });
     } catch (e) {
       userPoints.value = 0;
       userLevel.value = 0;
+      print("Error fetching user points: $e");
     }
   }
 
