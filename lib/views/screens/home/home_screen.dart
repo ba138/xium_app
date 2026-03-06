@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/dashboard_controller.dart';
+import 'package:xium_app/controller/user_controller.dart';
 import 'package:xium_app/views/screens/connect_source/add_loyalty_card_info_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
@@ -18,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var dashboardController = Get.put(DashboardController());
+  var userController = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,28 +30,39 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  CircleAvatar(backgroundColor: Colors.amber, radius: 24),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MyText(
-                        text: "Welcome back".tr,
-                        size: 16,
-                        weight: FontWeight.bold,
-                        color: Colors.white,
+              Obx(
+                () => Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: AppColors.buttonColor,
+                      radius: 24,
+                      backgroundImage: NetworkImage(
+                        userController.user.value?.profilePictureUrl ??
+                            "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
                       ),
+                    ),
+                    const SizedBox(width: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MyText(
+                          text: "Welcome back".tr,
+                          size: 16,
+                          weight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
 
-                      MyText(
-                        text: "Here's your financial snapshot".tr,
-                        size: 12,
-                        color: Colors.white54,
-                      ),
-                    ],
-                  ),
-                ],
+                        MyText(
+                          text:
+                              userController.user.value?.username ?? "John Doe",
+                          size: 16,
+                          weight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 24),
 
