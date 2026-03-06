@@ -143,6 +143,31 @@ async function syncTinkTransactionsInternal(uid, accessToken) {
   });
 
   await batch.commit();
+  // 🎯 CHECK IF BANK DOCUMENT ALREADY SAVED TODAY
+const startOfDay = new Date();
+startOfDay.setHours(0, 0, 0, 0);
+
+const endOfDay = new Date();
+endOfDay.setHours(23, 59, 59, 999);
+
+const todayDocs = await db
+  .collection("users")
+  .doc(uid)
+  .collection("documents")
+  .where("source", "==", "bank")
+  .where("createdAt", ">=", startOfDay)
+  .where("createdAt", "<=", endOfDay)
+  .get();
+
+// If this is the FIRST bank transaction today → add 100 points
+if (todayDocs.size === transactions.length && transactions.length > 0) {
+  await db.collection("users").doc(uid).set(
+    {
+      points: admin.firestore.FieldValue.increment(100),
+    },
+    { merge: true }
+  );
+}
 
   // ✅ Update user document to mark bank as connected
   await db.collection("users").doc(uid).set(
@@ -341,6 +366,31 @@ ${fullText}
               },
               { merge: true }
             );
+            // 🎯 CHECK IF EMAIL DOCUMENT ALREADY SAVED TODAY
+const startOfDay = new Date();
+startOfDay.setHours(0, 0, 0, 0);
+
+const endOfDay = new Date();
+endOfDay.setHours(23, 59, 59, 999);
+
+const todayDocs = await db
+  .collection("users")
+  .doc(uid)
+  .collection("documents")
+  .where("source", "==", "email")
+  .where("createdAt", ">=", startOfDay)
+  .where("createdAt", "<=", endOfDay)
+  .get();
+
+// If this is the FIRST email document today → add 100 points
+if (todayDocs.size === 1) {
+  await db.collection("users").doc(uid).set(
+    {
+      points: admin.firestore.FieldValue.increment(100),
+    },
+    { merge: true }
+  );
+}
 
             return res.status(200).json({
               success: true,
@@ -549,6 +599,31 @@ Rules:
           },
           { merge: true }
         );
+        // 🎯 CHECK IF OCR DOCUMENT ALREADY SAVED TODAY
+const startOfDay = new Date();
+startOfDay.setHours(0, 0, 0, 0);
+
+const endOfDay = new Date();
+endOfDay.setHours(23, 59, 59, 999);
+
+const todayDocs = await db
+  .collection("users")
+  .doc(uid)
+  .collection("documents")
+  .where("source", "==", "ocr")
+  .where("createdAt", ">=", startOfDay)
+  .where("createdAt", "<=", endOfDay)
+  .get();
+
+// If this is the FIRST OCR document today → add 100 points
+if (todayDocs.size === 1) {
+  await db.collection("users").doc(uid).set(
+    {
+      points: admin.firestore.FieldValue.increment(100),
+    },
+    { merge: true }
+  );
+}
 
         return res.status(200).json({
           success: true,

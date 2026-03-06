@@ -594,8 +594,9 @@ class AppTranslations extends Translations {
           "Suivez vos points, missions et avantages",
       "Total XIUM Points": "Total de points XIUM",
       "Intermediate": "Intermédiaire",
-      "more_points_next_level": "@points more points to reach the next level",
-      "max_level_reached": "Max level reached",
+      "more_points_next_level":
+          "@points points de plus pour atteindre le niveau suivant",
+      "max_level_reached": "Niveau maximum atteint",
       "Scan a document": "Scanner un document",
       "Import a doc from email": "Importer un document depuis l'email",
       "Import a doc from bank": "Importer un document depuis la banque",
