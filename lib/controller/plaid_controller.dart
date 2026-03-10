@@ -103,7 +103,6 @@ class TinkController extends GetxController {
       await exchangeToken(code);
     } catch (e) {
       Get.snackbar("Tink Error", e.toString());
-      debugPrint("Tink error: $e");
     } finally {
       isLoading.value = false;
     }
@@ -132,7 +131,6 @@ class TinkController extends GetxController {
       // Sync transactions after exchanging token
       await syncTransactions();
     } catch (e) {
-      debugPrint("Exchange token error: $e");
       Get.snackbar("Tink Token Error", e.toString());
     }
   }
@@ -153,13 +151,13 @@ class TinkController extends GetxController {
           .get();
 
       if (!tokenSnap.exists) {
-        debugPrint("No Tink token found for user $userId");
+        Get.snackbar("Error", "No Tink token found for user.");
         return;
       }
 
       final accessToken = tokenSnap.data()?['accessToken'];
       if (accessToken == null) {
-        debugPrint("Access token is null for user $userId");
+        Get.snackbar("Error", "Tink access token is missing.");
         return;
       }
 
@@ -174,14 +172,11 @@ class TinkController extends GetxController {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        debugPrint("Synced transactions: ${data['synced']}");
       } else {
-        debugPrint(
-          "Failed to sync transactions: ${response.statusCode} ${response.body}",
-        );
+        Get.snackbar("Error", "Failed to sync transactions.");
       }
     } catch (e) {
-      debugPrint("Sync transactions error: $e");
+      Get.snackbar("Error", "Failed to sync transactions.");
     } finally {
       isLoading.value = false;
     }

@@ -144,7 +144,7 @@ class DashboardController extends GetxController {
         topSpendingDate.value = "-";
       }
     } catch (e) {
-      print("Insight Data Error: $e");
+      Get.snackbar("Error", "Failed to fetch insights: $e");
     }
   }
 
@@ -179,7 +179,6 @@ class DashboardController extends GetxController {
     } catch (e) {
       userPoints.value = 0;
       userLevel.value = 0;
-      print("Error fetching user points: $e");
     }
   }
 
@@ -213,10 +212,6 @@ class DashboardController extends GetxController {
 
     // total progress = base + fraction within level
     levelProgress.value = (baseProgress + levelFraction).clamp(0.0, 1.0);
-
-    debugPrint(
-      "Points: ${userPoints.value}, Level: $currentLevel, Progress: ${levelProgress.value}",
-    );
   }
 
   /// Optional: progress value for LinearProgressIndicator
