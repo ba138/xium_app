@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/reward_controller.dart';
 import 'package:xium_app/views/widgets/my_text.dart';

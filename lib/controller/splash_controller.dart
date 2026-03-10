@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/views/screens/dashboard/nav_bar.dart';
-import 'package:xium_app/views/screens/home/document_screen.dart';
 import 'package:xium_app/views/screens/welcome/onboarding_screen1.dart';
 
 class SplashController extends GetxController with GetTickerProviderStateMixin {

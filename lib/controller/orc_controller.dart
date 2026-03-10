@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:xium_app/constants/app_colors.dart';
-import 'package:xium_app/views/screens/home/document_screen.dart';
 
 class OcrController extends GetxController {
   final _picker = ImagePicker();

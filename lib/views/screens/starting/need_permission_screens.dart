@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/generated/assets.dart';
 import 'package:xium_app/views/screens/starting/cube_screen.dart';
