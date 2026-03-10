@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/dashboard_controller.dart';
 import 'package:xium_app/controller/user_controller.dart';
+import 'package:xium_app/model/document_model.dart';
 import 'package:xium_app/views/screens/connect_source/add_loyalty_card_info_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
+import 'package:xium_app/views/screens/home/doc_view_screen.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -270,12 +272,12 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white,
             ),
             const Spacer(),
-            MyText(text: "See All".tr, size: 14, color: Colors.blueAccent),
+            // MyText(text: "See All".tr, size: 14, color: Colors.blueAccent),
           ],
         ),
         const SizedBox(height: 12),
 
-        StreamBuilder<QuerySnapshot>(
+        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: dashboardController.getTopNewestDocs(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -289,48 +291,64 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
 
-            var docs = snapshot.data!.docs;
+            /// 🔹 Convert Firestore docs → Model
+            List<DocumentModel> docs = snapshot.data!.docs
+                .map((doc) => DocumentModel.fromFirestore(doc))
+                .toList();
 
             return Column(
               children: List.generate(docs.length, (index) {
-                var data = docs[index];
+                DocumentModel data = docs[index];
 
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    color: const Color(0xff6C7278).withOpacity(0.3),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColors.buttonColor.withOpacity(0.3),
-                        ),
-                        child: const Icon(Icons.home, color: Colors.white),
+                return InkWell(
+                  onTap: () {
+                    Get.to(
+                      () => DocViewScreen(
+                        document: data,
+                        storeLogo: data.storeLogo,
+                        storeName: data.storeName,
+                        documentCount:
+                            dashboardController.topDocTypeCount.value,
                       ),
-
-                      const SizedBox(width: 12),
-
-                      Expanded(
-                        child: Text(
-                          "${data['storeName']}\n${data['documentType']}",
-                          style: const TextStyle(color: Colors.white),
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: const Color(0xff6C7278).withOpacity(0.3),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: AppColors.buttonColor.withOpacity(0.3),
+                          ),
+                          child: const Icon(Icons.home, color: Colors.white),
                         ),
-                      ),
 
-                      Text(
-                        "${data['currency']}${data['amount']}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(width: 12),
+
+                        Expanded(
+                          child: Text(
+                            "${data.storeName ?? "Unknown"}\n${data.documentType ?? ""}",
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
-                      ),
-                    ],
+
+                        Text(
+                          "${data.currency ?? ""}${data.amount ?? 0}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }),

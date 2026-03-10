@@ -149,7 +149,7 @@ class DashboardController extends GetxController {
   }
 
   /// Optional: Get top 3 newest documents
-  Stream<QuerySnapshot> getTopNewestDocs() {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getTopNewestDocs() {
     return _firestore
         .collection("users")
         .doc(auth.currentUser!.uid)
