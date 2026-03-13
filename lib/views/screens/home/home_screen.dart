@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
               _StatCard(
                 title: "Monthly Spending".tr,
                 value: "€$monthlyTotalPrice",
-                subtitle: "vs last",
+                subtitle: "vs last".tr,
                 icon: Icons.bar_chart_outlined,
               ),
               _StatCard(

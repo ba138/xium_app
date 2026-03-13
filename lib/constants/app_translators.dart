@@ -65,6 +65,9 @@ class AppTranslations extends Translations {
       "User Status": "User Status",
       "Current Level": "Current Level",
       "Beginner": "Beginner",
+      "Expert": "Expert",
+      "vs last": "vs last",
+      "expiring soon": "expiring soon",
       "Your level evolves based on your activity within the application.":
           "Your level evolves based on your activity within the application.",
       "Possible Benefits": "Possible Benefits",
@@ -345,6 +348,7 @@ class AppTranslations extends Translations {
       "Merchant": "Merchant",
       "Newest": "Newest",
       "Oldest": "Oldest",
+      "Edit Profile": "Edit Profile",
     },
     'fr_FR': {
       "Newest": "Le plus récent",
@@ -541,6 +545,8 @@ class AppTranslations extends Translations {
           "Pour récupérer automatiquement vos factures, reçus et garanties envoyés par e-mail",
       "Connect your email address": "Connectez votre adresse e-mail",
       "Connect Email": "Connecter l'email",
+      "vs last": "vs dernier",
+      "expiring soon": "Expiration bientôt",
       'rewards': 'Récompenses',
       "Documents": "Documents",
       "Welcome back": "Bon retour",
@@ -578,7 +584,6 @@ class AppTranslations extends Translations {
       "Search a store": "Rechercher un magasin",
       "No stores found": "Aucun magasin trouvé",
       "Select Image Source": "Sélectionnez la source de l'image",
-      "Camera": "Caméra",
       "Gallery": "Galerie",
       "Scan your invoice | receipt | warranty  to help XIUM detect documents.":
           "Scannez votre facture | reçu | garantie pour aider XIUM à détecter les documents.",
@@ -603,6 +608,7 @@ class AppTranslations extends Translations {
       "User Status": "Statut de l'utilisateur",
       "Current Level": "Niveau actuel",
       "Beginner": "Débutant",
+      "Expert": "Expert",
       "Your level evolves based on your activity within the application.":
           "Votre niveau évolue en fonction de votre activité au sein de l'application.",
       "Possible Benefits": "Avantages possibles",
@@ -611,8 +617,9 @@ class AppTranslations extends Translations {
           "Accès anticipé à certaines fonctionnalités",
       "Priority status during new updates":
           "Statut prioritaire lors des nouvelles mises à jour",
-      "Profile & Setting": "Profile & Setting",
-      "User Information": "User Information",
+      "Profile & Setting": "Profil et Paramètres",
+      "User Information": "Profil utilisateur",
+      "Edit Profile": "Modifier le profil",
       "Connections & Integrations": "Connexions & Intégrations",
       "Loyalty": "Fidélité",
       "Connected": "Connecté",

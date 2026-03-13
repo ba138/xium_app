@@ -50,15 +50,15 @@ class RewardController extends GetxController {
     int minLevelPoints = 0;
 
     if (points <= 3500) {
-      userLevelName.value = "Beginner";
+      userLevelName.value = "Beginner".tr;
       minLevelPoints = 0;
       nextLevelTarget = 3500;
     } else if (points <= 7000) {
-      userLevelName.value = "Intermediate";
+      userLevelName.value = "Intermediate".tr;
       minLevelPoints = 3500;
       nextLevelTarget = 7000;
     } else {
-      userLevelName.value = "Expert";
+      userLevelName.value = "Expert".tr;
       minLevelPoints = 7000;
       nextLevelTarget = 10000;
     }

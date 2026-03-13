@@ -112,13 +112,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                         child: Container(
                           height: 30,
-                          width: 80,
+                          padding: EdgeInsets.symmetric(horizontal: 8),
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColors.buttonColor),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Center(
-                            child: MyText(text: "Edit Profile", size: 12),
+                            child: MyText(text: "Edit Profile".tr, size: 12),
                           ),
                         ),
                       ),
