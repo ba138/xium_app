@@ -13,6 +13,12 @@ class SecurityScreen extends StatelessWidget {
         backgroundColor: AppColors.background,
         title: MyText(text: "security".tr, size: 18, weight: FontWeight.w600),
         centerTitle: true,
+        leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.arrow_back_ios, color: AppColors.onPrimary),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

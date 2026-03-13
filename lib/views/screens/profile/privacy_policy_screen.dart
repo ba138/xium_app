@@ -17,7 +17,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           weight: FontWeight.w600,
         ),
         centerTitle: true,
-        leading: InkWell(
+        leading: GestureDetector(
           onTap: () {
             Get.back();
           },
