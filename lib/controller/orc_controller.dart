@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,12 +17,12 @@ class OcrController extends GetxController {
   /// 🔹 State
   final RxBool isLoading = false.obs;
   final RxString error = ''.obs;
-  final RxString uploadedImageUrl = ''.obs;
+  final RxString uploadedFileUrl = ''.obs;
 
   static const String _cloudFunctionUrl =
       "https://us-central1-xium-app.cloudfunctions.net/processImageDocument";
 
-  /// 📸 Pick image from camera or gallery
+  /// 📸 Pick image
   Future<void> pickImage({bool fromCamera = false}) async {
     try {
       error.value = '';
@@ -33,14 +34,34 @@ class OcrController extends GetxController {
 
       if (pickedFile == null) return;
 
-      await _uploadAndProcess(File(pickedFile.path));
+      await _uploadAndProcess(File(pickedFile.path), filetype: "image");
     } catch (e) {
       error.value = e.toString();
     }
   }
 
-  /// ☁️ Upload image → Firebase Storage → send to Cloud Function
-  Future<void> _uploadAndProcess(File imageFile) async {
+  /// 📄 Pick PDF File
+  Future<void> pickPdf() async {
+    try {
+      error.value = '';
+
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result == null) return;
+
+      File file = File(result.files.single.path!);
+
+      await _uploadAndProcess(file, filetype: "filetype");
+    } catch (e) {
+      error.value = e.toString();
+    }
+  }
+
+  /// ☁️ Upload File → Firebase → Send to Cloud Function
+  Future<void> _uploadAndProcess(File file, {required String filetype}) async {
     try {
       isLoading.value = true;
 
@@ -48,22 +69,24 @@ class OcrController extends GetxController {
       if (uid == null) {
         throw "User not logged in";
       }
+
       Get.snackbar(
-        "Uploading Image".tr,
+        "Uploading File".tr,
         "Please wait while we process your document.".tr,
         snackPosition: SnackPosition.TOP,
         colorText: AppColors.onPrimary,
       );
-      final fileName = "ocr_${DateTime.now().millisecondsSinceEpoch}.jpg";
+
+      final fileName = "ocr_${DateTime.now().millisecondsSinceEpoch}.$filetype";
 
       final ref = _storage.ref().child("users/$uid/ocr/$fileName");
 
-      await ref.putFile(imageFile);
+      await ref.putFile(file);
 
-      final imageUrl = await ref.getDownloadURL();
-      uploadedImageUrl.value = imageUrl;
+      final fileUrl = await ref.getDownloadURL();
+      uploadedFileUrl.value = fileUrl;
 
-      await _sendToCloudFunction(uid, imageUrl);
+      await _sendToCloudFunction(uid, fileUrl, filetype);
     } catch (e) {
       error.value = e.toString();
     } finally {
@@ -72,15 +95,19 @@ class OcrController extends GetxController {
   }
 
   /// 🔥 Call Cloud Function
-  Future<void> _sendToCloudFunction(String uid, String imageUrl) async {
+  Future<void> _sendToCloudFunction(
+    String uid,
+    String fileUrl,
+    String filetype,
+  ) async {
     final response = await http.post(
       Uri.parse(_cloudFunctionUrl),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"uid": uid, "imageUrl": imageUrl}),
+      body: jsonEncode({"uid": uid, "fileUrl": fileUrl, "filetype": filetype}),
     );
 
     if (response.statusCode != 200) {
-      throw "OCR processing failed";
+      throw "Document processing failed";
     }
   }
 }

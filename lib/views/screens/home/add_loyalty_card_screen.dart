@@ -66,7 +66,7 @@ class _AddLoyaltyCardScreenState extends State<AddLoyaltyCardScreen> {
               title: "File".tr,
               onTap: () {
                 Get.back();
-                orcController.pickImage(fromCamera: false);
+                orcController.pickPdf();
               },
             ),
 
