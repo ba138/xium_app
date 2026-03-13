@@ -349,8 +349,89 @@ class AppTranslations extends Translations {
       "Newest": "Newest",
       "Oldest": "Oldest",
       "Edit Profile": "Edit Profile",
+      "security": "Security",
+      "your_data_security": "Your Data Security",
+      "your_data_security_desc":
+          "At Xium, security is a top priority. We use industry-standard practices to protect your data and ensure your information is handled securely.",
+
+      "bank_level_security": "Bank-Level Security",
+      "bank_level_security_desc":
+          "Xium uses Tink to connect to your bank accounts. Your banking credentials are never stored or visible to Xium. All connections are encrypted and handled directly by Tink.",
+
+      "encryption": "Encryption",
+      "encryption_desc":
+          "Data transmitted between your device and our servers is encrypted using secure communication protocols. Stored data is protected using appropriate encryption and access controls.",
+
+      "email_document_protection": "Email & Document Protection",
+      "email_document_protection_desc":
+          "Only the content you explicitly share with Xium is processed. Email attachments may be restricted by third-party providers. Uploaded documents and images are processed securely and stored safely.",
+
+      "ai_processing": "AI & Automated Processing",
+      "ai_processing_desc":
+          "Xium uses automated systems to classify documents. These systems operate in secure environments and are designed to minimize access to sensitive information.",
+
+      "access_controls": "Access Controls",
+      "access_controls_desc":
+          "Access to user data is restricted to authorized systems and personnel only, following the principle of least privilege.",
+
+      "user_responsibility": "User Responsibility",
+      "user_responsibility_desc":
+          "You are responsible for maintaining the security of your account, including protecting your device and login credentials.",
+
+      "third_party_services": "Third-Party Services",
+      "third_party_services_desc":
+          "Xium works with trusted third-party services such as Tink and email providers. Each service follows its own security and compliance standards.",
+
+      "security_updates": "Security Updates",
+      "security_updates_desc":
+          "We continuously review and improve our security measures to address new threats and vulnerabilities.",
+
+      "contact_security": "Contact",
+      "contact_security_desc":
+          "If you believe your account has been compromised or have security concerns, please contact us immediately at contact@xium.io",
     },
     'fr_FR': {
+      "security": "Sécurité",
+      "your_data_security": "Sécurité de vos données",
+      "your_data_security_desc":
+          "Chez Xium, la sécurité est une priorité absolue. Nous utilisons des pratiques conformes aux standards de l'industrie pour protéger vos données et garantir que vos informations sont traitées de manière sécurisée.",
+
+      "bank_level_security": "Sécurité de niveau bancaire",
+      "bank_level_security_desc":
+          "Xium utilise Tink pour se connecter à vos comptes bancaires. Vos identifiants bancaires ne sont jamais stockés ni visibles par Xium. Toutes les connexions sont chiffrées et gérées directement par Tink.",
+
+      "encryption": "Chiffrement",
+      "encryption_desc":
+          "Les données transmises entre votre appareil et nos serveurs sont chiffrées à l'aide de protocoles de communication sécurisés. Les données stockées sont protégées par un chiffrement approprié et des contrôles d'accès.",
+
+      "email_document_protection": "Protection des e-mails et documents",
+      "email_document_protection_desc":
+          "Seul le contenu que vous partagez explicitement avec Xium est traité. Les pièces jointes des e-mails peuvent être limitées par des fournisseurs tiers. Les documents et images téléchargés sont traités en toute sécurité et stockés de manière sûre.",
+
+      "ai_processing": "IA et traitement automatisé",
+      "ai_processing_desc":
+          "Xium utilise des systèmes automatisés pour classifier les documents. Ces systèmes fonctionnent dans des environnements sécurisés et sont conçus pour minimiser l'accès aux informations sensibles.",
+
+      "access_controls": "Contrôles d'accès",
+      "access_controls_desc":
+          "L'accès aux données des utilisateurs est limité uniquement aux systèmes et au personnel autorisés, conformément au principe du moindre privilège.",
+
+      "user_responsibility": "Responsabilité de l'utilisateur",
+      "user_responsibility_desc":
+          "Vous êtes responsable du maintien de la sécurité de votre compte, y compris la protection de votre appareil et de vos identifiants de connexion.",
+
+      "third_party_services": "Services tiers",
+      "third_party_services_desc":
+          "Xium travaille avec des services tiers de confiance tels que Tink et des fournisseurs d'e-mails. Chaque service suit ses propres normes de sécurité et de conformité.",
+
+      "security_updates": "Mises à jour de sécurité",
+      "security_updates_desc":
+          "Nous examinons et améliorons continuellement nos mesures de sécurité afin de répondre aux nouvelles menaces et vulnérabilités.",
+
+      "contact_security": "Contact",
+      "contact_security_desc":
+          "Si vous pensez que votre compte a été compromis ou si vous avez des préoccupations en matière de sécurité, veuillez nous contacter immédiatement à contact@xium.io",
+
       "Newest": "Le plus récent",
       "Oldest": "Le plus ancien",
       "Subject": "Sujet",
