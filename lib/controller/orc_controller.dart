@@ -86,9 +86,6 @@ class OcrController extends GetxController {
 
       final fileUrl = await ref.getDownloadURL();
       uploadedFileUrl.value = fileUrl;
-      debugPrint("this is the file url $fileUrl");
-      debugPrint("this is the userid$uid");
-      debugPrint("this is file type :$filetype");
 
       await _sendToCloudFunction(uid, uploadedFileUrl.value, filetype);
     } catch (e) {
