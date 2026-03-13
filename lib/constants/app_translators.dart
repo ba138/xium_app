@@ -349,6 +349,7 @@ class AppTranslations extends Translations {
       "Newest": "Newest",
       "Oldest": "Oldest",
       "Edit Profile": "Edit Profile",
+      "File": "File",
       "security": "Security",
       "your_data_security": "Your Data Security",
       "your_data_security_desc":
@@ -391,6 +392,7 @@ class AppTranslations extends Translations {
           "If you believe your account has been compromised or have security concerns, please contact us immediately at contact@xium.io",
     },
     'fr_FR': {
+      "File": "Fichier",
       "security": "Sécurité",
       "your_data_security": "Sécurité de vos données",
       "your_data_security_desc":

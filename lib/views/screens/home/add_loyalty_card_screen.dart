@@ -61,6 +61,16 @@ class _AddLoyaltyCardScreenState extends State<AddLoyaltyCardScreen> {
             ),
 
             const SizedBox(height: 16),
+            sheetTile(
+              icon: Icons.file_copy,
+              title: "File".tr,
+              onTap: () {
+                Get.back();
+                orcController.pickImage(fromCamera: false);
+              },
+            ),
+
+            const SizedBox(height: 16),
           ],
         ),
       ),

@@ -491,9 +491,9 @@ exports.processImageDocument = onRequest(
   (req, res) =>
     cors(req, res, async () => {
       try {
-        const { uid, imageUrl } = req.body;
+        const { uid, imageUrl,filetype} = req.body;
 
-        if (!uid || !imageUrl) {
+        if (!uid || !imageUrl||filetype) {
           return res.status(400).json({
             error: "uid and imageUrl are required",
           });
@@ -590,6 +590,7 @@ Rules:
             confidence: 0.9,
             status: "done",
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            fileformat:filetype
           });
 
         // 🔹 Mark OCR connected
