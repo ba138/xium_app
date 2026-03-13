@@ -491,17 +491,33 @@ exports.processImageDocument = onRequest(
   (req, res) =>
     cors(req, res, async () => {
       try {
-        const { uid, imageUrl,filetype} = req.body;
+        const { uid, imageUrl, filetype } = req.body;
 
-        if (!uid || !imageUrl||filetype) {
+        if (!uid || !imageUrl || !filetype) {
           return res.status(400).json({
-            error: "uid and imageUrl are required",
+            error: "uid, imageUrl, and filetype are required",
           });
         }
 
         const openai = new OpenAI({
           apiKey: process.env.OPENAI_API_KEY,
         });
+
+        // 🔹 Set input type based on filetype
+        let fileInput;
+        if (filetype === "image") {
+          fileInput = {
+            type: "input_image",
+            image_url: imageUrl,
+          };
+        } else if (filetype === "pdf") {
+          fileInput = {
+            type: "input_file",
+            file_url: imageUrl, // If using OpenAI input_file with URL, otherwise download file first
+          };
+        } else {
+          return res.status(400).json({ error: "Invalid filetype" });
+        }
 
         // 🧠 OCR + Classification + Logo search
         const response = await openai.responses.create({
@@ -513,7 +529,7 @@ exports.processImageDocument = onRequest(
                 {
                   type: "input_text",
                   text: `
-Analyze this image and return VALID JSON ONLY.
+Analyze this file and return VALID JSON ONLY.
 
 {
   "documentType": "invoice | receipt | warranty | unknown",
@@ -536,10 +552,7 @@ Rules:
 - DO NOT add explanations or markdown.
 `,
                 },
-                {
-                  type: "input_image",
-                  image_url: imageUrl,
-                },
+                fileInput, // ← Use conditional file input here
               ],
             },
           ],
@@ -590,7 +603,7 @@ Rules:
             confidence: 0.9,
             status: "done",
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
-            fileformat:filetype
+            fileformat: filetype,
           });
 
         // 🔹 Mark OCR connected
@@ -600,31 +613,30 @@ Rules:
           },
           { merge: true }
         );
-        // 🎯 CHECK IF OCR DOCUMENT ALREADY SAVED TODAY
-const startOfDay = new Date();
-startOfDay.setHours(0, 0, 0, 0);
 
-const endOfDay = new Date();
-endOfDay.setHours(23, 59, 59, 999);
+        // 🎯 Check today's OCR documents
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
 
-const todayDocs = await db
-  .collection("users")
-  .doc(uid)
-  .collection("documents")
-  .where("source", "==", "ocr")
-  .where("createdAt", ">=", startOfDay)
-  .where("createdAt", "<=", endOfDay)
-  .get();
+        const todayDocs = await db
+          .collection("users")
+          .doc(uid)
+          .collection("documents")
+          .where("source", "==", "ocr")
+          .where("createdAt", ">=", startOfDay)
+          .where("createdAt", "<=", endOfDay)
+          .get();
 
-// If this is the FIRST OCR document today → add 100 points
-if (todayDocs.size === 1) {
-  await db.collection("users").doc(uid).set(
-    {
-      points: admin.firestore.FieldValue.increment(100),
-    },
-    { merge: true }
-  );
-}
+        if (todayDocs.size === 1) {
+          await db.collection("users").doc(uid).set(
+            {
+              points: admin.firestore.FieldValue.increment(100),
+            },
+            { merge: true }
+          );
+        }
 
         return res.status(200).json({
           success: true,
@@ -635,6 +647,7 @@ if (todayDocs.size === 1) {
           },
         });
       } catch (error) {
+await db.collection("errors").doc(uid).set({"":error});
         console.error("OCR Function Error:", error);
         return res.status(500).json({
           error: error.message,

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -54,7 +55,7 @@ class OcrController extends GetxController {
 
       File file = File(result.files.single.path!);
 
-      await _uploadAndProcess(file, filetype: "filetype");
+      await _uploadAndProcess(file, filetype: "pdf");
     } catch (e) {
       error.value = e.toString();
     }
@@ -85,8 +86,11 @@ class OcrController extends GetxController {
 
       final fileUrl = await ref.getDownloadURL();
       uploadedFileUrl.value = fileUrl;
+      debugPrint("this is the file url $fileUrl");
+      debugPrint("this is the userid$uid");
+      debugPrint("this is file type :$filetype");
 
-      await _sendToCloudFunction(uid, fileUrl, filetype);
+      await _sendToCloudFunction(uid, uploadedFileUrl.value, filetype);
     } catch (e) {
       error.value = e.toString();
     } finally {
@@ -103,10 +107,11 @@ class OcrController extends GetxController {
     final response = await http.post(
       Uri.parse(_cloudFunctionUrl),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"uid": uid, "fileUrl": fileUrl, "filetype": filetype}),
+      body: jsonEncode({"uid": uid, "imageUrl": fileUrl, "filetype": filetype}),
     );
 
     if (response.statusCode != 200) {
+      debugPrint(response.body);
       throw "Document processing failed";
     }
   }
