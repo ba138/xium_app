@@ -394,6 +394,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: "Top Merchant".tr,
                   value: controller.topStoreName.value.isEmpty
                       ? "-".tr
+                      : controller.topStoreName.value.length > 12
+                      ? "${controller.topStoreName.value.substring(0, 12)}..."
                       : controller.topStoreName.value,
                   subtitle: controller.topStoreCount.value > 0
                       ? "${controller.topStoreCount.value} ${"transactions".tr}"

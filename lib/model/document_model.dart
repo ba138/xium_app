@@ -18,6 +18,7 @@ class DocumentModel {
   final double? confidence;
   final String? status;
   final String? imageUrl;
+  final String? filetype;
 
   // 🔹 Bank / transaction-based fields
   final double? amount;
@@ -35,7 +36,7 @@ class DocumentModel {
     this.storeName,
     this.storeLogo,
     this.imageUrl,
-
+    this.filetype,
     this.from,
     this.subject,
     this.body,
@@ -69,6 +70,7 @@ class DocumentModel {
       body: data?['body'],
       confidence: (data?['confidence'] as num?)?.toDouble(),
       status: data?['status'],
+      filetype: data?['fileformat'],
 
       amount: (data?['amount'] as num?)?.toDouble(),
       currency: data?['currency'],
@@ -101,6 +103,7 @@ class DocumentModel {
       'pending': pending,
       'merchantEntityId': merchantEntityId,
       'imageUrl': imageUrl,
+      'fileformat': filetype,
     };
   }
 

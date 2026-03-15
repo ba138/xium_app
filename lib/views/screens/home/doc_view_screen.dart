@@ -4,6 +4,7 @@ import 'package:xium_app/constants/app_colors.dart';
 
 import 'package:xium_app/model/document_model.dart';
 import 'package:xium_app/views/screens/home/widgets/add_expanses_screen.dart';
+import 'package:xium_app/views/screens/home/widgets/full_pdf_view_screen.dart';
 import 'package:xium_app/views/screens/home/widgets/full_screen_image_view.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -89,8 +90,34 @@ class DocViewScreen extends StatelessWidget {
                 Center(
                   child: Builder(
                     builder: (_) {
-                      // 1️⃣ Document image
-                      if (document.imageUrl != null &&
+                      /// 1️⃣ PDF file
+                      if (document.filetype == "pdf" &&
+                          document.imageUrl != null &&
+                          document.imageUrl!.isNotEmpty) {
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              () =>
+                                  FullScreenPdfView(pdfUrl: document.imageUrl!),
+                              transition: Transition.fadeIn,
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              const Icon(
+                                Icons.picture_as_pdf,
+                                size: 120,
+                                color: Colors.grey,
+                              ),
+                              MyText(text: "Open"),
+                            ],
+                          ),
+                        );
+                      }
+
+                      /// 2️⃣ Image file
+                      if (document.filetype == "image" &&
+                          document.imageUrl != null &&
                           document.imageUrl!.isNotEmpty) {
                         return GestureDetector(
                           onTap: () {
@@ -108,7 +135,7 @@ class DocViewScreen extends StatelessWidget {
                         );
                       }
 
-                      // 2️⃣ Store logo
+                      /// 3️⃣ Store logo fallback
                       if (document.storeLogo != null &&
                           document.storeLogo!.isNotEmpty) {
                         return CommonImageView(
@@ -117,7 +144,7 @@ class DocViewScreen extends StatelessWidget {
                         );
                       }
 
-                      // 3️⃣ Default store icon
+                      /// 4️⃣ Default store icon
                       return const Icon(
                         Icons.store,
                         size: 100,
