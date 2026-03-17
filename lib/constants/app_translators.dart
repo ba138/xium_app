@@ -390,8 +390,14 @@ class AppTranslations extends Translations {
       "contact_security": "Contact",
       "contact_security_desc":
           "If you believe your account has been compromised or have security concerns, please contact us immediately at contact@xium.io",
+      "Coming Soon": "Coming Soon",
+      "Bank connection feature will be available soon.":
+          "Bank connection feature will be available soon.",
     },
     'fr_FR': {
+      "Coming Soon": "Bientôt disponible",
+      "Bank connection feature will be available soon.":
+          "La connexion bancaire sera disponible bientôt.",
       "File": "Fichier",
       "security": "Sécurité",
       "your_data_security": "Sécurité de vos données",

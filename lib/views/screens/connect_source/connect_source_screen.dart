@@ -40,7 +40,15 @@ class _ConnectSourceScreenState extends State<ConnectSourceScreen> {
       "icon": Icons.account_balance,
       "title": "Bank".tr,
       "subtitle": "Automatically import receipts from your bank".tr,
-      "ontap": () => Get.to(() => ConnectBankCard()),
+      "ontap": () {
+        // Get.to(() => ConnectBankCard());
+        Get.snackbar(
+          "Coming Soon".tr,
+          "Bank connection feature will be available soon.".tr,
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+        );
+      },
     },
     {
       "key": "osr",

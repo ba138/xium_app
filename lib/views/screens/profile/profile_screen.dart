@@ -33,29 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: AppColors.onPrimary,
-                      ),
-                    ),
-
-                    const SizedBox(width: 10),
-
-                    MyText(text: "Profile & Setting".tr, size: 16),
-
-                    const Spacer(),
-
-                    /// ✅ Glassy dotted border container placed here
-                  ],
-                ),
-                const SizedBox(height: 30),
-                MyText(text: "User Information".tr, size: 10),
+                MyText(text: "User Information".tr, size: 18),
                 const SizedBox(height: 12),
                 Obx(() {
                   return Row(

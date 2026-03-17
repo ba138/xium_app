@@ -202,7 +202,15 @@ class _HomeScreenState extends State<HomeScreen> {
     final labels = ["Email".tr, "Bank".tr, "Phone".tr, "Loyalty".tr];
     final tap = {
       0: () => Get.to(() => ConnectEmailScreen()),
-      1: () => Get.to(() => ConnectBankCard()),
+      1: () {
+        // Get.to(() => ConnectBankCard());
+        Get.snackbar(
+          "Coming Soon".tr,
+          "Bank connection feature will be available soon.".tr,
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+        );
+      },
       2: () => Get.to(() => ConnectPhoneScreen()),
       3: () => Get.to(() => AddLoyaltyInfoScreen()),
     };

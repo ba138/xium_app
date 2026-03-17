@@ -88,25 +88,6 @@ class _AddLoyaltyCardScreenState extends State<AddLoyaltyCardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: AppColors.onPrimary,
-                    ),
-                  ),
-
-                  const SizedBox(width: 10),
-
-                  MyText(text: "Scann", size: 16),
-
-                  const Spacer(),
-                ],
-              ),
               const SizedBox(height: 30),
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
