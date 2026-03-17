@@ -65,7 +65,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
             children: [
               Row(
                 children: [
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       Get.back();
                     },

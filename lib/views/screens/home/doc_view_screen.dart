@@ -51,7 +51,7 @@ class DocViewScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        InkWell(
+                        GestureDetector(
                           onTap: Get.back,
                           child: const Icon(
                             Icons.arrow_back_ios,
