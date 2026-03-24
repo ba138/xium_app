@@ -6,7 +6,6 @@ import 'package:xium_app/controller/dashboard_controller.dart';
 import 'package:xium_app/controller/user_controller.dart';
 import 'package:xium_app/model/document_model.dart';
 import 'package:xium_app/views/screens/connect_source/add_loyalty_card_info_screen.dart';
-import 'package:xium_app/views/screens/connect_source/connect_bank_card.dart';
 import 'package:xium_app/views/screens/connect_source/connect_email_screen.dart';
 import 'package:xium_app/views/screens/connect_source/connect_phone_screen.dart';
 import 'package:xium_app/views/screens/home/doc_view_screen.dart';

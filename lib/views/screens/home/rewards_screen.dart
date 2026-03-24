@@ -165,15 +165,15 @@ class _RewardsScreenState extends State<RewardsScreen> {
                 ),
               ),
 
-              const SizedBox(height: 12),
+              // const SizedBox(height: 12),
 
-              Obx(
-                () => _missionTile(
-                  progress: controller.bankProgress.value,
-                  title: "Import a doc from bank".tr,
-                  icon: Icons.account_balance_outlined,
-                ),
-              ),
+              // Obx(
+              //   () => _missionTile(
+              //     progress: controller.bankProgress.value,
+              //     title: "Import a doc from bank".tr,
+              //     icon: Icons.account_balance_outlined,
+              //   ),
+              // ),
               const SizedBox(height: 28),
 
               /// User Status
@@ -217,7 +217,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "CURRENT LEVEL".tr,
+                              "Current Level".tr,
                               style: TextStyle(color: Colors.white54),
                             ),
                             SizedBox(height: 4),

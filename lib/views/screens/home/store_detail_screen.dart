@@ -152,7 +152,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                           } else if (index == 2) {
                             controller.filterByType("Invoice");
                           } else if (index == 3) {
-                            controller.filterByType("Warrantie");
+                            controller.filterByType("warranty");
                           }
                         });
                       },

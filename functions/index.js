@@ -513,7 +513,7 @@ exports.processImageDocument = onRequest(
         } else if (filetype === "pdf") {
           fileInput = {
             type: "input_file",
-            file_url: imageUrl, // If using OpenAI input_file with URL, otherwise download file first
+            file_url: imageUrl,
           };
         } else {
           return res.status(400).json({ error: "Invalid filetype" });
@@ -550,9 +550,18 @@ Rules:
 - SVG logos are FORBIDDEN
 - If not a valid document → documentType = "unknown"
 - DO NOT add explanations or markdown.
+
+- Normalize store names:
+  - Remove suffixes like "Inc", "Ltd", "LLC", "Corp", "Store", "Company"
+  - Convert variations to a single common brand name
+  - Example:
+    - "Apple Inc", "Apple Store" → "Apple"
+    - "Google LLC", "Google Payments", "Google Cloud" → "Google"
+    - "Amazon.com", "Amazon EU" → "Amazon"
+  - Always return a clean, short, canonical brand name in "merchantName"
 `,
                 },
-                fileInput, // ← Use conditional file input here
+                fileInput,
               ],
             },
           ],
@@ -585,6 +594,26 @@ Rules:
         // ✅ Validate logo
         const validLogo = await validateLogoUrl(extracted.storeLogo);
 
+        // ✅ 🔥 FIX: Merchant fallback + normalization
+        let merchant =
+          extracted.merchantName ||
+          extracted.storeName ||
+          null;
+
+        if (!merchant) {
+          merchant = "Unknown";
+        }
+
+        if (merchant) {
+          merchant = merchant
+            .replace(/\b(inc|ltd|llc|corp|store|company)\b/gi, "")
+            .trim();
+
+          merchant =
+            merchant.charAt(0).toUpperCase() +
+            merchant.slice(1);
+        }
+
         // 🔹 Save to Firestore
         const docRef = await db
           .collection("users")
@@ -594,9 +623,9 @@ Rules:
             source: "ocr",
             imageUrl,
             documentType: extracted.documentType,
-            storeName: extracted.storeName || "Unknown",
+            storeName: merchant,
             storeLogo: validLogo,
-            merchantName: extracted.merchantName ?? null,
+            merchantName: merchant,
             amount: extracted.amount ?? null,
             currency: extracted.currency ?? null,
             date: extracted.date ?? null,
@@ -647,7 +676,7 @@ Rules:
           },
         });
       } catch (error) {
-await db.collection("errors").doc(uid).set({"":error});
+        await db.collection("errors").doc(uid).set({ "": error });
         console.error("OCR Function Error:", error);
         return res.status(500).json({
           error: error.message,

@@ -109,7 +109,7 @@ class DocViewScreen extends StatelessWidget {
                                 size: 120,
                                 color: Colors.grey,
                               ),
-                              MyText(text: "Open"),
+                              MyText(text: "Open".tr),
                             ],
                           ),
                         );

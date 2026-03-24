@@ -393,8 +393,10 @@ class AppTranslations extends Translations {
       "Coming Soon": "Coming Soon",
       "Bank connection feature will be available soon.":
           "Bank connection feature will be available soon.",
+      "Open": "Open",
     },
     'fr_FR': {
+      "Open": "Ouvrir",
       "Coming Soon": "Bientôt disponible",
       "Bank connection feature will be available soon.":
           "La connexion bancaire sera disponible bientôt.",
