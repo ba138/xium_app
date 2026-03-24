@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
@@ -53,8 +54,8 @@ class DashboardController extends GetxController {
           for (var doc in snapshot.docs) {
             var data = doc.data();
 
-            if (data["source"] == "Warrantie") warranties++;
-            if (data["documentType"] == "Subscription") subscriptions++;
+            if (data["documentType"] == "warranty") warranties++;
+            if (data["documentType"] == "subscription") subscriptions++;
 
             double price = double.tryParse(data["amount"].toString()) ?? 0;
             totalPrice += price;

@@ -527,8 +527,8 @@ exports.processImageDocument = onRequest(
               role: "user",
               content: [
                 {
-                  type: "input_text",
-                  text: `
+  type: "input_text",
+  text: `
 Analyze this file and return VALID JSON ONLY.
 
 {
@@ -538,18 +538,17 @@ Analyze this file and return VALID JSON ONLY.
   "amount": number | null,
   "currency": string | null,
   "date": "YYYY-MM-DD" | null,
+  "storeLogo": string | null
+}
+
+Rules:
 storeLogo:
 - MUST be a direct URL ending with .png or .jpg
 - If the official logo is only available as SVG → return null
 - SVG logos are FORBIDDEN
-}
 
-Rules:
-- MUST be a direct URL ending with .png or .jpg
-- If the official logo is only available as SVG → return null
-- SVG logos are FORBIDDEN
 - If not a valid document → documentType = "unknown"
-- DO NOT add explanations or markdown.
+- DO NOT add explanations or markdown
 
 - Normalize store names:
   - Remove suffixes like "Inc", "Ltd", "LLC", "Corp", "Store", "Company"
@@ -559,8 +558,9 @@ Rules:
     - "Google LLC", "Google Payments", "Google Cloud" → "Google"
     - "Amazon.com", "Amazon EU" → "Amazon"
   - Always return a clean, short, canonical brand name in "merchantName"
+Return ONLY JSON.
 `,
-                },
+},
                 fileInput,
               ],
             },

@@ -179,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               _StatCard(
                 title: "Subscriptions".tr,
-                value: totalWarranties,
+                value: totalSubscriptions,
                 subtitle: "mo total",
                 icon: Icons.payment_outlined,
               ),
