@@ -532,7 +532,7 @@ exports.processImageDocument = onRequest(
 Analyze this file and return VALID JSON ONLY.
 
 {
-  "documentType": "invoice | receipt | warranty | unknown",
+  "documentType": "invoice | receipt | warranty | subscription | unknown",
   "storeName": string | null,
   "merchantName": string | null,
   "amount": number | null,
