@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(8),
                             color: AppColors.buttonColor.withOpacity(0.3),
                           ),
-                          child: const Icon(Icons.home, color: Colors.white),
+                          child: buildStoreLogo(data),
                         ),
 
                         const SizedBox(width: 12),
@@ -364,6 +364,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
+  }
+
+  Widget buildStoreLogo(DocumentModel data) {
+    if (data.storeLogo != null && data.storeLogo!.isNotEmpty) {
+      return Image.network(
+        data.storeLogo!,
+        width: 40,
+        height: 40,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          // Fallback if image fails to load
+          return const Icon(Icons.home, color: Colors.white);
+        },
+      );
+    } else {
+      return const Icon(Icons.home, color: Colors.white);
+    }
   }
 
   Widget _insights(DashboardController controller) {
@@ -668,4 +685,6 @@ class _InsightCard extends StatelessWidget {
       ),
     );
   }
+
+  // Flutter widget example
 }

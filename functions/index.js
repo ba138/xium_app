@@ -181,7 +181,6 @@ if (todayDocs.size === transactions.length && transactions.length > 0) {
 }
 
 
-
 exports.processIncomingEmail = onRequest(
   { secrets: ["OPENAI_API_KEY"] },
   (req, res) =>
@@ -216,7 +215,6 @@ exports.processIncomingEmail = onRequest(
             const subject = fields.subject || "";
             const body = fields["body-plain"] || "";
 
-            // ✅ MANUAL FORWARDING → sender is YOUR gmail
             const match = fromRaw.match(/<(.+?)>/);
             const senderEmail = match ? match[1] : fromRaw.trim();
 
@@ -224,7 +222,6 @@ exports.processIncomingEmail = onRequest(
               return res.status(400).json({ error: "Sender email not found" });
             }
 
-            // 🔍 FIND USER BY SENDER EMAIL
             const userSnap = await db
               .collection("users")
               .where("email", "==", senderEmail)
@@ -248,7 +245,6 @@ SUBJECT: ${subject}
 ${body}
             `;
 
-            // 🧹 Save & delete attachments (no OCR yet)
             for (const file of files) {
               const tempPath = `temp/${Date.now()}-${file.filename}`;
               await bucket.file(tempPath).save(file.buffer, {
@@ -257,7 +253,6 @@ ${body}
               await bucket.file(tempPath).delete().catch(() => {});
             }
 
-            // 🔐 OPENAI CLASSIFICATION
             const openai = new OpenAI({
               apiKey: process.env.OPENAI_API_KEY,
             });
@@ -274,16 +269,13 @@ ${body}
 Analyze this EMAIL and return VALID JSON ONLY.
 
 {
-  "documentType": "invoice | receipt | warranty | bank_transaction | unknown",
+  "documentType": "invoice | receipt | warranty | bank_transaction | subscription | unknown",
   "storeName": string | null,
   "merchantName": string | null,
   "confidence": number (0.0 - 1.0),
   "amount": number | null,
-  "currency": string | null
-  "storeLogo": 
-- MUST be a direct URL ending with .png or .jpg
-- If the official logo is only available as SVG → return null
-- SVG logos are FORBIDDEN,
+  "currency": string | null,
+  "storeLogo": string | null
 }
 
 Rules:
@@ -295,7 +287,6 @@ Rules:
 - If the official logo is only available as SVG → return null
 - SVG logos are FORBIDDEN
 - Extract store name from email body it is very important
-
 - Extract amount as NUMBER if possible
 - Extract currency like PKR, USD if present
 - JSON ONLY, NO markdown
@@ -309,7 +300,6 @@ ${fullText}
               ],
             });
 
-            // 🧹 CLEAN RESPONSE
             let rawText = aiResponse.output_text || "";
             rawText = rawText.replace(/```json|```/g, "").trim();
 
@@ -323,12 +313,12 @@ ${fullText}
               });
             }
 
-            // ❌ Ignore unsupported docs
             const allowedTypes = [
               "invoice",
               "receipt",
               "warranty",
               "bank_transaction",
+              "subscription",
             ];
 
             if (!allowedTypes.includes(extracted.documentType)) {
@@ -336,6 +326,59 @@ ${fullText}
                 success: false,
                 reason: "Unsupported document",
               });
+            }
+
+            // ✅ SAME LOGIC ADDED HERE
+        let validLogo = await validateLogoUrl(extracted.storeLogo);
+
+            if (!validLogo) {
+              const logos = {
+            Google: "https://cdn2.hubspot.net/hubfs/53/image8-2.jpg",
+            Netflix: "https://static.vecteezy.com/system/resources/previews/017/396/814/non_2x/netflix-mobile-application-logo-free-png.png",
+            Facebook: "https://img.freepik.com/premium-photo/facebook-logo_1080029-107.jpg?semt=ais_hybrid&w=740&q=80",
+            Apple: "https://1000logos.net/wp-content/uploads/2016/10/Apple-Logo.png",
+            Amazon: "https://thumbs.dreamstime.com/b/amazon-logo-amazon-logo-white-background-vector-format-avaliable-124289859.jpg",
+            Microsoft: "https://msblogs.thesourcemediaassets.com/2012/08/8867.Microsoft_5F00_Logo_2D00_for_2D00_screen.jpg",
+            Instagram:"https://img.freepik.com/premium-psd/instagram-application-logo_23-2151544088.jpg?semt=ais_hybrid&w=740&q=80",
+            WhatsApp: "https://img.freepik.com/premium-psd/instagram-application-logo_23-2151544088.jpg?semt=ais_hybrid&w=740&q=80",
+            Spotify: "https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg",
+            YouTube: "https://logo.clearbit.com/youtube.com",
+  Twitter: "https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?semt=ais_hybrid&w=740&q=80",
+  TikTok: "https://img.freepik.com/premium-vector/vector-set-realistic-isolated-blank-price-tag-coupons-discount-vector-illustration_561158-2220.jpg?semt=ais_hybrid&w=740&q=80",
+  LinkedIn: "https://img.freepik.com/premium-vector/linkedin-logo-icon_1273375-1174.jpg?semt=ais_hybrid&w=740&q=80",
+  Snapchat: "https://img.freepik.com/premium-photo/square-snapchat-logo-isolated-white-background_469489-1032.jpg?semt=ais_hybrid&w=740&q=80",
+  Uber: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaI0-AaIAcwVCkcnR8xdetso-wz9rCOVJB5Q&s",
+  Airbnb: "https://s3.us-east-1.amazonaws.com/cdn.designcrowd.com/blog/airbnb-logo-history/Color-Airbnb-Logo.jpg",
+  PayPal: "https://i.pinimg.com/736x/7c/e7/97/7ce797e044a880eb6d74bdec009343bf.jpg",
+  Visa: "https://www.logo.wine/a/logo/Visa_Inc./Visa_Inc.-Logo.wine.svg",
+  Mastercard: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg",
+  Samsung: "https://static.vecteezy.com/system/resources/previews/020/975/545/non_2x/samsung-logo-samsung-icon-transparent-free-png.png",
+  Sony: "https://1000logos.net/wp-content/uploads/2017/06/Sony-Logo.jpg",
+  Intel: "https://logos-world.net/wp-content/uploads/2021/09/Intel-Logo-2006-2020-700x394.png",
+  Adobe: "https://1000logos.net/wp-content/uploads/2016/10/Adobe-Logo-1993.jpg",
+  Walmart: "https://cdn.mos.cms.futurecdn.net/5StAbRHLA4ZdyzQZVivm2c.jpg",
+  eBay: "https://1000logos.net/wp-content/uploads/2018/10/Ebay-logo.jpg",
+  Alibaba: "https://images.seeklogo.com/logo-png/0/2/alibaba-com-logo-png_seeklogo-6545.png",
+  Zara: "https://static.vecteezy.com/system/resources/thumbnails/024/131/336/small/zara-brand-logo-symbol-clothes-black-design-icon-abstract-illustration-free-vector.jpg",
+  Nike: "https://thumbs.dreamstime.com/b/vector-logos-collection-most-famous-fashion-brands-world-format-available-illustrator-ai-nike-logo-119869268.jpg",
+  Adidas: "https://static.vecteezy.com/system/resources/thumbnails/014/414/689/small/adidas-new-logo-on-transparent-background-free-vector.jpg",
+  Tesla: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/500px-Tesla_logo.png"
+          };
+
+              let storeKey =
+                extracted.merchantName ||
+                extracted.storeName ||
+                "";
+
+              storeKey = storeKey.trim().toLowerCase();
+
+              const match = Object.keys(logos).find((key) =>
+                storeKey.includes(key.toLowerCase())
+              );
+
+              if (match) {
+                validLogo = logos[match];
+              }
             }
 
             // 💾 SAVE DOCUMENT
@@ -351,7 +394,7 @@ ${fullText}
                 documentType: extracted.documentType,
                 storeName: extracted.storeName ?? "Unknown",
                 merchantName: extracted.merchantName ?? null,
-                storeLogo: extracted.storeLogo ?? null,
+                storeLogo: validLogo,
                 amount: extracted.amount ?? null,
                 currency: extracted.currency ?? null,
                 confidence: extracted.confidence ?? 0.9,
@@ -359,43 +402,44 @@ ${fullText}
                 createdAt: admin.firestore.FieldValue.serverTimestamp(),
               });
 
-            // 🔹 Mark email connected
             await db.collection("users").doc(uid).set(
               {
                 source: { email: "connected" },
               },
               { merge: true }
             );
-            // 🎯 CHECK IF EMAIL DOCUMENT ALREADY SAVED TODAY
-const startOfDay = new Date();
-startOfDay.setHours(0, 0, 0, 0);
 
-const endOfDay = new Date();
-endOfDay.setHours(23, 59, 59, 999);
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0);
 
-const todayDocs = await db
-  .collection("users")
-  .doc(uid)
-  .collection("documents")
-  .where("source", "==", "email")
-  .where("createdAt", ">=", startOfDay)
-  .where("createdAt", "<=", endOfDay)
-  .get();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
 
-// If this is the FIRST email document today → add 100 points
-if (todayDocs.size === 1) {
-  await db.collection("users").doc(uid).set(
-    {
-      points: admin.firestore.FieldValue.increment(100),
-    },
-    { merge: true }
-  );
-}
+            const todayDocs = await db
+              .collection("users")
+              .doc(uid)
+              .collection("documents")
+              .where("source", "==", "email")
+              .where("createdAt", ">=", startOfDay)
+              .where("createdAt", "<=", endOfDay)
+              .get();
+
+            if (todayDocs.size === 1) {
+              await db.collection("users").doc(uid).set(
+                {
+                  points: admin.firestore.FieldValue.increment(100),
+                },
+                { merge: true }
+              );
+            }
 
             return res.status(200).json({
               success: true,
               documentId: docRef.id,
-              data: extracted,
+              data: {
+                ...extracted,
+                storeLogo: validLogo,
+              },
             });
           } catch (err) {
             console.error("INNER ERROR:", err);
@@ -527,8 +571,8 @@ exports.processImageDocument = onRequest(
               role: "user",
               content: [
                 {
-  type: "input_text",
-  text: `
+                  type: "input_text",
+                  text: `
 Analyze this file and return VALID JSON ONLY.
 
 {
@@ -560,7 +604,7 @@ storeLogo:
   - Always return a clean, short, canonical brand name in "merchantName"
 Return ONLY JSON.
 `,
-},
+                },
                 fileInput,
               ],
             },
@@ -592,7 +636,58 @@ Return ONLY JSON.
         }
 
         // ✅ Validate logo
-        const validLogo = await validateLogoUrl(extracted.storeLogo);
+        let validLogo = await validateLogoUrl(extracted.storeLogo);
+
+        // 🔥 NEW: Fallback logo logic (ONLY ADDITION)
+        if (!validLogo) {
+          const logos = {
+            Google: "https://cdn2.hubspot.net/hubfs/53/image8-2.jpg",
+            Netflix: "https://static.vecteezy.com/system/resources/previews/017/396/814/non_2x/netflix-mobile-application-logo-free-png.png",
+            Facebook: "https://img.freepik.com/premium-photo/facebook-logo_1080029-107.jpg?semt=ais_hybrid&w=740&q=80",
+            Apple: "https://1000logos.net/wp-content/uploads/2016/10/Apple-Logo.png",
+            Amazon: "https://thumbs.dreamstime.com/b/amazon-logo-amazon-logo-white-background-vector-format-avaliable-124289859.jpg",
+            Microsoft: "https://msblogs.thesourcemediaassets.com/2012/08/8867.Microsoft_5F00_Logo_2D00_for_2D00_screen.jpg",
+            Instagram:"https://img.freepik.com/premium-psd/instagram-application-logo_23-2151544088.jpg?semt=ais_hybrid&w=740&q=80",
+            WhatsApp: "https://img.freepik.com/premium-psd/instagram-application-logo_23-2151544088.jpg?semt=ais_hybrid&w=740&q=80",
+            Spotify: "https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg",
+            YouTube: "https://logo.clearbit.com/youtube.com",
+  Twitter: "https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?semt=ais_hybrid&w=740&q=80",
+  TikTok: "https://img.freepik.com/premium-vector/vector-set-realistic-isolated-blank-price-tag-coupons-discount-vector-illustration_561158-2220.jpg?semt=ais_hybrid&w=740&q=80",
+  LinkedIn: "https://img.freepik.com/premium-vector/linkedin-logo-icon_1273375-1174.jpg?semt=ais_hybrid&w=740&q=80",
+  Snapchat: "https://img.freepik.com/premium-photo/square-snapchat-logo-isolated-white-background_469489-1032.jpg?semt=ais_hybrid&w=740&q=80",
+  Uber: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaI0-AaIAcwVCkcnR8xdetso-wz9rCOVJB5Q&s",
+  Airbnb: "https://s3.us-east-1.amazonaws.com/cdn.designcrowd.com/blog/airbnb-logo-history/Color-Airbnb-Logo.jpg",
+  PayPal: "https://i.pinimg.com/736x/7c/e7/97/7ce797e044a880eb6d74bdec009343bf.jpg",
+  Visa: "https://www.logo.wine/a/logo/Visa_Inc./Visa_Inc.-Logo.wine.svg",
+  Mastercard: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg",
+  Samsung: "https://static.vecteezy.com/system/resources/previews/020/975/545/non_2x/samsung-logo-samsung-icon-transparent-free-png.png",
+  Sony: "https://1000logos.net/wp-content/uploads/2017/06/Sony-Logo.jpg",
+  Intel: "https://logos-world.net/wp-content/uploads/2021/09/Intel-Logo-2006-2020-700x394.png",
+  Adobe: "https://1000logos.net/wp-content/uploads/2016/10/Adobe-Logo-1993.jpg",
+  Walmart: "https://cdn.mos.cms.futurecdn.net/5StAbRHLA4ZdyzQZVivm2c.jpg",
+  eBay: "https://1000logos.net/wp-content/uploads/2018/10/Ebay-logo.jpg",
+  Alibaba: "https://images.seeklogo.com/logo-png/0/2/alibaba-com-logo-png_seeklogo-6545.png",
+  Zara: "https://static.vecteezy.com/system/resources/thumbnails/024/131/336/small/zara-brand-logo-symbol-clothes-black-design-icon-abstract-illustration-free-vector.jpg",
+  Nike: "https://thumbs.dreamstime.com/b/vector-logos-collection-most-famous-fashion-brands-world-format-available-illustrator-ai-nike-logo-119869268.jpg",
+  Adidas: "https://static.vecteezy.com/system/resources/thumbnails/014/414/689/small/adidas-new-logo-on-transparent-background-free-vector.jpg",
+  Tesla: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/500px-Tesla_logo.png"
+          };
+
+          let storeKey =
+            extracted.merchantName ||
+            extracted.storeName ||
+            "";
+
+          storeKey = storeKey.trim().toLowerCase();
+
+          const match = Object.keys(logos).find((key) =>
+            storeKey.includes(key.toLowerCase())
+          );
+
+          if (match) {
+            validLogo = logos[match];
+          }
+        }
 
         // ✅ 🔥 FIX: Merchant fallback + normalization
         let merchant =
