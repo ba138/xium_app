@@ -277,15 +277,25 @@ Analyze this EMAIL and return VALID JSON ONLY.
   "currency": string | null,
   "storeLogo": string | null
 }
-
+- Normalize store names:
+  - Remove suffixes like "Inc", "Ltd", "LLC", "Corp", "Store", "Company"
+  - Convert variations to a single common brand name
+  - Example:
+    - "Apple Inc", "Apple Store", "Apple Music" → "Apple"
+    - "Google LLC", "Google Payments", "Google Cloud" → "Google"
+    - "Amazon.com", "Amazon EU" → "Amazon"
 Rules:
 - Ignore marketing/newsletters
 - Bank alerts / transfers → documentType = "bank_transaction"
 - Use sender + subject + body
 - If not a financial document → documentType = "unknown"
-- MUST be a direct URL ending with .png or .jpg
-- If the official logo is only available as SVG → return null
-- SVG logos are FORBIDDEN
+storeLogo:
+- MUST be a valid, direct image URL ending with .png or .jpg
+- DO NOT return SVG logos under any condition
+- If the official logo is only available in SVG format → return null
+- DO NOT guess, generate, or construct a logo URL
+- ONLY return a logo URL if it is a real, publicly accessible image
+- If unsure or not found → return null
 - Extract store name from email body it is very important
 - Extract amount as NUMBER if possible
 - Extract currency like PKR, USD if present
@@ -587,9 +597,12 @@ Analyze this file and return VALID JSON ONLY.
 
 Rules:
 storeLogo:
-- MUST be a direct URL ending with .png or .jpg
-- If the official logo is only available as SVG → return null
-- SVG logos are FORBIDDEN
+- MUST be a valid, direct image URL ending with .png or .jpg
+- DO NOT return SVG logos under any condition
+- If the official logo is only available in SVG format → return null
+- DO NOT guess, generate, or construct a logo URL
+- ONLY return a logo URL if it is a real, publicly accessible image
+- If unsure or not found → return null
 
 - If not a valid document → documentType = "unknown"
 - DO NOT add explanations or markdown
@@ -598,7 +611,7 @@ storeLogo:
   - Remove suffixes like "Inc", "Ltd", "LLC", "Corp", "Store", "Company"
   - Convert variations to a single common brand name
   - Example:
-    - "Apple Inc", "Apple Store" → "Apple"
+    - "Apple Inc", "Apple Store", "Apple Music" → "Apple"
     - "Google LLC", "Google Payments", "Google Cloud" → "Google"
     - "Amazon.com", "Amazon EU" → "Amazon"
   - Always return a clean, short, canonical brand name in "merchantName"

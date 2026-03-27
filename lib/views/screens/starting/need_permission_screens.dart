@@ -36,7 +36,8 @@ class _NeedPermissionScreensState extends State<NeedPermissionScreens> {
               const SizedBox(height: 8),
               MyText(
                 text:
-                    "XIUM needs certain authorizations to automatically retrieve your documents and provide you with a smooth  and secure experience",
+                    "XIUM needs certain authorizations to automatically retrieve your documents and provide you with a smooth  and secure experience"
+                        .tr,
 
                 textAlign: TextAlign.center,
               ),

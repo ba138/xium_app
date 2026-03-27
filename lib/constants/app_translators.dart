@@ -394,8 +394,94 @@ class AppTranslations extends Translations {
       "Bank connection feature will be available soon.":
           "Bank connection feature will be available soon.",
       "Open": "Open",
+      "Weak Password": "Weak Password",
+      "The password provided is too weak.":
+          "The password provided is too weak.",
+      "Email Already In Use": "Email Already In Use",
+      "The email is already registered.": "The email is already registered.",
+
+      "Invalid Email": "Invalid Email",
+      "The email address is not valid.": "The email address is not valid.",
+
+      "Registration Error": "Registration Error",
+      "Something went wrong": "Something went wrong",
+
+      "Error": "Error",
+      "Email and Password can't be empty": "Email and Password can't be empty",
+
+      "Please enter a valid email address":
+          "Please enter a valid email address",
+
+      "Password must be at least 6 characters long":
+          "Password must be at least 6 characters long",
+
+      "Login failed": "Login failed",
+
+      "Verify Email": "Verify Email",
+      "Please verify your email before logging in.":
+          "Please verify your email before logging in.",
+      "Please enter your email": "Please enter your email",
+
+      "Email Not Registered": "Email Not Registered",
+      "No account found with this email.": "No account found with this email.",
+
+      "Reset Email Sent": "Reset Email Sent",
+      "Check your inbox or spam  folder to reset your password.":
+          "Check your inbox or spam  folder to reset your password.",
+      "Success": "Success",
+      "Account created.  verification email send to your inbox or spam folder .":
+          "Account created.  verification email send to your inbox or spam folder .",
+
+      "Passwords do not match": "Passwords do not match",
+
+      "Full name must be at least 3 characters":
+          "Full name must be at least 3 characters",
+      "All fields are required": "All fields are required",
     },
+
     'fr_FR': {
+      "Success": "Succès",
+      "Account created.  verification email send to your inbox or spam folder .":
+          "Compte créé. Un email de vérification a été envoyé dans votre boîte de réception ou dans le dossier spam.",
+
+      "Passwords do not match": "Les mots de passe ne correspondent pas",
+      "Password must be at least 6 characters long":
+          "Le mot de passe doit contenir au moins 6 caractères",
+
+      "Full name must be at least 3 characters":
+          "Le nom complet doit contenir au moins 3 caractères",
+      "All fields are required": "Tous les champs sont obligatoires",
+      "Please enter your email": "Veuillez entrer votre email",
+      "Please enter a valid email address":
+          "Veuillez entrer une adresse email valide",
+
+      "Email Not Registered": "Email non enregistré",
+      "No account found with this email.":
+          "Aucun compte trouvé avec cet email.",
+
+      "Reset Email Sent": "Email de réinitialisation envoyé",
+      "Check your inbox or spam  folder to reset your password.":
+          "Vérifiez votre boîte de réception ou le dossier spam pour réinitialiser votre mot de passe.",
+      "Error": "Erreur",
+      "Email and Password can't be empty":
+          "L’email et le mot de passe ne peuvent pas être vides",
+
+      "Login failed": "Échec de la connexion",
+
+      "Verify Email": "Vérifier l’email",
+      "Please verify your email before logging in.":
+          "Veuillez vérifier votre email avant de vous connecter.",
+      "Email Already In Use": "Email déjà utilisé",
+      "The email is already registered.": "Cet email est déjà enregistré.",
+
+      "Invalid Email": "Email invalide",
+      "The email address is not valid.": "L’adresse email n’est pas valide.",
+
+      "Registration Error": "Erreur d’inscription",
+      "Something went wrong": "Une erreur s’est produite",
+      "The password provided is too weak.":
+          "Le mot de passe fourni est trop faible.",
+      "Weak Password": "Mot de passe faible",
       "Open": "Ouvrir",
       "Coming Soon": "Bientôt disponible",
       "Bank connection feature will be available soon.":

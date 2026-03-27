@@ -108,8 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(radius),
         gradient: LinearGradient(
           colors: [
-            Colors.blueGrey.shade800.withOpacity(0.6),
-            Colors.blue.shade900.withOpacity(0.6),
+            Colors.blueGrey.shade800.withValues(alpha: 0.8),
+            Colors.blue.shade900.withValues(alpha: 0.8),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(18),
-                      color: const Color(0xff6C7278).withOpacity(0.3),
+                      color: const Color(0xff6C7278).withValues(alpha: 0.3),
                     ),
                     child: Row(
                       children: [
@@ -333,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 30,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: AppColors.buttonColor.withOpacity(0.3),
+                            color: AppColors.buttonColor.withValues(alpha: 0.3),
                           ),
                           child: buildStoreLogo(data),
                         ),
@@ -536,7 +536,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.blueGrey.shade900.withOpacity(0.7),
+        color: Colors.blueGrey.shade900.withValues(alpha: 0.8),
       ),
       child: Row(
         children: [
@@ -574,7 +574,7 @@ class _StatCard extends StatelessWidget {
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
-        color: Colors.white.withOpacity(0.08),
+        color: Colors.white.withValues(alpha: 0.08),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

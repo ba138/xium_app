@@ -97,8 +97,8 @@ class AuthController extends GetxController {
     // ✅ Check for empty fields
     if (fullName.isEmpty || email.isEmpty || password.isEmpty) {
       Get.snackbar(
-        "Error",
-        "All fields are required",
+        "Error".tr,
+        "All fields are required".tr,
         colorText: AppColors.primary,
       );
       return;
@@ -107,8 +107,8 @@ class AuthController extends GetxController {
     // ✅ Full name basic check
     if (fullName.length < 3) {
       Get.snackbar(
-        "Error",
-        "Full name must be at least 3 characters",
+        "Error".tr,
+        "Full name must be at least 3 characters".tr,
         colorText: AppColors.primary,
       );
       return;
@@ -117,8 +117,8 @@ class AuthController extends GetxController {
     // ✅ Email check (must contain @ and .)
     if (!email.contains("@") || !email.contains(".")) {
       Get.snackbar(
-        "Error",
-        "Please enter a valid email address",
+        "Error".tr,
+        "Please enter a valid email address".tr,
         colorText: AppColors.primary,
       );
       return;
@@ -127,16 +127,16 @@ class AuthController extends GetxController {
     // ✅ Password length check
     if (password.length < 6) {
       Get.snackbar(
-        "Error",
-        "Password must be at least 6 characters long",
+        "Error".tr,
+        "Password must be at least 6 characters long".tr,
         colorText: AppColors.primary,
       );
       return;
     }
     if (password != repeatPassword) {
       Get.snackbar(
-        "Error",
-        "Passwords do not match",
+        "Error".tr,
+        "Passwords do not match".tr,
         colorText: AppColors.primary,
       );
       return;
@@ -179,8 +179,9 @@ class AuthController extends GetxController {
       // Navigate to login
       Get.to(() => LoginScreen());
       Get.snackbar(
-        "Success",
-        "Account created. Please verify your email.",
+        "Success".tr,
+        "Account created.  verification email send to your inbox or spam folder ."
+            .tr,
         colorText: AppColors.primary,
       );
     } on FirebaseAuthException catch (e) {
@@ -188,32 +189,32 @@ class AuthController extends GetxController {
 
       if (e.code == 'weak-password') {
         Get.snackbar(
-          "Weak Password",
-          "The password provided is too weak.",
+          "Weak Password".tr,
+          "The password provided is too weak.".tr,
           colorText: AppColors.primary,
         );
       } else if (e.code == 'email-already-in-use') {
         Get.snackbar(
-          "Email Already In Use",
-          "The email is already registered.",
+          "Email Already In Use".tr,
+          "The email is already registered.".tr,
           colorText: AppColors.primary,
         );
       } else if (e.code == 'invalid-email') {
         Get.snackbar(
-          "Invalid Email",
-          "The email address is not valid.",
+          "Invalid Email".tr,
+          "The email address is not valid.".tr,
           colorText: AppColors.primary,
         );
       } else {
         Get.snackbar(
-          "Registration Error",
-          e.message ?? "Something went wrong",
+          "Registration Error".tr,
+          e.message ?? "Something went wrong".tr,
           colorText: AppColors.primary,
         );
       }
     } catch (e) {
       Get.back();
-      Get.snackbar("Error", e.toString(), colorText: AppColors.primary);
+      Get.snackbar("Error".tr, e.toString(), colorText: AppColors.primary);
     }
   }
 
@@ -221,8 +222,8 @@ class AuthController extends GetxController {
     // ✅ Empty check
     if (email.trim().isEmpty || password.trim().isEmpty) {
       Get.snackbar(
-        "Error",
-        "Email and Password can't be empty",
+        "Error".tr,
+        "Email and Password can't be empty".tr,
         colorText: AppColors.primary,
       );
       return;
@@ -231,8 +232,8 @@ class AuthController extends GetxController {
     // ✅ Basic email check (must contain @ and .)
     if (!email.contains("@") || !email.contains(".")) {
       Get.snackbar(
-        "Error",
-        "Please enter a valid email address",
+        "Error".tr,
+        "Please enter a valid email address".tr,
         colorText: AppColors.primary,
       );
       return;
@@ -241,8 +242,8 @@ class AuthController extends GetxController {
     // ✅ Password length check
     if (password.length < 6) {
       Get.snackbar(
-        "Error",
-        "Password must be at least 6 characters long",
+        "Error".tr,
+        "Password must be at least 6 characters long".tr,
         colorText: AppColors.primary,
       );
       return;
@@ -264,8 +265,8 @@ class AuthController extends GetxController {
       if (!user.emailVerified) {
         Get.back();
         Get.snackbar(
-          "Verify Email",
-          "Please verify your email before logging in.",
+          "Verify Email".tr,
+          "Please verify your email before logging in.".tr,
           colorText: AppColors.primary,
         );
         return;
@@ -281,7 +282,7 @@ class AuthController extends GetxController {
   Future<void> resetPassword(String email) async {
     if (email.isEmpty) {
       Get.snackbar(
-        "Error",
+        "Error".tr,
         "Please enter your email",
         colorText: AppColors.primary,
       );
@@ -291,8 +292,8 @@ class AuthController extends GetxController {
     // ✅ Email format check
     if (!email.contains("@") || !email.contains(".")) {
       Get.snackbar(
-        "Error",
-        "Please enter a valid email address",
+        "Error".tr,
+        "Please enter a valid email address".tr,
         colorText: AppColors.primary,
       );
       return;
@@ -309,8 +310,8 @@ class AuthController extends GetxController {
       if (querySnapshot.docs.isEmpty) {
         Get.back(); // Close loading dialog
         Get.snackbar(
-          "Email Not Registered",
-          "No account found with this email.",
+          "Email Not Registered".tr,
+          "No account found with this email.".tr,
           colorText: AppColors.primary,
         );
         return;
@@ -318,22 +319,22 @@ class AuthController extends GetxController {
       await _auth.sendPasswordResetEmail(email: email);
       Get.to(() => LoginScreen());
       Get.snackbar(
-        "Reset Email Sent",
-        "Check your inbox to reset your password.",
+        "Reset Email Sent".tr,
+        "Check your inbox or spam  folder to reset your password.".tr,
         colorText: AppColors.primary,
       );
     } on FirebaseAuthException catch (e) {
       Get.back(); // Close loading dialog
       if (e.code == 'invalid-email') {
         Get.snackbar(
-          "Invalid Email",
-          "Please enter a valid email address.",
+          "Invalid Email".tr,
+          "Please enter a valid email address.".tr,
           colorText: AppColors.primary,
         );
       } else {
         Get.snackbar(
-          "Error",
-          e.message ?? "Something went wrong",
+          "Error".tr,
+          e.message ?? "Something went wrong".tr,
           colorText: AppColors.primary,
         );
       }
