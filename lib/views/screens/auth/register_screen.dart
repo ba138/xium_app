@@ -42,7 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 8),
-                MyText(text: "Create your Account", size: 16),
+                MyText(text: "Create your Account".tr, size: 16),
                 SizedBox(height: 40),
                 Form(
                   key: authController.formKey,
@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       MyTextField(
                         hint: "Alex",
                         radius: 12,
-                        label: "Full Name",
+                        label: "Full Name".tr,
                         controller: authController.fullNameController,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -63,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       MyTextField(
                         hint: "Alexanold@mail.com",
                         radius: 12,
-                        label: "Email",
+                        label: "Email".tr,
                         controller: authController.emailController,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -71,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
                           if (!emailRegex.hasMatch(value)) {
-                            return 'Enter a valid Email Address';
+                            return 'Enter a valid Email Address'.tr;
                           }
                           return null;
                         },
@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return MyTextField(
                           hint: "******",
                           radius: 12,
-                          label: "Password",
+                          label: "Password".tr,
                           suffix: GestureDetector(
                             onTap: () {
                               authController.isShowRegister.value =
@@ -99,10 +99,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           controller: authController.passwordController,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'Password is required';
+                              return 'Password is required'.tr;
                             }
                             if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
+                              return 'Password must be at least 6 characters'
+                                  .tr;
                             }
                             return null;
                           },
@@ -112,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return MyTextField(
                           hint: "******",
                           radius: 12,
-                          label: "Repeat Password",
+                          label: "Repeat Password".tr,
                           suffix: GestureDetector(
                             onTap: () {
                               authController.isShowRepeatPassword.value =
@@ -137,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                             if (authController.repeatPasswordController.text !=
                                 authController.passwordController.text) {
-                              return 'Passwords do not match';
+                              return 'Passwords do not match'.tr;
                             }
                             return null;
                           },
@@ -152,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onTap: () {
                     authController.createUser();
                   },
-                  buttonText: "Register",
+                  buttonText: "Register".tr,
                   radius: 12,
                 ),
                 const SizedBox(height: 20),
@@ -166,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         color: AppColors.grayColor,
                       ),
                     ),
-                    MyText(text: "Or Register with "),
+                    MyText(text: "Or Register with ".tr),
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
@@ -178,7 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 20),
                 Platform.isAndroid
                     ? GlassiyButton(
-                        title: "Register With Google",
+                        title: "Register With Google".tr,
                         ontap: () {
                           authController.signInWithGoogle();
                         },
@@ -188,7 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 12),
                 Platform.isIOS
                     ? GlassiyButton(
-                        title: "Sign In With Apple",
+                        title: "Sign In With Apple".tr,
                         ontap: () {
                           authController.signInWithApple();
                         },
@@ -201,10 +202,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   spacing: 6,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    MyText(text: "Already have account?"),
+                    MyText(text: "Already have account?".tr),
 
                     MyText(
-                      text: "Login",
+                      text: "Login".tr,
                       color: AppColors.buttonColor,
                       weight: FontWeight.bold,
                       onTap: () {

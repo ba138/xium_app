@@ -40,12 +40,12 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
   void _handleSessionNavigation() async {
     final user = _auth.currentUser;
 
-    if (user == null) {
-      Get.offAll(() => OnboardingScreen1());
-
-      return;
-    } else {
+    if (user != null && user.uid.isNotEmpty && user.emailVerified) {
+      // User exists and email is verified → navigate to CustomBottomNav
       Get.offAll(() => const CustomBottomNav());
+    } else {
+      // Otherwise → go to Onboarding1
+      Get.offAll(() => OnboardingScreen1());
     }
   }
 }
