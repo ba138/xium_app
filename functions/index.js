@@ -264,8 +264,8 @@ ${body}
                   role: "user",
                   content: [
                     {
-                      type: "input_text",
-                      text: `
+  "type": "input_text",
+  "text": `
 Analyze this EMAIL and return VALID JSON ONLY.
 
 {
@@ -289,6 +289,13 @@ Rules:
 - Bank alerts / transfers → documentType = "bank_transaction"
 - Use sender + subject + body
 - If not a financial document → documentType = "unknown"
+
+- IMPORTANT: Convert ALL detected amounts to EURO (EUR)
+  - If the email contains any currency (e.g., PKR, USD, GBP), convert it to EUR using a reasonable current market rate
+  - Example: 2000 PKR → convert to EUR
+  - Always return the converted value in "amount"
+  - Always set "currency" = "EUR"
+
 storeLogo:
 - MUST be a valid, direct image URL ending with .png or .jpg
 - DO NOT return SVG logos under any condition
@@ -296,15 +303,16 @@ storeLogo:
 - DO NOT guess, generate, or construct a logo URL
 - ONLY return a logo URL if it is a real, publicly accessible image
 - If unsure or not found → return null
+
 - Extract store name from email body it is very important
 - Extract amount as NUMBER if possible
 - Extract currency like PKR, USD if present
 - JSON ONLY, NO markdown
 
 EMAIL:
-${fullText}
-                      `,
-                    },
+\${fullText}
+`
+}
                   ],
                 },
               ],
@@ -580,9 +588,9 @@ exports.processImageDocument = onRequest(
             {
               role: "user",
               content: [
-                {
-                  type: "input_text",
-                  text: `
+               {
+  "type": "input_text",
+  "text": `
 Analyze this file and return VALID JSON ONLY.
 
 {
@@ -604,6 +612,11 @@ storeLogo:
 - ONLY return a logo URL if it is a real, publicly accessible image
 - If unsure or not found → return null
 
+- IMPORTANT: Convert ALL detected amounts to EURO (EUR)
+  - If the document contains any currency (e.g., PKR, USD, GBP), convert it to EUR using a reasonable current market rate
+  - Always return the converted value in "amount"
+  - Always set "currency" = "EUR"
+
 - If not a valid document → documentType = "unknown"
 - DO NOT add explanations or markdown
 
@@ -615,9 +628,10 @@ storeLogo:
     - "Google LLC", "Google Payments", "Google Cloud" → "Google"
     - "Amazon.com", "Amazon EU" → "Amazon"
   - Always return a clean, short, canonical brand name in "merchantName"
+
 Return ONLY JSON.
-`,
-                },
+`
+},
                 fileInput,
               ],
             },
