@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
@@ -11,6 +12,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:xium_app/views/widgets/my_button.dart';
+import 'package:xium_app/views/widgets/my_text.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -175,15 +178,9 @@ class AuthController extends GetxController {
       fullNameController.clear();
       emailController.clear();
       passwordController.clear();
+      showVerificationEmailDialog();
 
       // Navigate to login
-      Get.to(() => LoginScreen());
-      Get.snackbar(
-        "Success".tr,
-        "Account created.  verification email send to your inbox or spam folder ."
-            .tr,
-        colorText: AppColors.primary,
-      );
     } on FirebaseAuthException catch (e) {
       Get.back();
 
@@ -317,12 +314,7 @@ class AuthController extends GetxController {
         return;
       }
       await _auth.sendPasswordResetEmail(email: email);
-      Get.to(() => LoginScreen());
-      Get.snackbar(
-        "Reset Email Sent".tr,
-        "Check your inbox or spam  folder to reset your password.".tr,
-        colorText: AppColors.primary,
-      );
+      showResetPasswordDialog();
     } on FirebaseAuthException catch (e) {
       Get.back(); // Close loading dialog
       if (e.code == 'invalid-email') {
@@ -452,5 +444,122 @@ class AuthController extends GetxController {
       Get.back();
       Get.snackbar('Logout Failed', e.toString(), colorText: AppColors.primary);
     }
+  }
+
+  void showVerificationEmailDialog() {
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xff0A0D2E), // card over background
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.08)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// TITLE
+              MyText(
+                text: "verification_email_sent".tr,
+                size: 18,
+                weight: FontWeight.w600,
+                color: Colors.white,
+              ),
+
+              const SizedBox(height: 12),
+
+              /// MESSAGE
+              MyText(
+                text: "verification_email_message"
+                    .tr, // translation key for message
+                size: 13,
+                color: Colors.white70,
+              ),
+
+              const SizedBox(height: 24),
+
+              /// ACTION BUTTON
+              Row(
+                children: [
+                  Expanded(
+                    child: MyButton(
+                      buttonText: "ok".tr,
+                      radius: 12,
+                      onTap: () {
+                        Get.back();
+                        Get.to(() => LoginScreen());
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  void showResetPasswordDialog() {
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xff0A0D2E), // card over background
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.08)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// TITLE
+              MyText(
+                text: "reset_password".tr,
+                size: 18,
+                weight: FontWeight.w600,
+                color: Colors.white,
+              ),
+
+              const SizedBox(height: 12),
+
+              /// MESSAGE
+              MyText(
+                text: "reset_password_message".tr, // translation key
+                size: 13,
+                color: Colors.white70,
+              ),
+
+              const SizedBox(height: 24),
+
+              /// ACTION BUTTON
+              Row(
+                children: [
+                  Expanded(
+                    child: MyButton(
+                      buttonText: "ok".tr,
+                      radius: 12,
+                      onTap: () {
+                        Get.back();
+                        Get.to(() => LoginScreen());
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
   }
 }
