@@ -16,111 +16,117 @@ class AddLoyaltyInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// 🔙 Back
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () => Get.back(),
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  MyText(text: "Back".tr, size: 16),
-                ],
-              ),
-
-              const SizedBox(height: 30),
-
-              /// 🏷 Title
-              MyText(
-                text: "Add Loyalty Card".tr,
-                size: 22,
-                weight: FontWeight.w600,
-              ),
-
-              const SizedBox(height: 8),
-
-              MyText(
-                text:
-                    "Save your loyalty cards to automatically link receipts and track rewards."
-                        .tr,
-                size: 12,
-                color: AppColors.grayColor,
-              ),
-
-              const SizedBox(height: 30),
-
-              /// 🧊 Glass Card
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.25),
+      body: GestureDetector(
+        onTap: () {
+          // This will close the keyboard when tapping outside
+          FocusScope.of(context).unfocus();
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// 🔙 Back
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () => Get.back(),
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        _inputField(
-                          controller: storeController,
-                          label: "Store Name".tr,
-                          hint: "e.g. Nike, Amazon, Starbucks".tr,
-                          icon: Icons.store,
+                    const SizedBox(width: 8),
+                    MyText(text: "Back".tr, size: 16),
+                  ],
+                ),
+
+                const SizedBox(height: 30),
+
+                /// 🏷 Title
+                MyText(
+                  text: "Add Loyalty Card".tr,
+                  size: 22,
+                  weight: FontWeight.w600,
+                ),
+
+                const SizedBox(height: 8),
+
+                MyText(
+                  text:
+                      "Save your loyalty cards to automatically link receipts and track rewards."
+                          .tr,
+                  size: 12,
+                  color: AppColors.grayColor,
+                ),
+
+                const SizedBox(height: 30),
+
+                /// 🧊 Glass Card
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.25),
                         ),
+                      ),
+                      child: Column(
+                        children: [
+                          _inputField(
+                            controller: storeController,
+                            label: "Store Name".tr,
+                            hint: "e.g. Nike, Amazon, Starbucks".tr,
+                            icon: Icons.store,
+                          ),
 
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        _inputField(
-                          controller: cardNumberController,
-                          label: "Loyalty Card Number".tr,
-                          hint: "Enter membership ID".tr,
-                          icon: Icons.credit_card,
-                        ),
+                          _inputField(
+                            controller: cardNumberController,
+                            label: "Loyalty Card Number".tr,
+                            hint: "Enter membership ID".tr,
+                            icon: Icons.credit_card,
+                          ),
 
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        _inputField(
-                          controller: nicknameController,
-                          label: "Nickname (Optional)".tr,
-                          hint: "e.g. My Nike Card".tr,
-                          icon: Icons.edit,
-                        ),
-                      ],
+                          _inputField(
+                            controller: nicknameController,
+                            label: "Nickname (Optional)".tr,
+                            hint: "e.g. My Nike Card".tr,
+                            icon: Icons.edit,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              const Spacer(),
+                const Spacer(),
 
-              /// 💾 Save Button
-              MyButton(
-                buttonText: "Save Loyalty Card".tr,
-                radius: 14,
-                onTap: () {
-                  // 🔜 Connect logic later
-                  loyaltyCardController.addLoyaltyCard(
-                    storeName: storeController.text,
-                    cardNumber: cardNumberController.text,
-                  );
-                },
-              ),
+                /// 💾 Save Button
+                MyButton(
+                  buttonText: "Save Loyalty Card".tr,
+                  radius: 14,
+                  onTap: () {
+                    // 🔜 Connect logic later
+                    loyaltyCardController.addLoyaltyCard(
+                      storeName: storeController.text,
+                      cardNumber: cardNumberController.text,
+                    );
+                  },
+                ),
 
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

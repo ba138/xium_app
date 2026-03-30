@@ -180,7 +180,7 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
             children: [
               /// TITLE
               MyText(
-                text: "Delete Account",
+                text: "delete_account".tr,
                 size: 18,
                 weight: FontWeight.w600,
                 color: Colors.white,
@@ -190,8 +190,7 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
 
               /// MESSAGE
               MyText(
-                text:
-                    "This action is permanent. All your documents and data will be removed permanently.",
+                text: "delete_account_warning".tr,
                 size: 13,
                 color: Colors.white70,
               ),
@@ -204,7 +203,7 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                   /// CANCEL
                   Expanded(
                     child: MyBorderButton(
-                      buttonText: "Cancel",
+                      buttonText: "cancel".tr,
                       radius: 12,
                       onTap: () => Get.back(),
                       bgColor: Colors.transparent,
@@ -216,7 +215,7 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
                   /// DELETE
                   Expanded(
                     child: MyButton(
-                      buttonText: "Delete",
+                      buttonText: "delete".tr,
                       radius: 12,
                       onTap: () {
                         Get.back();

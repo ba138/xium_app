@@ -456,9 +456,19 @@ class AppTranslations extends Translations {
       "Alex": "Alex",
       "Alexanold@mail.com": "Alexanold@mail.com",
       "******": "******",
+      "delete_account": "Delete Account",
+      "delete_account_warning":
+          "This action is permanent. All your documents and data will be removed permanently.",
+      "cancel": "Cancel",
+      "delete": "Delete",
     },
 
     'fr_FR': {
+      "delete_account": "Supprimer le compte",
+      "delete_account_warning":
+          "Cette action est permanente. Tous vos documents et données seront supprimés définitivement.",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
       "Register": "S’inscrire",
       "Create your Account": "Créez votre compte",
       "Full Name": "Nom complet",
