@@ -475,7 +475,7 @@ class AppTranslations extends Translations {
 
       "reset_password": "Réinitialiser le mot de passe",
       "reset_password_message":
-          "Un lien de réinitialisation du mot de passe a été envoyé à votre e-mail.\n\nVeuillez vérifier votre boîte de réception ou votre dossier spam.\n\nSi le lien n'est pas cliquable, copiez-le et collez-le dans votre navigateur.",
+          "Un lien de réinitialisation du mot de passe a été envoyé à votre e-mail.\n\nVeuillez vérifier votre boîte de réception ou votre dossier spam.\n\nSi l'e-mail est dans le spam, marquez-le comme « Non spam » afin que le lien devienne cliquable.\n\nSi le lien n'est pas cliquable, copiez-le et collez-le dans votre navigateur.",
       "ok": "OK",
       "verification_email_message":
           "Un e-mail de vérification a été envoyé.\n\nVeuillez vérifier votre boîte de réception ou le dossier spam.\n\nSi l'e-mail est dans le spam, marquez-le comme « Non spam » afin que le lien devienne cliquable.\n\nSi le lien n'est pas cliquable, copiez-le et collez-le dans votre navigateur.",
