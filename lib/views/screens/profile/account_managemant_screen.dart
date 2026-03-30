@@ -34,121 +34,127 @@ class _AccountManagemantScreenState extends State<AccountManagemantScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: AppColors.onPrimary,
-                      ),
-                    ),
-
-                    const SizedBox(width: 10),
-
-                    MyText(text: "Account Management".tr, size: 16),
-
-                    const Spacer(),
-
-                    /// ✅ Glassy dotted border container placed here
-                  ],
-                ),
-                const SizedBox(height: 40),
-                GlassContainer(
-                  height: MediaQuery.of(context).size.height * 0.63,
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: GestureDetector(
+        onTap: () {
+          // This will close the keyboard when tapping outside
+          FocusScope.of(context).unfocus();
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
                     children: [
-                      const SizedBox(height: 10),
-                      MyText(text: "Edit my information".tr, size: 16),
-                      const SizedBox(height: 20),
-                      MyTextField(
-                        hint: "Your Full Name",
-                        label: "Name".tr,
-                        radius: 12,
-                        controller: controller.nameController,
-                      ),
-                      MyTextField(
-                        hint: "Salmanuix@gmail.com",
-                        label: "Email".tr,
-                        radius: 12,
-                        controller: controller.emailController,
-                      ),
-                      MyTextField(
-                        hint: "********",
-                        label: "Old Password".tr,
-                        radius: 12,
-
-                        controller: controller.currentPasswordController,
-                      ),
-                      MyTextField(
-                        hint: "********",
-                        label: "New Password".tr,
-                        radius: 12,
-                        controller: controller.newPasswordController,
-                      ),
-                      const SizedBox(height: 30),
-                      MyButton(
+                      InkWell(
                         onTap: () {
-                          controller.updateUserInfo();
+                          Get.back();
                         },
-                        buttonText: "Save Changes".tr,
-                        radius: 12,
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: AppColors.onPrimary,
+                        ),
                       ),
-                      const SizedBox(height: 30),
-                      Center(
-                        child: MyText(
+
+                      const SizedBox(width: 10),
+
+                      MyText(text: "Account Management".tr, size: 16),
+
+                      const Spacer(),
+
+                      /// ✅ Glassy dotted border container placed here
+                    ],
+                  ),
+                  const SizedBox(height: 40),
+                  GlassContainer(
+                    height: MediaQuery.of(context).size.height * 0.63,
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        MyText(text: "Edit my information".tr, size: 16),
+                        const SizedBox(height: 20),
+                        MyTextField(
+                          hint: "Your Full Name",
+                          label: "Name".tr,
+                          radius: 12,
+                          controller: controller.nameController,
+                        ),
+                        MyTextField(
+                          hint: "Salmanuix@gmail.com",
+                          label: "Email".tr,
+                          radius: 12,
+                          controller: controller.emailController,
+                        ),
+                        MyTextField(
+                          hint: "********",
+                          label: "Old Password".tr,
+                          radius: 12,
+
+                          controller: controller.currentPasswordController,
+                        ),
+                        MyTextField(
+                          hint: "********",
+                          label: "New Password".tr,
+                          radius: 12,
+                          controller: controller.newPasswordController,
+                        ),
+                        const SizedBox(height: 30),
+                        MyButton(
+                          onTap: () {
+                            controller.updateUserInfo();
+                          },
+                          buttonText: "Save Changes".tr,
+                          radius: 12,
+                        ),
+                        const SizedBox(height: 30),
+                        Center(
+                          child: MyText(
+                            text: "Update your information and save the changes"
+                                .tr,
+                            size: 12,
+                            color: AppColors.grayColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  GlassContainer(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        MyText(
+                          text: "Delete my account".tr,
+                          color: Colors.red,
+                          size: 16,
+                        ),
+                        const SizedBox(height: 10),
+                        MyText(
                           text:
-                              "Update your information and save the changes".tr,
+                              "Deleting your account will permanently remove all documents and data. This cannot be undone"
+                                  .tr,
                           size: 12,
                           color: AppColors.grayColor,
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 40),
+                        MyButton(
+                          onTap: () {
+                            showDeleteAccountDialog(controller);
+                          },
+                          buttonText: "Delete permanently".tr,
+                          radius: 12,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                GlassContainer(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      MyText(
-                        text: "Delete my account".tr,
-                        color: Colors.red,
-                        size: 16,
-                      ),
-                      const SizedBox(height: 10),
-                      MyText(
-                        text:
-                            "Deleting your account will permanently remove all documents and data. This cannot be undone"
-                                .tr,
-                        size: 12,
-                        color: AppColors.grayColor,
-                      ),
-                      const SizedBox(height: 40),
-                      MyButton(
-                        onTap: () {
-                          showDeleteAccountDialog(controller);
-                        },
-                        buttonText: "Delete permanently".tr,
-                        radius: 12,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

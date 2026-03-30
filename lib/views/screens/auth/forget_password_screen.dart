@@ -35,32 +35,38 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           color: AppColors.onError,
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 8),
-                MyText(text: "enter_email_reset".tr, size: 16),
-                SizedBox(height: 40),
+      body: GestureDetector(
+        onTap: () {
+          // Close the keyboard when user taps outside
+          FocusScope.of(context).unfocus();
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 8),
+                  MyText(text: "enter_email_reset".tr, size: 16),
+                  SizedBox(height: 40),
 
-                MyTextField(
-                  hint: "example@gmail.com",
-                  radius: 12,
-                  label: "email".tr,
-                  controller: emailController,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.4),
-                MyButton(
-                  onTap: () {
-                    authController.resetPassword(emailController.text);
-                  },
-                  buttonText: "continue".tr,
-                  radius: 12,
-                ),
-              ],
+                  MyTextField(
+                    hint: "example@gmail.com",
+                    radius: 12,
+                    label: "email".tr,
+                    controller: emailController,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.4),
+                  MyButton(
+                    onTap: () {
+                      authController.resetPassword(emailController.text);
+                    },
+                    buttonText: "continue".tr,
+                    radius: 12,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

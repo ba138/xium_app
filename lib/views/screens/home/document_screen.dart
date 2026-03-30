@@ -27,100 +27,110 @@ class _DocumentScreenState extends State<DocumentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyText(text: "Your Stores".tr, size: 20, weight: FontWeight.bold),
-              MyText(
-                text: "Select a store to view all your related documents.".tr,
-              ),
+      body: GestureDetector(
+        onTap: () {
+          // This will close the keyboard when tapping outside
+          FocusScope.of(context).unfocus();
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                MyText(
+                  text: "Your Stores".tr,
+                  size: 20,
+                  weight: FontWeight.bold,
+                ),
+                MyText(
+                  text: "Select a store to view all your related documents.".tr,
+                ),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              MyTextField(
-                hint: "Search a store".tr,
-                radius: 12,
-                prefix: const Icon(Icons.search),
-                onChanged: (value) {
-                  controller.searchStores(value); // 🔥 CALL FUNCTION
-                },
-              ),
+                MyTextField(
+                  hint: "Search a store".tr,
+                  radius: 12,
+                  prefix: const Icon(Icons.search),
+                  onChanged: (value) {
+                    controller.searchStores(value); // 🔥 CALL FUNCTION
+                  },
+                ),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // ⭐ ADDING THE GRIDVIEW HERE ⭐
-              Expanded(
-                child: Obx(() {
-                  if (controller.isLoading.value) {
-                    return storeGridShimmer();
-                  }
+                // ⭐ ADDING THE GRIDVIEW HERE ⭐
+                Expanded(
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return storeGridShimmer();
+                    }
 
-                  if (controller.filteredStores.isEmpty) {
-                    return Center(child: MyText(text: "No stores found".tr));
-                  }
+                    if (controller.filteredStores.isEmpty) {
+                      return Center(child: MyText(text: "No stores found".tr));
+                    }
 
-                  return GridView.builder(
-                    itemCount: controller.filteredStores.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 0.8,
-                        ),
-                    itemBuilder: (context, index) {
-                      final store = controller.filteredStores[index];
+                    return GridView.builder(
+                      itemCount: controller.filteredStores.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 0.8,
+                          ),
+                      itemBuilder: (context, index) {
+                        final store = controller.filteredStores[index];
 
-                      return GestureDetector(
-                        onTap: () {
-                          Get.to(
-                            () => StoreDetailScreen(
-                              storeName: store.storeName,
-                              storeLogo: store.storeLogo,
-                              documentCount: store.documentCount,
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              () => StoreDetailScreen(
+                                storeName: store.storeName,
+                                storeLogo: store.storeLogo,
+                                documentCount: store.documentCount,
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppColors.grayColor.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.grey.withValues(alpha: 0.3),
+                              ),
                             ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: AppColors.grayColor.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.grey.withValues(alpha: 0.3),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                store.storeLogo != null &&
+                                        store.storeLogo!.isNotEmpty
+                                    ? CommonImageView(
+                                        url: store.storeLogo!,
+                                        height: 40,
+                                        fit: BoxFit.contain,
+                                      )
+                                    : Icon(
+                                        Icons.store,
+                                        size: 40,
+                                        color: AppColors.primary,
+                                      ),
+
+                                const SizedBox(height: 8),
+                                MyText(text: truncate(store.storeName, 9)),
+                              ],
                             ),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              store.storeLogo != null &&
-                                      store.storeLogo!.isNotEmpty
-                                  ? CommonImageView(
-                                      url: store.storeLogo!,
-                                      height: 40,
-                                      fit: BoxFit.contain,
-                                    )
-                                  : Icon(
-                                      Icons.store,
-                                      size: 40,
-                                      color: AppColors.primary,
-                                    ),
-
-                              const SizedBox(height: 8),
-                              MyText(text: truncate(store.storeName, 9)),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }),
-              ),
-              const SizedBox(height: 18),
-            ],
+                        );
+                      },
+                    );
+                  }),
+                ),
+                const SizedBox(height: 18),
+              ],
+            ),
           ),
         ),
       ),
