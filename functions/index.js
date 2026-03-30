@@ -265,52 +265,84 @@ ${body}
                   content: [
                     {
   "type": "input_text",
-  "text": `
-Analyze this EMAIL and return VALID JSON ONLY.
+"text": `
+Extract data from this EMAIL.
+
+Return ONLY JSON:
 
 {
   "documentType": "invoice | receipt | warranty | bank_transaction | subscription | unknown",
   "storeName": string | null,
   "merchantName": string | null,
-  "confidence": number (0.0 - 1.0),
+  "confidence": number,
   "amount": number | null,
-  "currency": string | null,
+  "currency": "EUR" | null,
   "storeLogo": string | null
 }
-- Normalize store names:
-  - Remove suffixes like "Inc", "Ltd", "LLC", "Corp", "Store", "Company"
-  - Convert variations to a single common brand name
-  - Example:
-    - "Apple Inc", "Apple Store", "Apple Music" → "Apple"
-    - "Google LLC", "Google Payments", "Google Cloud" → "Google"
-    - "Amazon.com", "Amazon EU" → "Amazon"
-Rules:
-- Ignore marketing/newsletters
-- Bank alerts / transfers → documentType = "bank_transaction"
-- Use sender + subject + body
-- If not a financial document → documentType = "unknown"
 
-- IMPORTANT: Convert ALL detected amounts to EURO (EUR)
-  - If the email contains any currency (e.g., PKR, USD, GBP), convert it to EUR using a reasonable current market rate
-  - Example: 2000 PKR → convert to EUR
-  - Always return the converted value in "amount"
-  - Always set "currency" = "EUR"
+STRICT RULES:
 
-storeLogo:
-- MUST be a valid, direct image URL ending with .png or .jpg
-- DO NOT return SVG logos under any condition
-- If the official logo is only available in SVG format → return null
-- DO NOT guess, generate, or construct a logo URL
-- ONLY return a logo URL if it is a real, publicly accessible image
-- If unsure or not found → return null
+- Extract ONLY from EMAIL BODY
+- DO NOT guess anything
 
-- Extract store name from email body it is very important
-- Extract amount as NUMBER if possible
-- Extract currency like PKR, USD if present
-- JSON ONLY, NO markdown
+------------------------
+STORE NORMALIZATION
+------------------------
+Normalize to main brand name:
+
+- "Apple Inc", "Apple Music", "Apple Store" → "Apple"
+- "Google LLC", "Google Cloud", "Google Storage" → "Google"
+- "Amazon Inc", "Amazon EU", "Amazon.com" → "Amazon"
+
+Remove: Inc, Ltd, LLC, Corp
+
+If unclear → null
+
+------------------------
+AMOUNT
+------------------------
+- Must contain number + currency
+- If missing → amount = null, currency = null
+- NEVER assume values
+
+------------------------
+EUR CONVERSION (STRICT)
+------------------------
+- ONLY convert if real amount exists
+- DO NOT guess rates
+
+Use these FIXED REALISTIC market rates:
+
+- USD → EUR = 0.85
+- GBP → EUR = 1.16
+- PKR → EUR = 0.0030
+- EUR → EUR = 1
+
+Examples:
+- $10 → 8.5 EUR
+- PKR 2000 → 6 EUR
+
+- Round to 2 decimal places
+- Always return currency = "EUR"
+
+If currency not in list → return null
+
+------------------------
+CONFIDENCE
+------------------------
+- Missing fields → max 0.5
+
+------------------------
+IMPORTANT
+------------------------
+- Prefer NULL over WRONG data
+- DO NOT infer
+- DO NOT auto-fill
+
+JSON ONLY
 
 EMAIL:
-\${fullText}
+${fullText}
 `
 }
                   ],
@@ -588,22 +620,38 @@ exports.processImageDocument = onRequest(
             {
               role: "user",
               content: [
-               {
+                {
   "type": "input_text",
   "text": `
-Analyze this file and return VALID JSON ONLY.
+Analyze this EMAIL and return VALID JSON ONLY.
 
 {
-  "documentType": "invoice | receipt | warranty | subscription | unknown",
+  "documentType": "invoice | receipt | warranty | bank_transaction | subscription | unknown",
   "storeName": string | null,
   "merchantName": string | null,
+  "confidence": number (0.0 - 1.0),
   "amount": number | null,
   "currency": string | null,
-  "date": "YYYY-MM-DD" | null,
   "storeLogo": string | null
 }
-
+- Normalize store names:
+  - Remove suffixes like "Inc", "Ltd", "LLC", "Corp", "Store", "Company"
+  - Convert variations to a single common brand name
+  - Example:
+    - "Apple Inc", "Apple Store", "Apple Music" → "Apple"
+    - "Google LLC", "Google Payments", "Google Cloud" → "Google"
+    - "Amazon.com", "Amazon EU" → "Amazon"
 Rules:
+- Ignore marketing/newsletters
+- Bank alerts / transfers → documentType = "bank_transaction"
+- Use sender + subject + body
+- If not a financial document → documentType = "unknown"
+
+- IMPORTANT: Convert ALL detected amounts to EURO (EUR)
+  - If the email contains any currency (e.g., PKR, USD, GBP), convert it to EUR using  current market rate
+  - Always return the converted value in "amount"
+  - Always set "currency" = "EUR"
+
 storeLogo:
 - MUST be a valid, direct image URL ending with .png or .jpg
 - DO NOT return SVG logos under any condition
@@ -612,24 +660,13 @@ storeLogo:
 - ONLY return a logo URL if it is a real, publicly accessible image
 - If unsure or not found → return null
 
-- IMPORTANT: Convert ALL detected amounts to EURO (EUR)
-  - If the document contains any currency (e.g., PKR, USD, GBP), convert it to EUR using a reasonable current market rate
-  - Always return the converted value in "amount"
-  - Always set "currency" = "EUR"
+- Extract store name from email body it is very important
+- Extract amount as NUMBER if possible
+- Extract currency like PKR, USD if present
+- JSON ONLY, NO markdown
 
-- If not a valid document → documentType = "unknown"
-- DO NOT add explanations or markdown
-
-- Normalize store names:
-  - Remove suffixes like "Inc", "Ltd", "LLC", "Corp", "Store", "Company"
-  - Convert variations to a single common brand name
-  - Example:
-    - "Apple Inc", "Apple Store", "Apple Music" → "Apple"
-    - "Google LLC", "Google Payments", "Google Cloud" → "Google"
-    - "Amazon.com", "Amazon EU" → "Amazon"
-  - Always return a clean, short, canonical brand name in "merchantName"
-
-Return ONLY JSON.
+EMAIL:
+\${fullText}
 `
 },
                 fileInput,
