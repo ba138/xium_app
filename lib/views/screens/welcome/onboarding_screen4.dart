@@ -70,51 +70,47 @@ class OnboardingScreen4 extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 /// 🔹 OR Divider
-                Row(
-                  spacing: 8,
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: AppColors.grayColor,
+                Platform.isIOS
+                    ? SizedBox.shrink()
+                    : Row(
+                        spacing: 8,
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.5,
+                              color: AppColors.grayColor,
+                            ),
+                          ),
+                          MyText(text: "or_login_with".tr),
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.5,
+                              color: AppColors.grayColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    MyText(text: "or_login_with".tr),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: AppColors.grayColor,
-                      ),
-                    ),
-                  ],
-                ),
-
                 const SizedBox(height: 20),
-
-                /// 🔹 Google Login
                 Platform.isAndroid
                     ? GlassiyButton(
-                        title: "sign_in_google".tr,
+                        title: "Register With Google".tr,
                         ontap: () {
                           authController.signInWithGoogle();
                         },
                         image: Assets.google,
                       )
-                    : const SizedBox.shrink(),
+                    : SizedBox.shrink(),
 
-                const SizedBox(height: 12),
-
-                /// 🔹 Apple Login
-                Platform.isIOS
-                    ? GlassiyButton(
-                        title: "sign_in_apple".tr,
-                        ontap: () {
-                          authController.signInWithApple();
-                        },
-                        image: Assets.fb,
-                      )
-                    : const SizedBox.shrink(),
-
+                // /// 🔹 Apple Login
+                // Platform.isIOS
+                //     ? GlassiyButton(
+                //         title: "sign_in_apple".tr,
+                //         ontap: () {
+                //           authController.signInWithApple();
+                //         },
+                //         image: Assets.fb,
+                //       )
+                //     : const SizedBox.shrink(),
                 const SizedBox(height: 20),
               ],
             ),

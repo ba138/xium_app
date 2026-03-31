@@ -165,24 +165,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  Row(
-                    spacing: 8,
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: AppColors.grayColor,
+                  Platform.isIOS
+                      ? SizedBox.shrink()
+                      : Row(
+                          spacing: 8,
+                          children: [
+                            Expanded(
+                              child: Divider(
+                                thickness: 0.5,
+                                color: AppColors.grayColor,
+                              ),
+                            ),
+                            MyText(text: "Or Register with ".tr),
+                            Expanded(
+                              child: Divider(
+                                thickness: 0.5,
+                                color: AppColors.grayColor,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      MyText(text: "Or Register with ".tr),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: AppColors.grayColor,
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   Platform.isAndroid
                       ? GlassiyButton(
@@ -193,16 +195,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           image: Assets.google,
                         )
                       : SizedBox.shrink(),
-                  const SizedBox(height: 12),
-                  Platform.isIOS
-                      ? GlassiyButton(
-                          title: "Sign In With Apple".tr,
-                          ontap: () {
-                            authController.signInWithApple();
-                          },
-                          image: Assets.fb,
-                        )
-                      : SizedBox.shrink(),
+                  // const SizedBox(height: 12),
+                  // Platform.isIOS
+                  //     ? GlassiyButton(
+                  //         title: "Sign In With Apple".tr,
+                  //         ontap: () {
+                  //           authController.signInWithApple();
+                  //         },
+                  //         image: Assets.fb,
+                  //       )
+                  //     : SizedBox.shrink(),
                   const SizedBox(height: 40),
 
                   Row(

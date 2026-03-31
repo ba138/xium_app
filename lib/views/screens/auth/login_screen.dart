@@ -111,45 +111,47 @@ class _LoginScreenState extends State<LoginScreen> {
                     radius: 12,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    spacing: 8,
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: AppColors.grayColor,
+                  Platform.isIOS
+                      ? SizedBox.shrink()
+                      : Row(
+                          spacing: 8,
+                          children: [
+                            Expanded(
+                              child: Divider(
+                                thickness: 0.5,
+                                color: AppColors.grayColor,
+                              ),
+                            ),
+                            MyText(text: "or_login_with".tr),
+                            Expanded(
+                              child: Divider(
+                                thickness: 0.5,
+                                color: AppColors.grayColor,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      MyText(text: "or_login_with".tr),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: AppColors.grayColor,
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   Platform.isAndroid
                       ? GlassiyButton(
-                          title: "sign_in_google".tr,
+                          title: "Register With Google".tr,
                           ontap: () {
                             authController.signInWithGoogle();
                           },
                           image: Assets.google,
                         )
                       : SizedBox.shrink(),
-                  const SizedBox(height: 12),
-                  Platform.isIOS
-                      ? GlassiyButton(
-                          title: "sign_in_apple".tr,
-                          ontap: () {
-                            authController.signInWithApple();
-                          },
-                          image: Assets.fb,
-                        )
-                      : SizedBox.shrink(),
-                  const SizedBox(height: 80),
+                  // const SizedBox(height: 12),
+                  // Platform.isIOS
+                  //     ? GlassiyButton(
+                  //         title: "sign_in_apple".tr,
+                  //         ontap: () {
+                  //           authController.signInWithApple();
+                  //         },
+                  //         image: Assets.fb,
+                  //       )
+                  //     : SizedBox.shrink(),
+                  SizedBox(height: Platform.isIOS ? 40 : 80),
 
                   Row(
                     spacing: 6,
