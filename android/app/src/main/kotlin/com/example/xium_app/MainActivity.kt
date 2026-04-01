@@ -1,4 +1,4 @@
-package com.example.xium_app
+package com.enzo.xium_app
 
 import io.flutter.embedding.android.FlutterActivity
 

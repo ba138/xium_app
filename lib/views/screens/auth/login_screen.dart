@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
                   Platform.isAndroid
                       ? GlassiyButton(
-                          title: "Register With Google".tr,
+                          title: "sign_in_google".tr,
                           ontap: () {
                             authController.signInWithGoogle();
                           },
