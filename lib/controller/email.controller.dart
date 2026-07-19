@@ -61,7 +61,7 @@ class MailController extends GetxController {
           decoration: BoxDecoration(
             color: const Color(0xff0A0D2E), // dark card over #040615
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.08)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -98,7 +98,9 @@ class MailController extends GetxController {
                   decoration: BoxDecoration(
                     color: const Color(0xff040615), // app background
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white.withOpacity(0.12)),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.12),
+                    ),
                   ),
                   child: Row(
                     children: [

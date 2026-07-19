@@ -184,8 +184,8 @@ class OnboardingScreen1 extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           color: isSelected
-              ? Colors.blue.withOpacity(0.2)
-              : Colors.white.withOpacity(0.05),
+              ? Colors.blue.withValues(alpha: 0.2)
+              : Colors.white.withValues(alpha: 0.05),
         ),
         child: Row(
           children: [

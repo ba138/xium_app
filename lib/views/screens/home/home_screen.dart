@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -128,7 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
     String totalAmountAllDocs,
   ) {
     return _glassContainer(
-      height: MediaQuery.of(context).size.height * 0.48,
+      height: Platform.isIOS
+          ? MediaQuery.of(context).size.height * 0.48
+          : MediaQuery.of(context).size.height * 0.52,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

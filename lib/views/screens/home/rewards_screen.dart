@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
@@ -40,7 +42,9 @@ class _RewardsScreenState extends State<RewardsScreen> {
               const SizedBox(height: 20),
               Obx(
                 () => _glassContainer(
-                  height: MediaQuery.of(context).size.height * 0.275,
+                  height: Platform.isIOS
+                      ? MediaQuery.of(context).size.height * 0.275
+                      : MediaQuery.of(context).size.height * 0.3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -78,7 +82,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                         ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: Colors.blue.withOpacity(0.2),
+                          color: Colors.blue.withValues(alpha: 0.2),
                         ),
                         child: Text(
                           controller.userLevelName.value,
@@ -260,7 +264,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            color: Colors.blue.withOpacity(0.2),
+                            color: Colors.blue.withValues(alpha: 0.2),
                           ),
                           child: const Icon(
                             Icons.star_half_outlined,
@@ -288,7 +292,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            color: Colors.blue.withOpacity(0.2),
+                            color: Colors.blue.withValues(alpha: 0.2),
                           ),
                           child: const Icon(
                             Icons.watch_later_outlined,
@@ -316,7 +320,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            color: Colors.blue.withOpacity(0.2),
+                            color: Colors.blue.withValues(alpha: 0.2),
                           ),
                           child: const Icon(
                             Icons.shield_outlined,
@@ -350,8 +354,8 @@ class _RewardsScreenState extends State<RewardsScreen> {
         borderRadius: BorderRadius.circular(24),
         gradient: LinearGradient(
           colors: [
-            Colors.white.withOpacity(0.08),
-            Colors.white.withOpacity(0.03),
+            Colors.white.withValues(alpha: 0.08),
+            Colors.white.withValues(alpha: 0.03),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -372,8 +376,8 @@ class _RewardsScreenState extends State<RewardsScreen> {
         borderRadius: BorderRadius.circular(radius),
         gradient: LinearGradient(
           colors: [
-            Colors.blueGrey.shade800.withOpacity(0.6),
-            Colors.blue.shade900.withOpacity(0.6),
+            Colors.blueGrey.shade800.withValues(alpha: 0.6),
+            Colors.blue.shade900.withValues(alpha: 0.6),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
