@@ -91,15 +91,13 @@ class OnboardingScreen4 extends StatelessWidget {
                         ],
                       ),
                 const SizedBox(height: 20),
-                Platform.isAndroid
-                    ? GlassiyButton(
-                        title: "sign_in_google".tr,
-                        ontap: () {
-                          authController.signInWithGoogle();
-                        },
-                        image: Assets.google,
-                      )
-                    : SizedBox.shrink(),
+                GlassiyButton(
+                  title: "sign_in_google".tr,
+                  ontap: () {
+                    authController.signInWithGoogle();
+                  },
+                  image: Assets.google,
+                ),
 
                 // /// 🔹 Apple Login
                 // Platform.isIOS

@@ -132,15 +132,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                   const SizedBox(height: 20),
-                  Platform.isAndroid
-                      ? GlassiyButton(
-                          title: "sign_in_google".tr,
-                          ontap: () {
-                            authController.signInWithGoogle();
-                          },
-                          image: Assets.google,
-                        )
-                      : SizedBox.shrink(),
+                  // Platform.isAndroid
+                  //     ?
+                  GlassiyButton(
+                    title: "sign_in_google".tr,
+                    ontap: () {
+                      authController.signInWithGoogle();
+                    },
+                    image: Assets.google,
+                  ),
+                  // : SizedBox.shrink(),
                   // const SizedBox(height: 12),
                   // Platform.isIOS
                   //     ? GlassiyButton(
