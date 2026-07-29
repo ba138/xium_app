@@ -186,15 +186,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ),
                   const SizedBox(height: 20),
-                  Platform.isAndroid
-                      ? GlassiyButton(
-                          title: "Register With Google".tr,
-                          ontap: () {
-                            authController.signInWithGoogle();
-                          },
-                          image: Assets.google,
-                        )
-                      : SizedBox.shrink(),
+                  GlassiyButton(
+                    title: "Register With Google".tr,
+                    ontap: () {
+                      authController.signInWithGoogle();
+                    },
+                    image: Assets.google,
+                  ),
                   // const SizedBox(height: 12),
                   // Platform.isIOS
                   //     ? GlassiyButton(
