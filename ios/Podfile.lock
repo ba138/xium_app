@@ -1,40 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - permission_handler_apple (9.3.0):
-    - Flutter
-  - Plaid (6.4.0)
-  - plaid_flutter (0.0.1):
-    - Flutter
-    - Plaid (= 6.4.0)
-  - sign_in_with_apple (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
-  - plaid_flutter (from `.symlinks/plugins/plaid_flutter/ios`)
-  - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
-
-SPEC REPOS:
-  trunk:
-    - Plaid
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  permission_handler_apple:
-    :path: ".symlinks/plugins/permission_handler_apple/ios"
-  plaid_flutter:
-    :path: ".symlinks/plugins/plaid_flutter/ios"
-  sign_in_with_apple:
-    :path: ".symlinks/plugins/sign_in_with_apple/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
-  Plaid: 252a1910d0ad030f27043925236be14a852c9bb2
-  plaid_flutter: 2f07a0704c94b28d8b10ec31ed2ea6a10d518f8e
-  sign_in_with_apple: c5dcc141574c8c54d5ac99dd2163c0c72ad22418
 
 PODFILE CHECKSUM: 53a6aebc29ccee84c41f92f409fc20cd4ca011f1
 
