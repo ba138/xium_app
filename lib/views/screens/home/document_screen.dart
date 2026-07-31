@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xium_app/constants/app_colors.dart';
 import 'package:xium_app/controller/home_controller.dart';
-import 'package:xium_app/controller/plaid_controller.dart';
+// import 'package:xium_app/controller/plaid_controller.dart';
 import 'package:xium_app/views/screens/home/store_detail_screen.dart';
 import 'package:xium_app/views/widgets/common_image_view.dart';
 import 'package:xium_app/views/widgets/my_text.dart';
@@ -18,7 +18,7 @@ class DocumentScreen extends StatefulWidget {
 
 class _DocumentScreenState extends State<DocumentScreen> {
   final controller = Get.put(HomeController());
-  final tinkController = Get.put(TinkController());
+  // final tinkController = Get.put(TinkController());
   String truncate(String text, int max) {
     if (text.length <= max) return text;
     return text.substring(0, max);

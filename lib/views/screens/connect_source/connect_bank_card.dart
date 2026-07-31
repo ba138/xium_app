@@ -15,7 +15,7 @@ class ConnectBankCard extends StatefulWidget {
 }
 
 class _ConnectBankCardState extends State<ConnectBankCard> {
-  var tinkController = Get.put(TinkController());
+  // var tinkController = Get.put(TinkController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +70,7 @@ class _ConnectBankCardState extends State<ConnectBankCard> {
 
               MyButton(
                 onTap: () {
-                  tinkController.openTinkLink();
+                  // tinkController.openTinkLink();
                   // () => _openBankSelectionSheet()
                 },
                 buttonText: "Continue with secure banking".tr,

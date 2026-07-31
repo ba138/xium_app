@@ -43,52 +43,52 @@ class AuthController extends GetxController {
     return digest.toString();
   }
 
-  Future<void> signInWithApple() async {
-    try {
-      Get.dialog(const LoadingDialogWidget(), barrierDismissible: false);
+  // Future<void> signInWithApple() async {
+  //   try {
+  //     Get.dialog(const LoadingDialogWidget(), barrierDismissible: false);
 
-      final appleProvider = AppleAuthProvider()
-        ..addScope('email')
-        ..addScope('name');
+  //     final appleProvider = AppleAuthProvider()
+  //       ..addScope('email')
+  //       ..addScope('name');
 
-      final userCredential = await FirebaseAuth.instance.signInWithProvider(
-        appleProvider,
-      );
+  //     final userCredential = await FirebaseAuth.instance.signInWithProvider(
+  //       appleProvider,
+  //     );
 
-      final firebaseUser = userCredential.user;
-      if (firebaseUser == null) {
-        throw Exception("Apple sign-in failed");
-      }
+  //     final firebaseUser = userCredential.user;
+  //     if (firebaseUser == null) {
+  //       throw Exception("Apple sign-in failed");
+  //     }
 
-      final docRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(firebaseUser.uid);
-      final doc = await docRef.get();
+  //     final docRef = FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(firebaseUser.uid);
+  //     final doc = await docRef.get();
 
-      if (!doc.exists) {
-        final userModel = UserModel(
-          uid: firebaseUser.uid,
-          username: firebaseUser.displayName ?? "Apple User",
-          email: firebaseUser.email ?? "",
-          profilePictureUrl:
-              "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-        );
+  //     if (!doc.exists) {
+  //       final userModel = UserModel(
+  //         uid: firebaseUser.uid,
+  //         username: firebaseUser.displayName ?? "Apple User",
+  //         email: firebaseUser.email ?? "",
+  //         profilePictureUrl:
+  //             "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+  //       );
 
-        await docRef.set({
-          ...userModel.toJson(),
-          'createdAt': FieldValue.serverTimestamp(),
-          'provider': 'apple',
-        });
-      }
+  //       await docRef.set({
+  //         ...userModel.toJson(),
+  //         'createdAt': FieldValue.serverTimestamp(),
+  //         'provider': 'apple',
+  //       });
+  //     }
 
-      Get.back();
-      Get.offAll(() => const NeedPermissionScreens());
-    } catch (e) {
-      Get.back();
-      debugPrint("Apple Sign-In Error: $e");
-      Get.snackbar("Apple Sign-In Error", e.toString());
-    }
-  }
+  //     Get.back();
+  //     Get.offAll(() => const NeedPermissionScreens());
+  //   } catch (e) {
+  //     Get.back();
+  //     debugPrint("Apple Sign-In Error: $e");
+  //     Get.snackbar("Apple Sign-In Error", e.toString());
+  //   }
+  // }
 
   Future<void> createUser() async {
     final fullName = fullNameController.text.trim();
