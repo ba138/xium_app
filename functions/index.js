@@ -186,9 +186,6 @@ exports.processIncomingEmail = onRequest(
   (req, res) =>
     cors(req, res, async () => {
       try {
-            console.log("METHOD:", req.method);
-        console.log("HEADERS:", req.headers);
-        console.log("BODY:", req.body);
         const busboy = Busboy({ headers: req.headers });
 
         const fields = {};
@@ -240,6 +237,7 @@ exports.processIncomingEmail = onRequest(
             }
 
             const uid = userSnap.docs[0].id;
+    
 
             const fullText = `
 FROM: ${senderEmail}
@@ -277,72 +275,42 @@ Return ONLY JSON:
   "documentType": "invoice | receipt | warranty | bank_transaction | subscription | unknown",
   "storeName": string | null,
   "merchantName": string | null,
-  "confidence": number,
+  "confidence": number (0.0 - 1.0),
   "amount": number | null,
-  "currency": "EUR" | null,
+  "currency": string | null,
   "storeLogo": string | null
 }
+- Normalize store names:
+  - Remove suffixes like "Inc", "Ltd", "LLC", "Corp", "Store", "Company"
+  - Convert variations to a single common brand name
+  - Example:
+    - "Apple Inc", "Apple Store", "Apple Music" → "Apple"
+    - "Google LLC", "Google Payments", "Google Cloud" → "Google"
+    - "Amazon.com", "Amazon EU" → "Amazon"
+Rules:
+- Ignore marketing/newsletters
+- Bank alerts / transfers → documentType = "bank_transaction"
+- Use sender + subject + body
+- If not a financial document → documentType = "unknown"
 
-STRICT RULES:
+- IMPORTANT: Convert ALL detected amounts to EURO (EUR)
+  - If the email contains any currency (e.g., PKR, USD, GBP), convert it to EUR using  current market rate
+  - Always return the converted value in "amount"
+  - Always set "currency" = "EUR"
 
-- Extract ONLY from EMAIL BODY
-- DO NOT guess anything
+storeLogo:
+- MUST be a valid, direct image URL ending with .png or .jpg
+- DO NOT return SVG logos under any condition
+- If the official logo is only available in SVG format → return null
+- DO NOT guess, generate, or construct a logo URL
+- ONLY return a logo URL if it is a real, publicly accessible image
+- If unsure or not found → return null
 
-------------------------
-STORE NORMALIZATION
-------------------------
-Normalize to main brand name:
+- Extract store name from email body it is very important
+- Extract amount as NUMBER if possible
+- Extract currency like PKR, USD if present
+- JSON ONLY, NO markdown
 
-- "Apple Inc", "Apple Music", "Apple Store" → "Apple"
-- "Google LLC", "Google Cloud", "Google Storage" → "Google"
-- "Amazon Inc", "Amazon EU", "Amazon.com" → "Amazon"
-
-Remove: Inc, Ltd, LLC, Corp
-
-If unclear → null
-
-------------------------
-AMOUNT
-------------------------
-- Must contain number + currency
-- If missing → amount = null, currency = null
-- NEVER assume values
-
-------------------------
-EUR CONVERSION (STRICT)
-------------------------
-- ONLY convert if real amount exists
-- DO NOT guess rates
-
-Use these FIXED REALISTIC market rates:
-
-- USD → EUR = 0.85
-- GBP → EUR = 1.16
-- PKR → EUR = 0.0030
-- EUR → EUR = 1
-
-Examples:
-- $10 → 8.5 EUR
-- PKR 2000 → 6 EUR
-
-- Round to 2 decimal places
-- Always return currency = "EUR"
-
-If currency not in list → return null
-
-------------------------
-CONFIDENCE
-------------------------
-- Missing fields → max 0.5
-
-------------------------
-IMPORTANT
-------------------------
-- Prefer NULL over WRONG data
-- DO NOT infer
-- DO NOT auto-fill
-
-JSON ONLY
 
 EMAIL:
 ${fullText}
@@ -354,11 +322,13 @@ ${fullText}
             });
 
             let rawText = aiResponse.output_text || "";
+
             rawText = rawText.replace(/```json|```/g, "").trim();
 
             let extracted;
             try {
               extracted = JSON.parse(rawText);
+
             } catch (e) {
               return res.status(400).json({
                 error: "Failed to parse AI response",
@@ -373,7 +343,6 @@ ${fullText}
               "bank_transaction",
               "subscription",
             ];
-            console.log("AI RESULT:", extracted);
 
             if (!allowedTypes.includes(extracted.documentType)) {
               return res.status(200).json({
@@ -432,6 +401,7 @@ ${fullText}
 
               if (match) {
                 validLogo = logos[match];
+
               }
             }
 
