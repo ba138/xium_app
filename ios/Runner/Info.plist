@@ -24,7 +24,8 @@
 	<!-- Location Permission (Required by third-party SDKs) -->
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location permission is required by integrated services used in the app.</string>
-
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>Location permission is required by integrated services used in the app.</string>
 	<key>CFBundleDisplayName</key>
 	<string>XIUM</string>
 

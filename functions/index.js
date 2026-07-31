@@ -186,6 +186,9 @@ exports.processIncomingEmail = onRequest(
   (req, res) =>
     cors(req, res, async () => {
       try {
+            console.log("METHOD:", req.method);
+        console.log("HEADERS:", req.headers);
+        console.log("BODY:", req.body);
         const busboy = Busboy({ headers: req.headers });
 
         const fields = {};
@@ -370,6 +373,7 @@ ${fullText}
               "bank_transaction",
               "subscription",
             ];
+            console.log("AI RESULT:", extracted);
 
             if (!allowedTypes.includes(extracted.documentType)) {
               return res.status(200).json({
