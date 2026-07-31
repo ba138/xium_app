@@ -179,7 +179,68 @@ const bucket = admin.storage().bucket();
 
 //   return transactions.length;
 // }
+async function convertCurrencyToGBP(amount, currency) {
+  try {
 
+    if (!amount || !currency || currency === "GBP") {
+      return {
+        amount,
+        currency
+      };
+    }
+
+    console.log("CONVERTING CURRENCY:", {
+      amount,
+      currency
+    });
+
+
+    const response = await fetch(
+      `https://api.fastforex.io/convert?api_key=b8bd43971f-9292e31ba3-tj1f74&from=${currency}&to=EUR&amount=${amount}&precision=2`
+    );
+
+
+    const data = await response.json();
+
+
+    console.log("FASTFOREX RESPONSE:", data);
+
+
+    if (
+      data.result &&
+      data.result.EUR
+    ) {
+
+      return {
+        amount: data.result.EUR,
+        currency: "EUR"
+      };
+
+    }
+
+
+    return {
+      amount,
+      currency
+    };
+
+
+  } catch (error) {
+
+    console.error(
+      "CURRENCY CONVERSION ERROR:",
+      error
+    );
+
+
+    // fallback
+    return {
+      amount,
+      currency
+    };
+
+  }
+}
 
 exports.processIncomingEmail = onRequest(
   { secrets: ["OPENAI_API_KEY"] },
@@ -403,39 +464,17 @@ ${fullText}
               }
             }
 // 🔄 Convert extracted currency to GBP
-let convertedAmount = extracted.amount;
-let convertedCurrency = extracted.currency;
+const converted = await convertCurrencyToGBP(
+  extracted.amount,
+  extracted.currency
+);
 
-if (
-  extracted.amount &&
-  extracted.currency &&
-  extracted.currency !== "GBP"
-) {
-  try {
-     const response = await fetch(
-      `https://api.fastforex.io/convert?api_key=b8bd43971f-9292e31ba3-tj1f74&from=${extracted.currency}&to=GBP&amount=${extracted.amount}&precision=2`
-    );
 
-    const conversionData = await response.json();
+console.log("FINAL CURRENCY:", converted);
 
-    console.log("CURRENCY CONVERSION RESULT:", conversionData);
 
-    if (
-      conversionData.result &&
-      conversionData.result.GBP
-    ) {
-      convertedAmount = conversionData.result.GBP;
-      convertedCurrency = "GBP";
-    }
-
-  } catch (error) {
-    console.error("Currency conversion failed:", error);
-
-    // fallback keep original value
-    convertedAmount = extracted.amount;
-    convertedCurrency = extracted.currency;
-  }
-}
+const convertedAmount = converted.amount;
+const convertedCurrency = converted.currency;
             // 💾 SAVE DOCUMENT
             const docRef = await db
               .collection("users")
@@ -775,40 +814,17 @@ EMAIL:
             merchant.charAt(0).toUpperCase() +
             merchant.slice(1);
         }
-// 🔄 Convert extracted currency to GBP
-let convertedAmount = extracted.amount;
-let convertedCurrency = extracted.currency;
+const converted = await convertCurrencyToGBP(
+  extracted.amount,
+  extracted.currency
+);
 
-if (
-  extracted.amount &&
-  extracted.currency &&
-  extracted.currency !== "GBP"
-) {
-  try {
-     const response = await fetch(
-      `https://api.fastforex.io/convert?api_key=b8bd43971f-9292e31ba3-tj1f74&from=${extracted.currency}&to=GBP&amount=${extracted.amount}&precision=2`
-    );
 
-    const conversionData = await response.json();
+console.log("FINAL CURRENCY:", converted);
 
-    console.log("CURRENCY CONVERSION RESULT:", conversionData);
 
-    if (
-      conversionData.result &&
-      conversionData.result.GBP
-    ) {
-      convertedAmount = conversionData.result.GBP;
-      convertedCurrency = "GBP";
-    }
-
-  } catch (error) {
-    console.error("Currency conversion failed:", error);
-
-    // fallback keep original value
-    convertedAmount = extracted.amount;
-    convertedCurrency = extracted.currency;
-  }
-}
+const convertedAmount = converted.amount;
+const convertedCurrency = converted.currency;
         // 🔹 Save to Firestore
         const docRef = await db
           .collection("users")
