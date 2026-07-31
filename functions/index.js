@@ -293,10 +293,8 @@ Rules:
 - Use sender + subject + body
 - If not a financial document → documentType = "unknown"
 
-- IMPORTANT: Convert ALL detected amounts to EURO (EUR)
-  - If the email contains any currency (e.g., PKR, USD, GBP), convert it to EUR using  current market rate
-  - Always return the converted value in "amount"
-  - Always set "currency" = "EUR"
+ - Exact Amount (number only)
+- Currency Code (3-letter code: USD, EUR, GBP, etc)
 
 storeLogo:
 - MUST be a valid, direct image URL ending with .png or .jpg
@@ -404,7 +402,40 @@ ${fullText}
 
               }
             }
+// 🔄 Convert extracted currency to GBP
+let convertedAmount = extracted.amount;
+let convertedCurrency = extracted.currency;
 
+if (
+  extracted.amount &&
+  extracted.currency &&
+  extracted.currency !== "GBP"
+) {
+  try {
+     const response = await fetch(
+      `https://api.fastforex.io/convert?api_key=b8bd43971f-9292e31ba3-tj1f74&from=${extracted.currency}&to=GBP&amount=${extracted.amount}&precision=2`
+    );
+
+    const conversionData = await response.json();
+
+    console.log("CURRENCY CONVERSION RESULT:", conversionData);
+
+    if (
+      conversionData.result &&
+      conversionData.result.GBP
+    ) {
+      convertedAmount = conversionData.result.GBP;
+      convertedCurrency = "GBP";
+    }
+
+  } catch (error) {
+    console.error("Currency conversion failed:", error);
+
+    // fallback keep original value
+    convertedAmount = extracted.amount;
+    convertedCurrency = extracted.currency;
+  }
+}
             // 💾 SAVE DOCUMENT
             const docRef = await db
               .collection("users")
@@ -419,8 +450,8 @@ ${fullText}
                 storeName: extracted.storeName ?? "Unknown",
                 merchantName: extracted.merchantName ?? null,
                 storeLogo: validLogo,
-                amount: extracted.amount ?? null,
-                currency: extracted.currency ?? null,
+                amount: convertedAmount?? null,
+                currency: convertedCurrency ?? null,
                 confidence: extracted.confidence ?? 0.9,
                 status: "done",
                 createdAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -621,10 +652,8 @@ Rules:
 - Use sender + subject + body
 - If not a financial document → documentType = "unknown"
 
-- IMPORTANT: Convert ALL detected amounts to EURO (EUR)
-  - If the email contains any currency (e.g., PKR, USD, GBP), convert it to EUR using  current market rate
-  - Always return the converted value in "amount"
-  - Always set "currency" = "EUR"
+ - Exact Amount (number only)
+- Currency Code (3-letter code: USD, EUR, GBP, etc)
 
 storeLogo:
 - MUST be a valid, direct image URL ending with .png or .jpg
@@ -746,7 +775,40 @@ EMAIL:
             merchant.charAt(0).toUpperCase() +
             merchant.slice(1);
         }
+// 🔄 Convert extracted currency to GBP
+let convertedAmount = extracted.amount;
+let convertedCurrency = extracted.currency;
 
+if (
+  extracted.amount &&
+  extracted.currency &&
+  extracted.currency !== "GBP"
+) {
+  try {
+     const response = await fetch(
+      `https://api.fastforex.io/convert?api_key=b8bd43971f-9292e31ba3-tj1f74&from=${extracted.currency}&to=GBP&amount=${extracted.amount}&precision=2`
+    );
+
+    const conversionData = await response.json();
+
+    console.log("CURRENCY CONVERSION RESULT:", conversionData);
+
+    if (
+      conversionData.result &&
+      conversionData.result.GBP
+    ) {
+      convertedAmount = conversionData.result.GBP;
+      convertedCurrency = "GBP";
+    }
+
+  } catch (error) {
+    console.error("Currency conversion failed:", error);
+
+    // fallback keep original value
+    convertedAmount = extracted.amount;
+    convertedCurrency = extracted.currency;
+  }
+}
         // 🔹 Save to Firestore
         const docRef = await db
           .collection("users")
@@ -759,8 +821,8 @@ EMAIL:
             storeName: merchant,
             storeLogo: validLogo,
             merchantName: merchant,
-            amount: extracted.amount ?? null,
-            currency: extracted.currency ?? null,
+            amount: convertedAmount ?? null,
+            currency: convertedCurrency ?? null,
             date: extracted.date ?? null,
             confidence: 0.9,
             status: "done",
