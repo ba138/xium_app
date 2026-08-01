@@ -241,7 +241,50 @@ async function convertCurrencyToGBP(amount, currency) {
 
   }
 }
+async function checkAndAddPoints(uid, source) {
 
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const endOfDay = new Date();
+  endOfDay.setHours(23, 59, 59, 999);
+
+
+  const todayDocs = await db
+    .collection("users")
+    .doc(uid)
+    .collection("documents")
+    .where("source", "==", source)
+    .where("createdAt", ">=", startOfDay)
+    .where("createdAt", "<=", endOfDay)
+    .get();
+
+
+  // Only first document of the day gets points
+  if (todayDocs.size === 1) {
+
+    await db.collection("users")
+      .doc(uid)
+      .set(
+        {
+          points: admin.firestore.FieldValue.increment(100)
+        },
+        {
+          merge: true
+        }
+      );
+
+
+    console.log(`100 points added for first ${source} document`);
+
+    return true;
+  }
+
+
+  console.log(`No points added. ${source} already processed today`);
+
+  return false;
+}
 exports.processIncomingEmail = onRequest(
   { secrets: ["OPENAI_API_KEY"] },
   (req, res) =>
@@ -298,7 +341,36 @@ exports.processIncomingEmail = onRequest(
             }
 
             const uid = userSnap.docs[0].id;
-    
+    const messageId = fields["Message-Id"] || fields["message-id"] || fields["Message-ID"] || null;
+
+let duplicateKey;
+
+if (messageId) {
+  duplicateKey = messageId.trim();
+} else {
+  const crypto = require("crypto");
+
+  duplicateKey = crypto
+    .createHash("sha256")
+    .update(`${senderEmail}_${subject}_${body}`)
+    .digest("hex");
+}
+
+const duplicateDoc = await db
+  .collection("users")
+  .doc(uid)
+  .collection("processedEmails")
+  .doc(duplicateKey)
+  .get();
+
+if (duplicateDoc.exists) {
+  console.log("Duplicate email ignored:", duplicateKey);
+
+  return res.status(200).json({
+    success: true,
+    message: "Duplicate email skipped",
+  });
+}
 
             const fullText = `
 FROM: ${senderEmail}
@@ -502,30 +574,17 @@ const convertedCurrency = converted.currency;
               },
               { merge: true }
             );
-
-            const startOfDay = new Date();
-            startOfDay.setHours(0, 0, 0, 0);
-
-            const endOfDay = new Date();
-            endOfDay.setHours(23, 59, 59, 999);
-
-            const todayDocs = await db
-              .collection("users")
-              .doc(uid)
-              .collection("documents")
-              .where("source", "==", "email")
-              .where("createdAt", ">=", startOfDay)
-              .where("createdAt", "<=", endOfDay)
-              .get();
-
-            if (todayDocs.size === 1) {
-              await db.collection("users").doc(uid).set(
-                {
-                  points: admin.firestore.FieldValue.increment(100),
-                },
-                { merge: true }
-              );
-            }
+            await db
+  .collection("users")
+  .doc(uid)
+  .collection("processedEmails")
+  .doc(duplicateKey)
+  .set({
+    documentId: docRef.id,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+await new Promise(resolve => setTimeout(resolve, 3000));
+           await checkAndAddPoints(uid, "email");
 
             return res.status(200).json({
               success: true,
@@ -855,28 +914,9 @@ const convertedCurrency = converted.currency;
         );
 
         // 🎯 Check today's OCR documents
-        const startOfDay = new Date();
-        startOfDay.setHours(0, 0, 0, 0);
-        const endOfDay = new Date();
-        endOfDay.setHours(23, 59, 59, 999);
+        await new Promise(resolve => setTimeout(resolve, 3000));
+           await checkAndAddPoints(uid, "ocr");
 
-        const todayDocs = await db
-          .collection("users")
-          .doc(uid)
-          .collection("documents")
-          .where("source", "==", "ocr")
-          .where("createdAt", ">=", startOfDay)
-          .where("createdAt", "<=", endOfDay)
-          .get();
-
-        if (todayDocs.size === 1) {
-          await db.collection("users").doc(uid).set(
-            {
-              points: admin.firestore.FieldValue.increment(100),
-            },
-            { merge: true }
-          );
-        }
 
         return res.status(200).json({
           success: true,
